@@ -22,9 +22,25 @@ public abstract class Control
 	protected boolean back = false;
 	protected boolean left = false;
 	protected boolean right = false;
+	protected boolean up = false;
+	protected boolean down = false;
+	protected boolean space = false;
+	protected boolean pauze = false;
+	protected boolean waspauzed = false;
 	
 	protected int dX = 0;
 	protected int dY = 0;
+	protected int CurrentX = 0;
+	protected int CurrentY = 0;
+	protected int ReleaseX = 0;
+	protected int ReleaseY = 0;
+	protected int PressedX = 0;
+	protected int PressedY = 0;
+	protected int WasPressedX = 0;
+	protected int WasPressedY = 0;
+	
+	protected boolean hpdown = false;
+	protected boolean hpup = false;
 	
 	/**
 	 * @return Returns true if forward motion is desired.
@@ -58,6 +74,17 @@ public abstract class Control
 		return right;
 	}
 	
+	public boolean getSpace(){
+		return space;
+	}
+	
+	public boolean getPauze(){
+		return pauze;
+	}
+	public boolean getWaspauzed(){
+		return waspauzed;
+	}
+	
 	/**
 	 * Gets the amount of rotation desired on the horizontal plane.
 	 * @return The horizontal rotation.
@@ -74,6 +101,43 @@ public abstract class Control
 	public int getdY()
 	{
 		return dY;
+	}
+	
+	public int getCurrentX(){
+		return CurrentX;
+	}
+	public int getCurrentY(){
+		return CurrentY;
+	}
+	public int getReleaseX(){
+		return ReleaseX;
+	}
+	public int getReleaseY(){
+		return ReleaseY;
+	}
+	
+	public void SwitchPauze(){
+		if(pauze == true){
+			pauze = false;
+		}else if(pauze == false){
+			pauze = true;
+		}
+	}
+	public void mouseReleasedUsed(){
+		ReleaseX = 0;
+		ReleaseY = 0;
+	}
+	public void mouseReset(){
+		dX = 0;
+		dY = 0;
+		CurrentX = 0;
+		CurrentY = 0;
+		ReleaseX = 0;
+		ReleaseY = 0;
+		PressedX = 0;
+		PressedY = 0;
+		WasPressedX = 0;
+		WasPressedY = 0;
 	}
 	
 	/**

@@ -18,8 +18,11 @@
 public class Player extends GameObject {	
 	private double horAngle, verAngle;
 	private double speed;
+	protected int hp;
 	
 	private Control control = null;
+	
+	private boolean GodMode = false;
 	
 	/**
 	 * The Player constructor.
@@ -42,6 +45,7 @@ public class Player extends GameObject {
 		horAngle = h;
 		verAngle = v;
 		speed = 0.01;
+		hp = 6;
 	}
 	
 	/**
@@ -122,27 +126,76 @@ public class Player extends GameObject {
 		{
 			control.update();
 			
-			horAngle = horAngle - (0.7*control.getdX());
-			verAngle = verAngle - (0.7*control.getdY());
+			double Hor = getHorAngle() - (0.1*control.getdX());
+			double Ver = getVerAngle() - (0.1*control.getdY());
+			
+			if( Ver > 89){
+				Ver = 89;
+			}
+			if( Ver < - 89){
+				Ver = - 89;
+			}
+			
+			setHorAngle(Hor);
+			setVerAngle(Ver);
 			// TODO: Rotate the player, according to control
 			
 			if (control.forward){
-				locationX = locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle));
-				locationZ = locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle));
+				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle)));
+				setLocationZ(getLocationZ() - getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle)));
+				
+				if(GodMode){
+					setLocationY(getLocationY() + getSpeed() * deltaTime * Math.sin(Math.toRadians(verAngle)));
+				}
 			}
 			if (control.back){
-				locationX = locationX + speed * deltaTime * Math.sin(Math.toRadians(horAngle));
-				locationZ = locationZ + speed * deltaTime * Math.cos(Math.toRadians(horAngle));
+				setLocationX(getLocationX() + getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle)));
+				setLocationZ(getLocationZ() + getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle)));
+				
+				if(GodMode){
+					setLocationY(getLocationY() - getSpeed() * deltaTime * Math.sin(Math.toRadians(verAngle)));
+				}
 			}
 			if (control.left){
-				locationX = locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90));
-				locationZ = locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90));
+				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle + 90)));
+				setLocationZ(getLocationZ() - getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle + 90)));
 			}
 			if (control.right){
-				locationX = locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90));
-				locationZ = locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90));
+				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle - 90)));
+				setLocationZ(getLocationZ() - getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle - 90)));
 			}
-			// TODO: Move the player, according to control
-		}
+			if(control.space){
+				setVerAngle(0);
+			}
+			
+			if(GodMode){
+				if(control.up){
+					setLocationY(getLocationY() + getSpeed() * deltaTime);
+				}
+				if(control.down){
+					setLocationY(getLocationY() - getSpeed() * deltaTime);
+				}
+			}
+			
+			if(control.hpdown){
+				if(hp > 0){
+					hp = hp -1;
+				}
+				control.hpdown = false;
+			}
+			if(control.hpup){
+				if(hp < 6){
+					hp = hp + 1;
+				}
+				control.hpup = false;
+			}
+		}	
+	}
+	
+	public void setGodMode(boolean G){
+		GodMode = G;
+	}
+	public boolean getGodMode(){
+		return GodMode;
 	}
 }

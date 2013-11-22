@@ -23,21 +23,32 @@ import com.sun.opengl.util.GLUT;
  */
 public class Maze implements VisibleObject {
 	
-	public final double MAZE_SIZE = 10;
+	public final double MAZE_SIZE = 22;
 	public final double SQUARE_SIZE = 5;
 
-	private int[][] maze = 
-	{	{  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 },
-		{  1,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
-		{  1,  0,  0,  0,  0,  0,  1,  1,  1,  1 },
-		{  1,  0,  1,  0,  0,  0,  1,  0,  0,  1 },
-		{  1,  0,  1,  0,  1,  0,  1,  0,  0,  1 },
-		{  1,  0,  1,  0,  1,  0,  1,  0,  0,  1 },
-		{  1,  0,  0,  0,  1,  0,  1,  0,  0,  1 },
-		{  1,  0,  0,  0,  1,  1,  1,  0,  0,  1 },
-		{  1,  0,  0,  0,  0,  0,  0,  0,  0,  1 },
-		{  1,  1,  1,  1,  1,  1,  1,  1,  1,  1 }	};
-
+	private static int[][] maze = new int[22][22];
+//	{{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+//	{1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+//	{1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
+//	{1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+//	{1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+//	{1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+//	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
+//	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+//	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }};
 	
 	/**
 	 * isWall(int x, int z) checks for a wall.
@@ -54,6 +65,10 @@ public class Maze implements VisibleObject {
 			return maze[x][z] == 1;
 		else
 			return false;
+	}
+	
+	public static void setMaze(int[][] temp) {
+		maze = temp;
 	}
 	
 	/**
@@ -78,7 +93,7 @@ public class Maze implements VisibleObject {
 	 * @param x		the double x-coordinate
 	 * @return		the integer x-coordinate
 	 */
-	private int convertToGridX( double x )
+	protected int convertToGridX( double x )
 	{
 		return (int)Math.floor( x / SQUARE_SIZE );
 	}
@@ -88,7 +103,7 @@ public class Maze implements VisibleObject {
 	 * @param z		the double z-coordinate
 	 * @return		the integer z-coordinate
 	 */
-	private int convertToGridZ( double z )
+	protected int convertToGridZ( double z )
 	{
 		return (int)Math.floor( z / SQUARE_SIZE );
 	}
@@ -112,7 +127,8 @@ public class Maze implements VisibleObject {
 				gl.glPopMatrix();
 			}
 		}
-		paintSingleFloorTile( gl, MAZE_SIZE * SQUARE_SIZE );			// Paint the floor.
+		paintSingleFloorTile( gl, MAZE_SIZE * SQUARE_SIZE );	// Paint the floor.
+		paintSingleRoofTile(gl,MAZE_SIZE*SQUARE_SIZE,SQUARE_SIZE);
 	}
 	
 	/**
@@ -135,4 +151,24 @@ public class Maze implements VisibleObject {
 	        gl.glVertex3d(size, 0, 0);		
 		gl.glEnd();	
 	}	
+	private void paintSingleRoofTile(GL gl, double size,double height)
+	{
+        // Setting the floor color and material.
+        float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f };				// The floor is blue.
+        gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the floor.
+
+        gl.glNormal3d(0, 1, 0);
+		gl.glBegin(GL.GL_QUADS);
+	        gl.glVertex3d(size, height, 0);	
+	        gl.glVertex3d(size, height, size);
+	        gl.glVertex3d(0, height, size);
+	        gl.glVertex3d(0, height, 0);
+		gl.glEnd();	
+	}
+
+	@Override
+	public void update(int deltaTime, Maze maze) {
+		// TODO Auto-generated method stub
+		
+	}
 }

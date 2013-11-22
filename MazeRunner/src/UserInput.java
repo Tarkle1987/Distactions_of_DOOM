@@ -1,6 +1,12 @@
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.awt.event.*;
 
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
+
+import com.sun.opengl.util.GLUT;
 
 /**
  * The UserInput class is an extension of the Control class. It also implements three 
@@ -21,7 +27,16 @@ import javax.media.opengl.GLCanvas;
 public class UserInput extends Control 
 		implements MouseListener, MouseMotionListener, KeyListener
 {
-	public int xd, yd, xp, yp;
+	protected int xd, yd, xp, yp;
+	protected boolean view_right, view_left;
+	protected double boundx = 0;
+	protected double boundy = 0;
+	protected boolean schiet = false;
+	protected boolean geschoten = false;
+	private boolean hpchanged = false;
+
+
+
 	// TODO: Add fields to help calculate mouse movement
 	
 	/**
@@ -48,11 +63,29 @@ public class UserInput extends Control
 	@Override
 	public void update()
 	{
-		dX = xd-xp;
-		dY = yd-yp;
-		xp = xd;
+		if(xd-xp != 0)
+		{
+			
+			dX = -3*(xp-xd);
+			xp = xd;
+		}
+		else
+			if(view_left == true)
+				if(view_right == true)
+					dX = 0;
+				else
+					dX = -5;
+			else
+				if(view_right == true)
+					dX = 5;
+				else
+					dX = 0;
+	
+		dY = -3*(yp-yd);
 		yp = yd;
 		// TODO: Set dX and dY to values corresponding to mouse movement
+		
+
 	}
 
 	/*
@@ -64,11 +97,19 @@ public class UserInput extends Control
 	@Override
 	public void mousePressed(MouseEvent event)
 	{
-		xp = event.getX();
-		yp = event.getY();
-		xd = event.getX();
-		yd = event.getY();
-		// TODO: Detect the location where the mouse has been pressed
+
+		if(pauze){
+			this.PressedX = event.getX();
+			this.PressedY = event.getY();
+		}
+		
+		if(!geschoten){
+			schiet = true;
+			
+		}
+		
+		geschoten = true;
+	
 	}
 
 	@Override
@@ -76,28 +117,54 @@ public class UserInput extends Control
 	{	
 		xd = event.getX();
 		yd = event.getY();
+		
 		// TODO: Detect mouse movement while the mouse button is down
 	}
 
 	@Override
 	public void keyPressed(KeyEvent event)
 	{
-		if (event.getKeyChar() == 'w')
-		{
-			forward = true;	
+		
+		switch(event.getExtendedKeyCode()){
+		case 87: forward = true;	// 'w'
+		break;
+		case 65: left = true;		// 'a'
+		break;
+		case 83: back = true;		// 's'
+		break;
+		case 68: right = true;		// 'd'
+		break;
+		case 69: view_right = true;// 'e'
+		break;
+		case 81: view_left = true;// 'q'
+		break;
+		case 32: space = true;    // 'space;
+		break;
+		case 27: SwitchPauze();	  // 'escape'
+		break;
+		case 67: up = true;		  // 'c'
+		break;
+		case 86: down = true;	  // 'v'
+		break;
+		case 70: 				  // 'f'
+			if(!hpchanged){
+				hpdown = true;
+				hpchanged = true;
+			}
+		break;
+		case 71:   				  // 'g' 
+			if(!hpchanged){
+				hpup = true;
+				hpchanged = true;
+			}
+		break;
+		
+		default: break;
 		}
-		if (event.getKeyCode() == KeyEvent.VK_A)
-		{
-			left = true;
-		}
-		if (event.getKeyCode() == KeyEvent.VK_S)
-		{
-			back = true;
-		}
-		if (event.getKeyCode() == KeyEvent.VK_D)
-		{
-			right = true;
-		}
+		
+	
+		
+	
 
 		// TODO: Set forward, back, left and right to corresponding key presses
 	}
@@ -105,24 +172,32 @@ public class UserInput extends Control
 	@Override
 	public void keyReleased(KeyEvent event)
 	{
-		if (event.getKeyChar() == 'w')
-		{
-			forward = false;	
+		switch(event.getExtendedKeyCode()){
+		case 87: forward = false;	// 'w'
+		break;
+		case 65: left = false;		// 'a'
+		break;
+		case 83: back = false;		// 's'
+		break;
+		case 68: right = false;		// 'd'
+		break;
+		case 69: view_right = false;// 'e'
+		break;
+		case 81: view_left = false;// 'q'
+		break;
+		case 32: space = false;    // 'space; 
+		break;
+		case 67: up = false;	  // 'c'
+		break;
+		case 86: down = false;	  // 'v'
+		break;
+		case 70: hpchanged = false; // 'f'
+		break;
+		case 71: hpchanged = false; // 'g'
+		default: break;
 		}
-		if (event.getKeyCode() == KeyEvent.VK_A)
-		{
-			left = false;
-		}
-		if (event.getKeyCode() == KeyEvent.VK_S)
-		{
-			back = false;
-		}
-		if (event.getKeyCode() == KeyEvent.VK_D)
-		{
-			right = false;
-		}
+		
 
-		// TODO: Set forward, back, left and right to corresponding key presses
 	}
 
 	/*
@@ -134,6 +209,20 @@ public class UserInput extends Control
 	@Override
 	public void mouseMoved(MouseEvent event)
 	{
+		
+		
+		CurrentX = event.getX();
+		CurrentY = event.getY();
+		
+	if(!pauze){
+		xd = event.getX();
+		yd = event.getY();
+	}
+		
+		
+		
+		
+
 	}
 
 	@Override
@@ -161,7 +250,47 @@ public class UserInput extends Control
 	{
 		dX = 0;
 		dY = 0;
+		
+		ReleaseX = event.getX();
+		ReleaseY = event.getY();
+		
+		WasPressedX = PressedX;
+		WasPressedY = PressedY;
+		
+		PressedX = 0;
+		PressedY = 0;
+		
+		geschoten = false;
 	}
+	
+	public void mouseOutBorder(int screenWidth,int screenHeight){
+	
+		int border = 50;
+	        
+		if(CurrentX > (screenWidth - border) || CurrentX < (border) || CurrentY > (screenHeight - border) || CurrentY < (border)){
+			mouseReset(screenWidth,screenHeight);
+		}
+	}
+	
+	public void mouseReset(int screenWidth, int screenHeight){
+		
+	
+		
+		  try {
+    			Robot robot = new Robot();
+
+    			robot.mouseMove(screenWidth + (int)boundx/2, screenHeight + (int)(boundy-boundx/2));
+
+   	
+    		} catch (AWTException e) {
+    		
+    			e.printStackTrace();
+    		}
+		  
+
+	}
+	
+
 
 
 }
