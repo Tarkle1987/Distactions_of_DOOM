@@ -37,6 +37,7 @@ public class UserInput extends Control
 
 
 
+
 	// TODO: Add fields to help calculate mouse movement
 	
 	/**
@@ -125,6 +126,8 @@ public class UserInput extends Control
 	public void keyPressed(KeyEvent event)
 	{
 		
+		//System.out.println(event.getExtendedKeyCode());
+		
 		switch(event.getExtendedKeyCode()){
 		case 87: forward = true;	// 'w'
 		break;
@@ -158,6 +161,10 @@ public class UserInput extends Control
 				hpchanged = true;
 			}
 		break;
+		case 66:				  // 'b'
+			// not programmed
+			break;
+			
 		
 		default: break;
 		}
@@ -194,6 +201,10 @@ public class UserInput extends Control
 		case 70: hpchanged = false; // 'f'
 		break;
 		case 71: hpchanged = false; // 'g'
+		break;
+		case 66:				  // 'b'
+			// not programmed
+			break;
 		default: break;
 		}
 		

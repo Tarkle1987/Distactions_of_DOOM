@@ -29,9 +29,12 @@ public class Clock {
 	}
 
 	private void update() {
-		if(seconds > 60){
+		if(seconds > 59){
 			minutes = minutes + 1;
 			seconds = seconds - 60;
+		}
+		if(minutes > 99){
+			minutes = 0;
 		}
 		
 		clock[0].set(seconds%10);

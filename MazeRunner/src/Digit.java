@@ -30,7 +30,7 @@ public class Digit {
 			barVer(gl, x -12*size - delta*size, y - 12*size -delta*size);
 		
 		// boven rechts
-		if(digit == 0 || digit == 1 || digit == 2 || digit == 3 || digit == 4 || digit == 6 || digit == 7 || digit == 8 || digit == 9)
+		if(digit == 0 || digit == 1 || digit == 2 || digit == 3 || digit == 4 || digit == 7 || digit == 8 || digit == 9)
 			barVer(gl, x + 12*size +delta*size, y - 12*size -delta*size);
 		
 		// middelste
