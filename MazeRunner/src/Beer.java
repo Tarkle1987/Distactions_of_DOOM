@@ -58,7 +58,7 @@ public class Beer extends GameObject implements VisibleObject{
 				!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ() + heigth) &&
 				!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ() - heigth))
 		{
-			Tile state = new Tile(currentTile.getX() + Xdirection, currentTile.getZ());
+			Tile state = new Tile(currentTile.getX() + Xdirection*speed, currentTile.getZ());
 			boolean check = true;
 			for(int j =0; j<objectPositions.size(); j++)
 			{
@@ -77,7 +77,7 @@ public class Beer extends GameObject implements VisibleObject{
 				!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() + Zdirection*(heigth+speed)) &&
 				!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() + Zdirection*(heigth+speed)))
 		{
-			Tile state = new Tile(currentTile.getX(), currentTile.getZ() + Zdirection);
+			Tile state = new Tile(currentTile.getX(), currentTile.getZ() + Zdirection*speed);
 			boolean check = true;
 			for(int j =0; j<objectPositions.size(); j++)
 			{
