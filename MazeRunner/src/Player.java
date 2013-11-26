@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Player represents the actual player in MazeRunner.
  * <p>
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 public class Player extends GameObject {	
 	private double horAngle, verAngle;
 	private double speed;
+	protected int hp;
 	
 	private Control control = null;
 	
@@ -46,6 +45,7 @@ public class Player extends GameObject {
 		horAngle = h;
 		verAngle = v;
 		speed = 0.01;
+		hp = 6;
 	}
 	
 	/**
@@ -119,12 +119,9 @@ public class Player extends GameObject {
 	/**
 	 * Updates the physical location and orientation of the player
 	 * @param deltaTime The time in milliseconds since the last update.
-	 * @param objectPositions 
-	 * @return 
 	 */
-	public Tile update(int deltaTime)
+	public void update(int deltaTime)
 	{
-		Tile currentTile = new Tile(this.getLocationX(), this.getLocationZ());
 		if (control != null)
 		{
 			control.update();
@@ -179,11 +176,20 @@ public class Player extends GameObject {
 					setLocationY(getLocationY() - getSpeed() * deltaTime);
 				}
 			}
-			// TODO: Move the player, according to control
-		}
-		
-		Tile playerTile = new Tile(this.getLocationX(), this.getLocationZ());
-		return playerTile;
+			
+			if(control.hpdown){
+				if(hp > 0){
+					hp = hp -1;
+				}
+				control.hpdown = false;
+			}
+			if(control.hpup){
+				if(hp < 6){
+					hp = hp + 1;
+				}
+				control.hpup = false;
+			}
+		}	
 	}
 	
 	public void setGodMode(boolean G){
