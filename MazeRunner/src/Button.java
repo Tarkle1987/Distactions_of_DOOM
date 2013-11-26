@@ -1,5 +1,3 @@
-import java.awt.Point;
-
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;

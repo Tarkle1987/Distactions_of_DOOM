@@ -18,6 +18,7 @@
 public class Player extends GameObject {	
 	private double horAngle, verAngle;
 	private double speed;
+	private double sprintspeed = 0.015;
 	protected int hp;
 	
 	private Control control = null;
@@ -127,6 +128,8 @@ public class Player extends GameObject {
 		{
 			control.update();
 			
+		
+			
 			double Hor = getHorAngle() - (0.1*control.getdX());
 			double Ver = getVerAngle() - (0.1*control.getdY());
 			
@@ -142,20 +145,28 @@ public class Player extends GameObject {
 			// TODO: Rotate the player, according to control
 			
 			if (control.forward){
+				// sprint (only forward
+				if(control.sprint){
+					speed = sprintspeed;
+				}
+				
 				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle)));
 				setLocationZ(getLocationZ() - getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle)));
 				
-				if(GodMode){
-					setLocationY(getLocationY() + getSpeed() * deltaTime * Math.sin(Math.toRadians(verAngle)));
-				}
+//				if(GodMode){
+//					setLocationY(getLocationY() + getSpeed() * deltaTime * Math.sin(Math.toRadians(verAngle)));
+//				}
+				
+				// reset speed to default
+				speed = 0.01;
 			}
 			if (control.back){
 				setLocationX(getLocationX() + getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle)));
 				setLocationZ(getLocationZ() + getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle)));
 				
-				if(GodMode){
-					setLocationY(getLocationY() - getSpeed() * deltaTime * Math.sin(Math.toRadians(verAngle)));
-				}
+//				if(GodMode){
+//					setLocationY(getLocationY() - getSpeed() * deltaTime * Math.sin(Math.toRadians(verAngle)));
+//				}
 			}
 			if (control.left){
 				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle + 90)));

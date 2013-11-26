@@ -18,10 +18,10 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		
 		super(x,y + size/2,z);
 		this.size = size;
-		speed = 0.01;
+		speed = 0.011;
 		angle = 0;
 		newangle = angle;
-		anglespeed = 0.6;
+		anglespeed = 0.4;
 	}
 	
 	
@@ -42,25 +42,53 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		gl.glPopMatrix();
 	}
 	
-	public void CubeMove(double X, double Z){
+	public void CubeMove(int deltaTime, Maze maze, double X, double Z){
 
 		// De kubus bewegen als de speler ertegenaan loopt ( alleen in X of in Z richting )
-		switch (CubeTouchDetection(X,Z)){
-		case 1: while(X > this.locationX - size/2 -1){this.locationX = this.locationX + speed;}
-			break;
-		case 2: while(Z > this.locationZ - size/2 -1){this.locationZ = this.locationZ + speed;}
-			break;
-		case 3: while(X < this.locationX + size/2 + 1){this.locationX = this.locationX - speed;}
-			break;
-		case 4: while(Z < this.locationZ + size/2 + 1){this.locationZ = this.locationZ - speed;}
-			break;
+//		switch (CubeTouchDetection(X,Z)){
+//		case 1: while(X > this.locationX - size/2 -1){this.locationX = this.locationX + speed*deltaTime;}
+//			break;
+//		case 2: while(Z > this.locationZ - size/2 -1){this.locationZ = this.locationZ + speed*deltaTime;}
+//			break;
+//		case 3: while(X < this.locationX + size/2 + 1){this.locationX = this.locationX - speed*deltaTime;}
+//			break;
+//		case 4: while(Z < this.locationZ + size/2 + 1){this.locationZ = this.locationZ - speed*deltaTime;}
+//			break;
+//		}
+		
+		
+		
+		// kubus loopt richting player
+		double dX = X - locationX;
+		double dZ = Z - locationZ;
+		
+		double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+		
+		if(dLength < sightrange && dLength > 2){
+		
+			dX = dX/dLength;
+			dZ = dZ/dLength;
+		
+			locationX = locationX + dX * speed*deltaTime;
+			locationZ = locationZ + dZ * speed*deltaTime;
+		
+			
+			if(maze.isWall(locationX, locationZ)){
+				locationX = locationX - dX * speed*deltaTime;
+				
+				if(maze.isWall(locationX, locationZ)){
+					locationX = locationX + dX * speed*deltaTime;
+					locationZ = locationZ - dZ * speed*deltaTime;
+					
+					if(maze.isWall(locationX, locationZ)){
+						locationX = locationX - dX * speed*deltaTime;
+					}
+				}
+			}
 		}
-		
-		CubeRotate(X,Z);
-		
 	}
 		
-	private void CubeRotate(double X, double Z){
+	private void CubeRotate(int deltaTime, double X, double Z){
 		// trying to let the cube turn to the player
 		
 		// Vector van de speler bepalen ten opzichte van de kubus
@@ -85,9 +113,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		if(angle < newangle){
 			
 			if((angle - newangle) < -180){
-				angle = angle - anglespeed;
+				angle = angle - anglespeed*deltaTime;
 			}else{
-				angle = angle + anglespeed;
+				angle = angle + anglespeed*deltaTime;
 			}
 			
 			if(angle > 180)
@@ -99,9 +127,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		
 			
 			if((angle - newangle) > 180){
-				angle = angle + anglespeed;
+				angle = angle + anglespeed*deltaTime;
 			}else{
-				angle = angle - anglespeed;
+				angle = angle - anglespeed*deltaTime;
 			}
 			
 			if(angle > 180)
@@ -144,8 +172,13 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 
 	@Override
-	public void update(int deltaTime, Maze maze) {
-		// TODO Auto-generated method stub
+	public void update(int deltaTime, Maze maze, double X, double Z) {
+		
+		// kubus roteerd naar de player
+		CubeRotate(deltaTime, X,Z);
+		
+		// Bewegen van kubus naar player / door player
+		CubeMove(deltaTime, maze, X,Z);
 		
 	}
 

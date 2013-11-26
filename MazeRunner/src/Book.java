@@ -24,7 +24,7 @@ public class Book extends GameObject implements VisibleObject {
 		this.size = 0.5;
 	}
 	
-	public void update(int deltaTime, Maze maze){
+	public void update(int deltaTime, Maze maze, double playerX, double playerZ){
 	
 		double x = locationX;
 		double z = locationZ;
