@@ -21,6 +21,7 @@ public class Beer extends GameObject implements VisibleObject{
 	private int Zdirection;
 	private Tile nextTile;
 	private int beerNumber;
+	private double VisibleDistance = 20.0;
 
 	public Beer(Tile tile, double heigth, int beerNumber)
 	{
@@ -50,101 +51,146 @@ public class Beer extends GameObject implements VisibleObject{
 	{
 		ArrayList<Tile> possibleStates = new ArrayList<Tile>(); // List of possibleStates, send to method move.
 		Tile currentTile = new Tile(this.getLocationX(), this.getLocationZ());
-		/*
-		 * To implement momentum, we first check if the option in the direction of the previous direction isn't a wall.
-		 * That is separately checked for the X and Z direction. This option is added to the list of states
-		 */
-		if(Xdirection != 0 && !maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ()) &&
-				!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ() + heigth) &&
-				!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ() - heigth)&&
-				(maze.isWall(currentTile.getX() - Xdirection*heigth, currentTile.getZ() + 2*heigth)||
-						maze.isWall(currentTile.getX()- Xdirection*heigth, currentTile.getZ() - 2*heigth)))
+		Tile playerTile = objectPositions.get(0);
+		if(playerTile.distance(currentTile)< VisibleDistance)
 		{
-			Tile state = new Tile(currentTile.getX() + Xdirection*speed, currentTile.getZ());
-			boolean check = true;
+			double Xdir = currentTile.getX() - playerTile.getX();
+			double Zdir = currentTile.getZ() - playerTile.getZ();
+			if(Xdir > 0.0)
+				Xdir = 1.0;
+			if(Xdir < 0.0)
+				Xdir = -1.0;
+			if(Zdir  > 0.0)
+				Zdir = 1.0;
+			if(Zdir < 0.0)
+				Zdir = -1.0;
+			Tile newStateX = new Tile(currentTile.getX() - Xdir*speed, currentTile.getZ());
+			boolean checkX = true;
 			for(int j =0; j<objectPositions.size(); j++)
 			{
-				if(state.distance(objectPositions.get(j)) < 2*heigth && j != this.beerNumber)
+				if(newStateX.distance(objectPositions.get(j)) < 2*heigth && j != this.beerNumber)
 				{
-					check = false;
+					checkX = false;
 					break;
 				}
 			}
-			if(!possibleStates.contains(state) && check )
+			if(!maze.isWall(currentTile.getX() - Xdir*(heigth +speed), currentTile.getZ())&&
+					!maze.isWall(currentTile.getX() -Xdir*(heigth +speed), currentTile.getZ() + heigth) &&
+					!maze.isWall(currentTile.getX() - Xdir*(heigth + speed), currentTile.getZ() - heigth)&& checkX)
 			{
-				possibleStates.add(state);
+			possibleStates.add(newStateX);
 			}
-		}
-		else if(Zdirection != 0 && !maze.isWall(currentTile.getX(), currentTile.getZ() + Zdirection*(heigth+speed)) &&
-				!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() + Zdirection*(heigth+speed)) &&
-				!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() + Zdirection*(heigth+speed))&&
-				(maze.isWall(currentTile.getX() + 2* heigth, currentTile.getZ()-Zdirection*heigth)&&
-						maze.isWall(currentTile.getX() - 2*heigth, currentTile.getZ()-Zdirection*heigth)))
-		{
-			Tile state = new Tile(currentTile.getX(), currentTile.getZ() + Zdirection*speed);
-			boolean check = true;
+			Tile newStateZ = new Tile(currentTile.getX(), currentTile.getZ()-Zdir*speed);
+			boolean checkZ = true;
 			for(int j =0; j<objectPositions.size(); j++)
 			{
-				if(state.distance(objectPositions.get(j)) < 2*heigth && j != this.beerNumber)
+				if(newStateZ.distance(objectPositions.get(j)) < 2*heigth && j != this.beerNumber)
 				{
-					check = false;
+					checkZ = false;
 					break;
 				}
 			}
-			if(!possibleStates.contains(state) && check )
+			if(!maze.isWall(currentTile.getX(), currentTile.getZ() - Zdir*(heigth + speed))&&
+					!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() - Zdir*(heigth + speed))&&
+					!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() - Zdir*(heigth +speed))&& checkZ)
 			{
-				possibleStates.add(state);
+			possibleStates.add(newStateZ);
 			}
 		}
-/*
- * If the direction-momentum side is a wall, the possibleState size = 0, check then for other possibilities.
- */
 		if(possibleStates.size() < 1)
 		{
-			for(int k=-1; k<=1; k++)
+			/*
+			 * To implement momentum, we first check if the option in the direction of the previous direction isn't a wall.
+			 * That is separately checked for the X and Z direction. This option is added to the list of states
+			 */
+			if(Xdirection != 0 && !maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ()) &&
+					!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ() + heigth) &&
+					!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ() - heigth))
 			{
-				/*
-				 * Check for 2 * 3 directions if the next step is a wall. Also two sides are checked, so that it isn't possible
-				 * to move through walls. If it is not a wall, the Tile is added to the possibleStates.
-				 */
-				if(!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ()) && 
-						!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ() + heigth) &&
-						!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ() - heigth))
+				Tile state = new Tile(currentTile.getX() + Xdirection*speed, currentTile.getZ());
+				boolean check = true;
+				for(int j =0; j<objectPositions.size(); j++)
 				{
-
-					Tile state = new Tile(this.getLocationX()+k*speed,this.getLocationZ());
-					boolean check = true;
-					for(int j =0; j<objectPositions.size(); j++)
+					if(state.distance(objectPositions.get(j)) < 2*heigth && j != this.beerNumber)
 					{
-						if(state.distance(objectPositions.get(j)) < 2*heigth && j != this.beerNumber)
-						{
-							check = false;
-							break;
-						}
-					}
-					if(!possibleStates.contains(state) && check )
-					{
-						possibleStates.add(state);
+						check = false;
+						break;
 					}
 				}
-
-				if(!maze.isWall(this.getLocationX(), this.getLocationZ() + k*(heigth+speed)) && 
-						!maze.isWall(this.getLocationX() + heigth, this.getLocationZ() + k*(heigth+speed)) &&
-						!maze.isWall(this.getLocationX() - heigth, this.getLocationZ() + k*(heigth+speed)))
+				if(!possibleStates.contains(state) && check )
 				{
-					Tile state = new Tile(this.getLocationX(),this.getLocationZ()+k*speed);
-					boolean check = true;
-					for(int j =0; j<objectPositions.size(); j++)
+					possibleStates.add(state);
+				}
+			}
+			else if(Zdirection != 0 && !maze.isWall(currentTile.getX(), currentTile.getZ() + Zdirection*(heigth+speed)) &&
+					!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() + Zdirection*(heigth+speed)) &&
+					!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() + Zdirection*(heigth+speed)))
+			{
+				Tile state = new Tile(currentTile.getX(), currentTile.getZ() + Zdirection*speed);
+				boolean check = true;
+				for(int j =0; j<objectPositions.size(); j++)
+				{
+					if(state.distance(objectPositions.get(j)) < 2*heigth && j != this.beerNumber)
 					{
-						if(state.distance(objectPositions.get(j)) < 2*heigth&& j != this.beerNumber)
+						check = false;
+						break;
+					}
+				}
+				if(!possibleStates.contains(state) && check )
+				{
+					possibleStates.add(state);
+				}
+			}
+			/*
+			 * If the direction-momentum side is a wall, the possibleState size = 0, check then for other possibilities.
+			 */
+			if(possibleStates.size() < 1)
+			{
+				for(int k=-1; k<=1; k++)
+				{
+					/*
+					 * Check for 2 * 3 directions if the next step is a wall. Also two sides are checked, so that it isn't possible
+					 * to move through walls. If it is not a wall, the Tile is added to the possibleStates.
+					 */
+					if(!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ()) && 
+							!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ() + heigth) &&
+							!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ() - heigth))
+					{
+
+						Tile state = new Tile(this.getLocationX()+k*speed,this.getLocationZ());
+						boolean check = true;
+						for(int j =0; j<objectPositions.size(); j++)
 						{
-							check = false;
-							break;
+							if(state.distance(objectPositions.get(j)) < 2*heigth && j != this.beerNumber)
+							{
+								check = false;
+								break;
+							}
+						}
+						if(!possibleStates.contains(state) && check )
+						{
+							possibleStates.add(state);
 						}
 					}
-					if(!possibleStates.contains(state) && check )
+
+					if(!maze.isWall(this.getLocationX(), this.getLocationZ() + k*(heigth+speed)) && 
+							!maze.isWall(this.getLocationX() + heigth, this.getLocationZ() + k*(heigth+speed)) &&
+							!maze.isWall(this.getLocationX() - heigth, this.getLocationZ() + k*(heigth+speed)))
 					{
-						possibleStates.add(state);
+						Tile state = new Tile(this.getLocationX(),this.getLocationZ()+k*speed);
+						boolean check = true;
+						for(int j =0; j<objectPositions.size(); j++)
+						{
+							if(state.distance(objectPositions.get(j)) < 2*heigth&& j != this.beerNumber)
+							{
+								check = false;
+								break;
+							}
+						}
+						if(!possibleStates.contains(state) && check )
+						{
+							possibleStates.add(state);
+						}
 					}
 				}
 			}
@@ -163,6 +209,9 @@ public class Beer extends GameObject implements VisibleObject{
 			Zdirection = -1;
 		return nextTile;		
 	}
+
+
+
 
 	/*
 	 * Method that moves the object with the direction randomly chosen if there are more than one possible states.
