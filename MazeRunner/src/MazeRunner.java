@@ -34,10 +34,7 @@ public class MazeRunner extends Frame implements GLEventListener {
  */
 	private GLCanvas canvas;
 
-	private int screenWidth = 1000, screenHeight = 500;		// Screen size.
-	private float buttonHeight = screenHeight / 15.0f;
-	private float buttonWidth = screenWidth / 2.5f;
-	private float buttonSpace = buttonHeight + buttonHeight / 4.0f;
+	private int screenWidth = 1000, screenHeight = 1000;		// Screen size.
 	private ArrayList<VisibleObject> visibleObjects;		// A list of objects that will be displayed on screen.
 	private Player player;									// The player object.
 	private Camera camera;									// The camera object.
@@ -45,11 +42,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Maze maze; 										// The maze.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	private boolean init = true;
-	private boolean fullscreen = false;
-	
+
 	private CompanionCube c1;
-	protected ArrayList<Tile> objectPositions;				// A list of positions from the objects: player and beers
-	private Beer b1, b2, b3, b4, b5;
+	
+	// Ingame seconden tellen
+	private int miliseconds = 0;
+	
+	private Clock clock = new Clock();
+	
 
 
 
@@ -152,17 +152,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
-		// We define an ArrayList of Tiles to store all the current positions of the gameobjects
-		objectPositions = new ArrayList<Tile>();
 		// Add the maze that we will be using.
 		maze = new Maze();
 		visibleObjects.add( maze );
 
 		// Initialize the player.
 		input = new UserInput(canvas);
-		input.xp = screenWidth/2;
-        input.yp = screenHeight/2;
-		input.mouseReset(screenWidth,screenHeight);
+
+		
 		
 		player = new Player( 6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
 							 maze.SQUARE_SIZE / 2,							// y-position
@@ -171,46 +168,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	    camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
 		             player.getHorAngle(), player.getVerAngle() );
+			
+	
 		
-	    /*
-	     * Start positions for the game objects. Be aware: for the player the start position must two times be set..
-	     * TODO: Give the players startpoint as a Tile.
-	     * TODO: Give the cube's startpoint as a Tile.
-	     */
-	    Tile startPlayer = new Tile(6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,
-				 5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2);
-	    Tile cubeEen = new Tile( 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
-		Tile beerEen = new Tile(10, 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5);
-		Tile beerTwee = new Tile(8,8);
-		Tile beerDrie = new Tile(8,10);
-		Tile beerVier = new Tile(10,20);
-		Tile beerVijf = new Tile(16,16);
-		
-		/*
-		 * initial setting of the objectPositions.
-		 */
-		objectPositions.add(0, startPlayer);
-		objectPositions.add(1, beerEen);
-		objectPositions.add(2, beerTwee);
-		objectPositions.add(3, beerDrie);
-		objectPositions.add(4, beerVier);
-		objectPositions.add(5, beerVijf);
-	    
 		c1 = new CompanionCube(14,  0,  4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
-		b1 = new Beer(beerEen, 1.0, 1);
-		b2 = new Beer(beerTwee, 1, 2);
-		b3 = new Beer(beerDrie, 1, 3);
-		b4 = new Beer(beerVier, 1, 4);
-		b5 = new Beer(beerVijf, 1, 5);
 		visibleObjects.add(c1);
-		visibleObjects.add(b1);
-		visibleObjects.add(b2);
-		visibleObjects.add(b3);
-		visibleObjects.add(b4);
-		visibleObjects.add(b5);
 		
 		//this.setUndecorated(true);
 		player.setControl(input);
+		
+		input.screenWidth = screenWidth;
+		input.screenHeight = screenHeight;
+		input.mouseReset();
 		
 	     
 	}
@@ -286,6 +255,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			}
 			
 			Ingame(drawable);
+			HUD(drawable);
 				
 		}
 		// Pauzing te game progress
@@ -295,6 +265,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 			
 			// Start PauzeMenu
 			Pauzemenu(drawable);
+			
+			input.waspauzed = true;
 			
 		}
 	}
@@ -331,6 +303,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		
 		input.boundx = this.getBounds().getWidth() - width;
 		input.boundy = this.getBounds().getHeight() - height;
+		input.screenWidth = screenWidth;
+		input.screenHeight = screenHeight;
 		
 		gl.glViewport( 0, 0, screenWidth, screenHeight );
 		
@@ -354,21 +328,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	private void updateMovement(int deltaTime)
 	{
-		/*
-		 * Update position of the objects to next Steps. ObjectPositions is given to the objects, so that they can look for
-		 * other objects, and avoid them. The one that is first called, 'wins'.
-		 */
-		objectPositions.set(0, player.update(deltaTime));
-		objectPositions.set(1, b1.BeerMove(maze, objectPositions));
-		objectPositions.set(2, b2.BeerMove(maze, objectPositions));
-		objectPositions.set(3, b3.BeerMove(maze, objectPositions));
-		objectPositions.set(4, b4.BeerMove(maze, objectPositions));
-		objectPositions.set(5, b5.BeerMove(maze, objectPositions));
-		c1.CubeMove(player.locationX,player.locationZ);
-		
+		player.update(deltaTime);
 		
 		for(int i = 0; i<visibleObjects.size(); i++){
-			visibleObjects.get(i).update(deltaTime, maze);
+			visibleObjects.get(i).update(deltaTime, maze, player.locationX, player.locationZ);
 			if(visibleObjects.get(i) instanceof Book){
 				Book b = (Book)visibleObjects.get(i);
 				if(b.destroy){
@@ -424,20 +387,29 @@ public class MazeRunner extends Frame implements GLEventListener {
 		GL gl = drawable.getGL();
 		GLU glu = new GLU();
 	
-		
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();		
 		long currentTime = now.getTimeInMillis();
 		if(input.getWaspauzed() == true){
-			previousTime = currentTime;
+			
+			previousTime = now.getTimeInMillis();
 			input.waspauzed = false;
 		}
 		int deltaTime = (int)(currentTime - previousTime);
 		previousTime = currentTime;
+		
+		// Seconden tellen
+		miliseconds = miliseconds + deltaTime;
+		
+		if(miliseconds > 999){
+			clock.seconds = clock.seconds +1;
+			miliseconds = miliseconds - 1000;
+		}
+		
 	
-		input.xp = screenWidth/2;
-        input.yp = screenHeight/2;
-        input.mouseReset(screenWidth/2 + this.getX(),screenHeight/2 + this.getY());
+//		input.xp = screenWidth/2;
+//        input.yp = screenHeight/2;
+//        input.mouseReset(screenWidth/2 + this.getX(),screenHeight/2 + this.getY());
 
 
         
@@ -469,6 +441,8 @@ public class MazeRunner extends Frame implements GLEventListener {
          
         init = false;
 		
+        
+	
 	}
 	private void Pauzemenu(GLAutoDrawable drawable){
 		GL gl = drawable.getGL();
@@ -514,6 +488,22 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 		
 		input.mouseReleasedUsed();
+	}
+	
+	private void HUD(GLAutoDrawable drawable){
+		GL gl = drawable.getGL();
+		
+		
+		switchTo2D(drawable);
+		
+		HealthBar bar = new HealthBar(screenHeight,player.hp);
+		bar.display(gl);
+	
+		clock.display(gl, screenWidth, screenHeight);
+		
+		switchTo3D(drawable);
+		
+	
 	}
 	
 	

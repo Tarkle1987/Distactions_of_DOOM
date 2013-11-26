@@ -26,5 +26,5 @@ public interface VisibleObject {
 	 * @param gl	the GL context in which will be drawn
 	 */
 	void display(GL gl);
-	void update(int deltaTime, Maze maze);
+	void update(int deltaTime, Maze maze, double playerX, double playerZ);
 }

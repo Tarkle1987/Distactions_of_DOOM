@@ -185,7 +185,7 @@ public class Beer extends GameObject implements VisibleObject{
 	}
 
 	@Override
-	public void update(int deltaTime, Maze maze) {
+	public void update(int deltaTime, Maze maze, double playerX, double playerZ) {
 		// TODO Auto-generated method stub
 
 	}

@@ -1,12 +1,9 @@
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.*;
-
-import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLEventListener;
 
-import com.sun.opengl.util.GLUT;
+
 
 /**
  * The UserInput class is an extension of the Control class. It also implements three 
@@ -31,6 +28,8 @@ public class UserInput extends Control
 	protected boolean view_right, view_left;
 	protected double boundx = 0;
 	protected double boundy = 0;
+	protected int screenWidth;
+	protected int screenHeight;
 	protected boolean schiet = false;
 	protected boolean geschoten = false;
 	private boolean hpchanged = false;
@@ -64,28 +63,34 @@ public class UserInput extends Control
 	@Override
 	public void update()
 	{
+		xp = screenWidth/2;
+		yp = screenHeight/2;
+		
 		if(xd-xp != 0)
 		{
 			
-			dX = -3*(xp-xd);
-			xp = xd;
+			dX = -2*(xp-xd);
+	
 		}
 		else
 			if(view_left == true)
 				if(view_right == true)
 					dX = 0;
 				else
-					dX = -5;
+					dX = -1.5;
 			else
 				if(view_right == true)
-					dX = 5;
+					dX = 1.5;
 				else
 					dX = 0;
 	
-		dY = -3*(yp-yd);
-		yp = yd;
+		dY = -2*(yp-yd);
+
 		// TODO: Set dX and dY to values corresponding to mouse movement
 		
+		
+		mouseReset();
+
 
 	}
 
@@ -116,9 +121,10 @@ public class UserInput extends Control
 	@Override
 	public void mouseDragged(MouseEvent event)
 	{	
-		xd = event.getX();
-		yd = event.getY();
-		
+		if(!pauze){
+			xd = event.getX();
+			yd = event.getY();
+		}
 		// TODO: Detect mouse movement while the mouse button is down
 	}
 
@@ -126,7 +132,7 @@ public class UserInput extends Control
 	public void keyPressed(KeyEvent event)
 	{
 		
-		//System.out.println(event.getExtendedKeyCode());
+//		System.out.println(event.getExtendedKeyCode());
 		
 		switch(event.getExtendedKeyCode()){
 		case 87: forward = true;	// 'w'
@@ -137,9 +143,9 @@ public class UserInput extends Control
 		break;
 		case 68: right = true;		// 'd'
 		break;
-		case 69: view_right = true;// 'e'
+		case 69: view_right = true;	// 'e'
 		break;
-		case 81: view_left = true;// 'q'
+		case 81: view_left = true;	// 'q'
 		break;
 		case 32: space = true;    // 'space;
 		break;
@@ -164,6 +170,9 @@ public class UserInput extends Control
 		case 66:				  // 'b'
 			// not programmed
 			break;
+		case 16:				  // 'shift'
+			sprint = true;
+			break;
 			
 		
 		default: break;
@@ -186,11 +195,11 @@ public class UserInput extends Control
 		break;
 		case 83: back = false;		// 's'
 		break;
-		case 68: right = false;		// 'd'
+		case 68: right = false;			// 'd'
 		break;
-		case 69: view_right = false;// 'e'
+		case 69: view_right = false;	// 'e'
 		break;
-		case 81: view_left = false;// 'q'
+		case 81: view_left = false;		// 'q'
 		break;
 		case 32: space = false;    // 'space; 
 		break;
@@ -205,6 +214,10 @@ public class UserInput extends Control
 		case 66:				  // 'b'
 			// not programmed
 			break;
+		case 16:				  // 'shift'
+			sprint = false;
+			break;
+			
 		default: break;
 		}
 		
@@ -259,8 +272,7 @@ public class UserInput extends Control
 	@Override
 	public void mouseReleased(MouseEvent event)
 	{
-		dX = 0;
-		dY = 0;
+		
 		
 		ReleaseX = event.getX();
 		ReleaseY = event.getY();
@@ -279,18 +291,18 @@ public class UserInput extends Control
 		int border = 50;
 	        
 		if(CurrentX > (screenWidth - border) || CurrentX < (border) || CurrentY > (screenHeight - border) || CurrentY < (border)){
-			mouseReset(screenWidth,screenHeight);
+			mouseReset();
 		}
 	}
 	
-	public void mouseReset(int screenWidth, int screenHeight){
+	public void mouseReset(){
 		
 	
 		
 		  try {
     			Robot robot = new Robot();
 
-    			robot.mouseMove(screenWidth + (int)boundx/2, screenHeight + (int)(boundy-boundx/2));
+    			robot.mouseMove(screenWidth/2 + (int)boundx/2, screenHeight/2 + (int)(boundy-boundx/2));
 
    	
     		} catch (AWTException e) {

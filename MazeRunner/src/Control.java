@@ -28,8 +28,8 @@ public abstract class Control
 	protected boolean pauze = false;
 	protected boolean waspauzed = false;
 	
-	protected int dX = 0;
-	protected int dY = 0;
+	protected double dX = 0;
+	protected double dY = 0;
 	protected int CurrentX = 0;
 	protected int CurrentY = 0;
 	protected int ReleaseX = 0;
@@ -41,6 +41,7 @@ public abstract class Control
 	
 	protected boolean hpdown = false;
 	protected boolean hpup = false;
+	protected boolean sprint = false;
 	
 	/**
 	 * @return Returns true if forward motion is desired.
@@ -89,7 +90,7 @@ public abstract class Control
 	 * Gets the amount of rotation desired on the horizontal plane.
 	 * @return The horizontal rotation.
 	 */
-	public int getdX()
+	public double getdX()
 	{
 		return dX;
 	}
@@ -98,7 +99,7 @@ public abstract class Control
 	 * Gets the amount of rotation desired on the vertical plane.
 	 * @return The vertical rotation.
 	 */
-	public int getdY()
+	public double getdY()
 	{
 		return dY;
 	}
