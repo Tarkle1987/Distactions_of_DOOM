@@ -120,8 +120,9 @@ public class Player extends GameObject {
 	/**
 	 * Updates the physical location and orientation of the player
 	 * @param deltaTime The time in milliseconds since the last update.
+	 * @return 
 	 */
-	public void update(int deltaTime)
+	public Tile update(int deltaTime)
 	{
 		if (control != null)
 		{
@@ -200,7 +201,9 @@ public class Player extends GameObject {
 				}
 				control.hpup = false;
 			}
-		}	
+		}
+		Tile playerTile = new Tile(this.getLocationX(), this.getLocationZ());
+		return playerTile;
 	}
 	
 	public void setGodMode(boolean G){
