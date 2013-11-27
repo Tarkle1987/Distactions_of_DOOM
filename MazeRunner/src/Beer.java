@@ -273,6 +273,7 @@ public class Beer extends GameObject implements VisibleObject{
 			if(BookPositions.get(k).distance(this.getPosition()) < 1.5 && !visibleObjects.get(BookIndices.get(k)).getDestroy())
 			{
 				waitingTime = 750;
+				visibleObjects.get(BookIndices.get(k)).setDestroy(true);
 				break;
 			}
 		}
@@ -292,6 +293,12 @@ public class Beer extends GameObject implements VisibleObject{
 	public boolean getDestroy() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void setDestroy(boolean set) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

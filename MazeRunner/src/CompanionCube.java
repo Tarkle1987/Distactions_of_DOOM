@@ -248,4 +248,11 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		return false;
 	}
 
+
+	@Override
+	public void setDestroy(boolean set) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

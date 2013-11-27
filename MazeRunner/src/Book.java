@@ -124,6 +124,12 @@ public class Book extends GameObject implements VisibleObject {
 		return this.destroy;
 	}
 
+	@Override
+	public void setDestroy(boolean set) 
+	{
+		this.destroy = set;
+	}
+
 
 	
 	

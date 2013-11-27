@@ -32,4 +32,5 @@ public interface VisibleObject {
 	void update(int deltaTime, Maze maze,
 			ArrayList<VisibleObject> visibleObjects, Player player);
 	boolean getDestroy();
+	void setDestroy(boolean set);
 }
