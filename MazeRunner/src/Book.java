@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
@@ -24,8 +26,10 @@ public class Book extends GameObject implements VisibleObject {
 		this.size = 0.5;
 	}
 	
-	public void update(int deltaTime, Maze maze, double playerX, double playerZ){
-	
+	public void update(int deltaTime, Maze maze,
+			ArrayList<VisibleObject> visibleObjects, Player player)
+	{
+		
 		double x = locationX;
 		double z = locationZ;
 	
@@ -105,6 +109,13 @@ public class Book extends GameObject implements VisibleObject {
 	public void setVerAngle(double angle){
 		this.verAngle = angle;
 	}
+
+	@Override
+	public Tile getPosition() 
+	{
+		return new Tile(this.getLocationX(), this.getLocationZ());
+	}
+
 
 	
 	

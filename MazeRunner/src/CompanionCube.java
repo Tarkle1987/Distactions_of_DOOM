@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
@@ -164,15 +166,15 @@ public class CompanionCube extends GameObject implements VisibleObject {
 				quadrant = 4;
 			}
 		}
-		
 
-		
 		return quadrant;
 	}
 
 
 	@Override
-	public void update(int deltaTime, Maze maze, double X, double Z) {
+	public void update(int deltaTime, Maze maze, ArrayList<VisibleObject> visibleObjects ,Player player) {
+		double X = player.locationX;
+		double Z = player.locationZ;
 		
 		// kubus roteerd naar de player
 		CubeRotate(deltaTime, X,Z);
@@ -180,6 +182,13 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		// Bewegen van kubus naar player / door player
 		CubeMove(deltaTime, maze, X,Z);
 		
+	}
+
+
+	@Override
+	public Tile getPosition() 
+	{
+		return new Tile(this.getLocationX(), this.getLocationZ());
 	}
 
 }
