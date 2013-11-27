@@ -191,4 +191,11 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		return new Tile(this.getLocationX(), this.getLocationZ());
 	}
 
+
+	@Override
+	public boolean getDestroy() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

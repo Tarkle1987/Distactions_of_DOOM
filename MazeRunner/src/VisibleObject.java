@@ -31,4 +31,5 @@ public interface VisibleObject {
 	Tile getPosition();
 	void update(int deltaTime, Maze maze,
 			ArrayList<VisibleObject> visibleObjects, Player player);
+	boolean getDestroy();
 }

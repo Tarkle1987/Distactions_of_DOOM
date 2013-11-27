@@ -113,7 +113,15 @@ public class Book extends GameObject implements VisibleObject {
 	@Override
 	public Tile getPosition() 
 	{
-		return new Tile(this.getLocationX(), this.getLocationZ());
+		Tile res = new Tile(this.getLocationX(), this.getLocationZ());
+		System.out.println(res.toString());
+		return res;
+	}
+
+	@Override
+	public boolean getDestroy() 
+	{
+		return this.destroy;
 	}
 
 

@@ -182,4 +182,10 @@ public class Maze implements VisibleObject {
 		
 	}
 
+	@Override
+	public boolean getDestroy() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

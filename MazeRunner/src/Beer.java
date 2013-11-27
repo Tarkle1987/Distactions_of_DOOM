@@ -22,6 +22,7 @@ public class Beer extends GameObject implements VisibleObject{
 	private Tile nextTile;
 	private int beerNumber;
 	private double VisibleDistance = 20.0;
+	private int waitingTime = 0;
 
 	public Beer(Tile tile, double heigth, int beerNumber)
 	{
@@ -245,19 +246,52 @@ public class Beer extends GameObject implements VisibleObject{
 	@Override
 	public void update(int deltaTime, Maze maze, ArrayList<VisibleObject> visibleObjects, Player player) 
 	{
+		DecreaseWaitingTime(deltaTime);
 		ArrayList<Tile> objectOccupation = new ArrayList<Tile>();
+		ArrayList<Tile> BookPositions = new ArrayList<Tile>();
+		ArrayList<Integer> BookIndices = new ArrayList<Integer>();
 		Tile playerTile = new Tile(player.locationX, player.locationZ);
 		objectOccupation.add(playerTile);
 		for(int i = 0; i<visibleObjects.size(); i++)
 		{
 			if(!(visibleObjects.get(i) instanceof Maze)&& !(visibleObjects.get(i) instanceof Book)
-					&& !visibleObjects.get(i).getPosition().equals(this.nextTile) )
+					&& !visibleObjects.get(i).getPosition().equals(this.getPosition()) )
 			{
 				objectOccupation.add((visibleObjects.get(i)).getPosition());
 			}
 		}
-		
-		BeerMove(deltaTime, maze, objectOccupation);
+		for(int i =0; i<visibleObjects.size(); i++)
+		{
+			if(visibleObjects.get(i) instanceof Book)
+			{
+				BookPositions.add(visibleObjects.get(i).getPosition());
+				BookIndices.add(i);
+			}
+		}
+		for(int k =0; k<BookPositions.size(); k++)
+		{
+			if(BookPositions.get(k).distance(this.getPosition()) < 1.5 && !visibleObjects.get(BookIndices.get(k)).getDestroy())
+			{
+				waitingTime = 750;
+				break;
+			}
+		}
+		if(waitingTime < 0)
+		{
+			BeerMove(deltaTime, maze, objectOccupation);
+		}
+
+	}
+
+	private void DecreaseWaitingTime(int deltaTime) 
+	{
+		this.waitingTime = this.waitingTime - deltaTime;
+	}
+
+	@Override
+	public boolean getDestroy() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 
