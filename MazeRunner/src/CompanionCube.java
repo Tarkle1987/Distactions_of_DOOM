@@ -16,7 +16,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	
 	private int sightrange = 0;
 	
-	int momentum;
+	private double directionX = 0;
+	private double directionZ = 0;
+	int momentum = 10 *16;
 	
 	public CompanionCube(double x, double y, double z,  double size){
 		
@@ -74,31 +76,41 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			dZ = dZ/dLength;
 			
 		}else{
-			double random = Math.random();
+			momentum = momentum - deltaTime;
 			
-			if(random <= 0.5){
-				random = random * -2;
+			if(momentum <= 0){
+				momentum = 100*16;
+			
+				double random = Math.random();
+			
+				if(random <= 0.5){
+					random = random * -2;
+				}else{
+					random = (random - 0.5)*2;
+				}
+			
+				dX = random;
+			
+				random = Math.random();
+			
+				if(random <= 0.5){
+					random = random * -2;
+				}else{
+					random = (random - 0.5)*2;
+				}
+			
+				dZ = random;
+			
+				dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+			
+			
+				dX = dX/dLength;
+				dZ = dZ/dLength;
+			
 			}else{
-				random = (random - 0.5)*2;
+				dX = directionX;
+				dZ = directionZ;
 			}
-			
-			dX = random;
-			
-			random = Math.random();
-			
-			if(random <= 0.5){
-				random = random * -2;
-			}else{
-				random = (random - 0.5)*2;
-			}
-			
-			dZ = random;
-			
-			dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
-			
-			
-			dX = dX/dLength;
-			dZ = dZ/dLength;
 			
 		}
 		
@@ -124,6 +136,8 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			}
 
 		
+			directionX = dX;
+			directionZ = dZ;
 	}
 		
 	private void CubeRotate(int deltaTime, double X, double Z){
