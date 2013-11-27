@@ -34,6 +34,8 @@ public class UserInput extends Control
 	protected boolean geschoten = false;
 	private boolean hpchanged = false;
 
+	protected int thisX = 0;
+	protected int thisY = 0;
 
 
 
@@ -302,7 +304,7 @@ public class UserInput extends Control
 		  try {
     			Robot robot = new Robot();
 
-    			robot.mouseMove(screenWidth/2 + (int)boundx/2, screenHeight/2 + (int)(boundy-boundx/2));
+    			robot.mouseMove(screenWidth/2 + (int)boundx/2 + thisX, screenHeight/2 + (int)(boundy-boundx/2) + thisY);
 
    	
     		} catch (AWTException e) {

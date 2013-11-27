@@ -194,11 +194,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 		b3 = new Beer(beerDrie, 1, 3);
 		b4 = new Beer(beerVier, 1, 4);
 		b5 = new Beer(beerVijf, 1, 5);
-		visibleObjects.add(b1);
-		visibleObjects.add(b2);
-		visibleObjects.add(b3);
-		visibleObjects.add(b4);
-		visibleObjects.add(b5);
+//		visibleObjects.add(b1);
+//		visibleObjects.add(b2);
+//		visibleObjects.add(b3);
+//		visibleObjects.add(b4);
+//		visibleObjects.add(b5);
 
 		c1 = new CompanionCube(14,  0,  4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
 		visibleObjects.add(c1);
@@ -270,6 +270,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable) {
+		input.thisX = this.getX();
+		input.thisY = this.getY();
+		
 		if(!input.getPauze()){
 	
 			this.setCursor(this.getToolkit().createCustomCursor(
@@ -439,7 +442,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			clock.seconds = clock.seconds +1;
 			miliseconds = miliseconds - 1000;
 		}
-		
+
 	
 //		input.xp = screenWidth/2;
 //        input.yp = screenHeight/2;
