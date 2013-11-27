@@ -18,7 +18,7 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		
 		super(x,y + size/2,z);
 		this.size = size;
-		speed = 0.011;
+		speed = 0.01;
 		angle = 0;
 		newangle = angle;
 		anglespeed = 0.4;
