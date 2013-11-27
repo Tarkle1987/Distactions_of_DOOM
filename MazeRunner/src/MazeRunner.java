@@ -364,13 +364,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 */
 
 		for(int i = 0; i<visibleObjects.size(); i++){
-<<<<<<< HEAD
-			visibleObjects.get(i).update(deltaTime, maze, player.locationX, player.locationZ);
-			
-			// Destroy books that hit a wall
-=======
+
 			visibleObjects.get(i).update(deltaTime, maze, visibleObjects ,player);
->>>>>>> 09086e38a36131996fe1c0b7deedde98f3b662c1
 			if(visibleObjects.get(i) instanceof Book){
 				Book b = (Book)visibleObjects.get(i);
 				if(b.destroy){
