@@ -14,7 +14,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	protected double newangle;
 	private double anglespeed;
 	
-	private int sightrange = 15;
+	private int sightrange = 0;
+	
+	int momentum;
 	
 	public CompanionCube(double x, double y, double z,  double size){
 		
@@ -70,24 +72,58 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		
 			dX = dX/dLength;
 			dZ = dZ/dLength;
+			
+		}else{
+			double random = Math.random();
+			
+			if(random <= 0.5){
+				random = random * -2;
+			}else{
+				random = (random - 0.5)*2;
+			}
+			
+			dX = random;
+			
+			random = Math.random();
+			
+			if(random <= 0.5){
+				random = random * -2;
+			}else{
+				random = (random - 0.5)*2;
+			}
+			
+			dZ = random;
+			
+			dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+			
+			
+			dX = dX/dLength;
+			dZ = dZ/dLength;
+			
+		}
+		
 		
 			locationX = locationX + dX * speed*deltaTime;
 			locationZ = locationZ + dZ * speed*deltaTime;
 		
 			
-			if(maze.isWall(locationX, locationZ)){
+			if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
+					maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
 				locationX = locationX - dX * speed*deltaTime;
 				
-				if(maze.isWall(locationX, locationZ)){
+				if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
+						maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
 					locationX = locationX + dX * speed*deltaTime;
 					locationZ = locationZ - dZ * speed*deltaTime;
 					
-					if(maze.isWall(locationX, locationZ)){
+					if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
+							maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
 						locationX = locationX - dX * speed*deltaTime;
 					}
 				}
 			}
-		}
+
+		
 	}
 		
 	private void CubeRotate(int deltaTime, double X, double Z){
