@@ -78,7 +78,7 @@ public class Beer extends GameObject implements VisibleObject{
 					!maze.isWall(currentTile.getX() -Xdir*(heigth +speed), currentTile.getZ() + heigth) &&
 					!maze.isWall(currentTile.getX() - Xdir*(heigth + speed), currentTile.getZ() - heigth)&& checkX)
 			{
-			possibleStates.add(newStateX);
+				possibleStates.add(newStateX);
 			}
 			Tile newStateZ = new Tile(currentTile.getX(), currentTile.getZ()-Zdir*speed);
 			boolean checkZ = true;
@@ -94,7 +94,7 @@ public class Beer extends GameObject implements VisibleObject{
 					!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() - Zdir*(heigth + speed))&&
 					!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() - Zdir*(heigth +speed))&& checkZ)
 			{
-			possibleStates.add(newStateZ);
+				possibleStates.add(newStateZ);
 			}
 		}
 		if(possibleStates.size() < 1)
@@ -237,11 +237,29 @@ public class Beer extends GameObject implements VisibleObject{
 		return res;
 	}
 
-	@Override
-	public void update(int deltaTime, Maze maze, double playerX, double playerZ) {
-		// TODO Auto-generated method stub
-
+	public Tile getPosition()
+	{
+		return new Tile(this.getLocationX(), this.getLocationZ());
 	}
+
+	@Override
+	public void update(int deltaTime, Maze maze, ArrayList<VisibleObject> visibleObjects, Player player) 
+	{
+		ArrayList<Tile> objectOccupation = new ArrayList<Tile>();
+		Tile playerTile = new Tile(player.locationX, player.locationZ);
+		objectOccupation.add(playerTile);
+		for(int i = 0; i<visibleObjects.size(); i++)
+		{
+			if(!(visibleObjects.get(i) instanceof Maze)&& !(visibleObjects.get(i) instanceof Book)
+					&& !visibleObjects.get(i).getPosition().equals(this.nextTile) )
+			{
+				objectOccupation.add((visibleObjects.get(i)).getPosition());
+			}
+		}
+		
+		BeerMove(maze, objectOccupation);
+	}
+
 
 }
 

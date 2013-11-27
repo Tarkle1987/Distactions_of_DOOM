@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
 
 /**
@@ -26,5 +28,7 @@ public interface VisibleObject {
 	 * @param gl	the GL context in which will be drawn
 	 */
 	void display(GL gl);
-	void update(int deltaTime, Maze maze, double playerX, double playerZ);
+	Tile getPosition();
+	void update(int deltaTime, Maze maze,
+			ArrayList<VisibleObject> visibleObjects, Player player);
 }

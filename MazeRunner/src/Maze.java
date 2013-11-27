@@ -1,4 +1,7 @@
+import java.util.ArrayList;
+
 import javax.media.opengl.GL;
+
 import com.sun.opengl.util.GLUT;
 
 /**
@@ -167,8 +170,16 @@ public class Maze implements VisibleObject {
 	}
 
 	@Override
-	public void update(int deltaTime, Maze maze, double playerX, double playerZ) {
+	public Tile getPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void update(int deltaTime, Maze maze,
+			ArrayList<VisibleObject> visibleObjects, Player player) {
 		// TODO Auto-generated method stub
 		
 	}
+
 }

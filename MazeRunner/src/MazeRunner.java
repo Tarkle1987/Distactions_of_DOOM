@@ -44,8 +44,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private boolean init = true;
 
 	private CompanionCube c1;
-	//protected ArrayList<Tile> objectPositions;				// A list of positions from the objects: player and beers
-	//private Beer b1, b2, b3, b4, b5;
+	private Beer b1, b2, b3, b4, b5;
 
 	
 	// Ingame seconden tellen
@@ -180,7 +179,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * Start positions for the game objects. Be aware: for the player the start position must two times be set..
 	     * TODO: Give the players startpoint as a Tile.
 	     * TODO: Give the cube's startpoint as a Tile.
-	     
+	  */   
 	    Tile startPlayer = new Tile(6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,
 				 5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2);
 	    Tile cubeEen = new Tile( 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
@@ -189,29 +188,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Tile beerDrie = new Tile(8,10);
 		Tile beerVier = new Tile(10,20);
 		Tile beerVijf = new Tile(16,16);
-		
-		
-		 * initial setting of the objectPositions.
-		 
-		objectPositions.add(0, startPlayer);
-		objectPositions.add(1, beerEen);
-		objectPositions.add(2, beerTwee);
-		objectPositions.add(3, beerDrie);
-		objectPositions.add(4, beerVier);
-		objectPositions.add(5, beerVijf);
-	    
+		  
 		b1 = new Beer(beerEen, 1.0, 1);
 		b2 = new Beer(beerTwee, 1, 2);
 		b3 = new Beer(beerDrie, 1, 3);
 		b4 = new Beer(beerVier, 1, 4);
 		b5 = new Beer(beerVijf, 1, 5);
-		visibleObjects.add(c1);
 		visibleObjects.add(b1);
 		visibleObjects.add(b2);
 		visibleObjects.add(b3);
 		visibleObjects.add(b4);
 		visibleObjects.add(b5);
-*/
+
 		c1 = new CompanionCube(14,  0,  4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
 		visibleObjects.add(c1);
 		
@@ -373,17 +361,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 		/*
 		 * Update position of the objects to next Steps. ObjectPositions is given to the objects, so that they can look for
 		 * other objects, and avoid them. The one that is first called, 'wins'.
-		 
-		objectPositions.set(0, player.update(deltaTime));
-		objectPositions.set(1, b1.BeerMove(maze, objectPositions));
-		objectPositions.set(2, b2.BeerMove(maze, objectPositions));
-		objectPositions.set(3, b3.BeerMove(maze, objectPositions));
-		objectPositions.set(4, b4.BeerMove(maze, objectPositions));
-		objectPositions.set(5, b5.BeerMove(maze, objectPositions));
-		*/
+*/
 
 		for(int i = 0; i<visibleObjects.size(); i++){
-			visibleObjects.get(i).update(deltaTime, maze, player.locationX, player.locationZ);
+			visibleObjects.get(i).update(deltaTime, maze, visibleObjects ,player);
 			if(visibleObjects.get(i) instanceof Book){
 				Book b = (Book)visibleObjects.get(i);
 				if(b.destroy){
