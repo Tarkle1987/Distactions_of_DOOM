@@ -26,7 +26,7 @@ public class Beer extends GameObject implements VisibleObject{
 	public Beer(Tile tile, double heigth, int beerNumber)
 	{
 		super(tile.getX(), 0, tile.getZ());
-		this.speed = 0.5;
+		this.speed = 0.01;
 		this.heigth = heigth;
 		this.beerNumber = beerNumber;
 		this.Xdirection = 0;
@@ -47,7 +47,7 @@ public class Beer extends GameObject implements VisibleObject{
 		gl.glPopMatrix();
 	}
 
-	public Tile BeerMove(Maze maze, ArrayList<Tile> objectPositions)
+	public Tile BeerMove(int deltaTime, Maze maze, ArrayList<Tile> objectPositions)
 	{
 		ArrayList<Tile> possibleStates = new ArrayList<Tile>(); // List of possibleStates, send to method move.
 		Tile currentTile = new Tile(this.getLocationX(), this.getLocationZ());
@@ -64,7 +64,7 @@ public class Beer extends GameObject implements VisibleObject{
 				Zdir = 1.0;
 			if(Zdir < 0.0)
 				Zdir = -1.0;
-			Tile newStateX = new Tile(currentTile.getX() - Xdir*speed, currentTile.getZ());
+			Tile newStateX = new Tile(currentTile.getX() - Xdir*speed*deltaTime, currentTile.getZ());
 			boolean checkX = true;
 			for(int j =0; j<objectPositions.size(); j++)
 			{
@@ -74,13 +74,13 @@ public class Beer extends GameObject implements VisibleObject{
 					break;
 				}
 			}
-			if(!maze.isWall(currentTile.getX() - Xdir*(heigth +speed), currentTile.getZ())&&
-					!maze.isWall(currentTile.getX() -Xdir*(heigth +speed), currentTile.getZ() + heigth) &&
-					!maze.isWall(currentTile.getX() - Xdir*(heigth + speed), currentTile.getZ() - heigth)&& checkX)
+			if(!maze.isWall(currentTile.getX() - Xdir*(heigth +speed*deltaTime), currentTile.getZ())&&
+					!maze.isWall(currentTile.getX() -Xdir*(heigth +speed*deltaTime), currentTile.getZ() + heigth) &&
+					!maze.isWall(currentTile.getX() - Xdir*(heigth + speed*deltaTime), currentTile.getZ() - heigth)&& checkX)
 			{
 				possibleStates.add(newStateX);
 			}
-			Tile newStateZ = new Tile(currentTile.getX(), currentTile.getZ()-Zdir*speed);
+			Tile newStateZ = new Tile(currentTile.getX(), currentTile.getZ()-Zdir*speed*deltaTime);
 			boolean checkZ = true;
 			for(int j =0; j<objectPositions.size(); j++)
 			{
@@ -90,9 +90,9 @@ public class Beer extends GameObject implements VisibleObject{
 					break;
 				}
 			}
-			if(!maze.isWall(currentTile.getX(), currentTile.getZ() - Zdir*(heigth + speed))&&
-					!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() - Zdir*(heigth + speed))&&
-					!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() - Zdir*(heigth +speed))&& checkZ)
+			if(!maze.isWall(currentTile.getX(), currentTile.getZ() - Zdir*(heigth + speed*deltaTime))&&
+					!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() - Zdir*(heigth + speed*deltaTime))&&
+					!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() - Zdir*(heigth +speed*deltaTime))&& checkZ)
 			{
 				possibleStates.add(newStateZ);
 			}
@@ -103,11 +103,11 @@ public class Beer extends GameObject implements VisibleObject{
 			 * To implement momentum, we first check if the option in the direction of the previous direction isn't a wall.
 			 * That is separately checked for the X and Z direction. This option is added to the list of states
 			 */
-			if(Xdirection != 0 && !maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ()) &&
-					!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ() + heigth) &&
-					!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed), currentTile.getZ() - heigth))
+			if(Xdirection != 0 && !maze.isWall(currentTile.getX() + Xdirection*(heigth+speed*deltaTime), currentTile.getZ()) &&
+					!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed*deltaTime), currentTile.getZ() + heigth) &&
+					!maze.isWall(currentTile.getX() + Xdirection*(heigth+speed*deltaTime), currentTile.getZ() - heigth))
 			{
-				Tile state = new Tile(currentTile.getX() + Xdirection*speed, currentTile.getZ());
+				Tile state = new Tile(currentTile.getX() + Xdirection*speed*deltaTime, currentTile.getZ());
 				boolean check = true;
 				for(int j =0; j<objectPositions.size(); j++)
 				{
@@ -122,11 +122,11 @@ public class Beer extends GameObject implements VisibleObject{
 					possibleStates.add(state);
 				}
 			}
-			else if(Zdirection != 0 && !maze.isWall(currentTile.getX(), currentTile.getZ() + Zdirection*(heigth+speed)) &&
-					!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() + Zdirection*(heigth+speed)) &&
-					!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() + Zdirection*(heigth+speed)))
+			else if(Zdirection != 0 && !maze.isWall(currentTile.getX(), currentTile.getZ() + Zdirection*(heigth+speed*deltaTime)) &&
+					!maze.isWall(currentTile.getX() + heigth, currentTile.getZ() + Zdirection*(heigth+speed*deltaTime)) &&
+					!maze.isWall(currentTile.getX() - heigth, currentTile.getZ() + Zdirection*(heigth+speed*deltaTime)))
 			{
-				Tile state = new Tile(currentTile.getX(), currentTile.getZ() + Zdirection*speed);
+				Tile state = new Tile(currentTile.getX(), currentTile.getZ() + Zdirection*speed*deltaTime);
 				boolean check = true;
 				for(int j =0; j<objectPositions.size(); j++)
 				{
@@ -152,9 +152,9 @@ public class Beer extends GameObject implements VisibleObject{
 					 * Check for 2 * 3 directions if the next step is a wall. Also two sides are checked, so that it isn't possible
 					 * to move through walls. If it is not a wall, the Tile is added to the possibleStates.
 					 */
-					if(!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ()) && 
-							!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ() + heigth) &&
-							!maze.isWall(this.getLocationX() + k*(heigth+speed), this.getLocationZ() - heigth))
+					if(!maze.isWall(this.getLocationX() + k*(heigth+speed*deltaTime), this.getLocationZ()) && 
+							!maze.isWall(this.getLocationX() + k*(heigth+speed*deltaTime), this.getLocationZ() + heigth) &&
+							!maze.isWall(this.getLocationX() + k*(heigth+speed*deltaTime), this.getLocationZ() - heigth))
 					{
 
 						Tile state = new Tile(this.getLocationX()+k*speed,this.getLocationZ());
@@ -173,11 +173,11 @@ public class Beer extends GameObject implements VisibleObject{
 						}
 					}
 
-					if(!maze.isWall(this.getLocationX(), this.getLocationZ() + k*(heigth+speed)) && 
-							!maze.isWall(this.getLocationX() + heigth, this.getLocationZ() + k*(heigth+speed)) &&
-							!maze.isWall(this.getLocationX() - heigth, this.getLocationZ() + k*(heigth+speed)))
+					if(!maze.isWall(this.getLocationX(), this.getLocationZ() + k*(heigth+speed*deltaTime)) && 
+							!maze.isWall(this.getLocationX() + heigth, this.getLocationZ() + k*(heigth+speed*deltaTime)) &&
+							!maze.isWall(this.getLocationX() - heigth, this.getLocationZ() + k*(heigth+speed*deltaTime)))
 					{
-						Tile state = new Tile(this.getLocationX(),this.getLocationZ()+k*speed);
+						Tile state = new Tile(this.getLocationX(),this.getLocationZ()+k*speed*deltaTime);
 						boolean check = true;
 						for(int j =0; j<objectPositions.size(); j++)
 						{
@@ -257,7 +257,7 @@ public class Beer extends GameObject implements VisibleObject{
 			}
 		}
 		
-		BeerMove(maze, objectOccupation);
+		BeerMove(deltaTime, maze, objectOccupation);
 	}
 
 
