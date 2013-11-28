@@ -65,7 +65,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	private static final byte Level_Editor = 2;
 	private byte mode = Menu;
 
-
+	private LevelEditor LE;
 
 
 	/**
@@ -175,12 +175,19 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		switch(mode){
 		
 		case(Menu) :
+			
 			MenuScreen(gl);
 			break;
 		case(Settings) :
 			SettingScreen(gl);
 			break;
 		case(Level_Editor) :
+			LE.display(drawable);
+			LE.reshape(drawable, this.getX(), this.getY(), screenWidth, screenHeight);
+			if(LE.dispose){
+				mode = Menu;
+				//this.setSize(600, 600);
+			}
 			break;
 		case(3):
 			gl.glClearColor(0f, 0f, 0f, 1);
@@ -338,6 +345,10 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 			int height) {
 		GL gl = drawable.getGL();
 
+		
+		if(LE != null){
+			LE.reshape(drawable, x, y, width, height);
+		}
 		// Set the new screen size and adjusting the viewport
 		screenWidth = width;
 		screenHeight = height;
@@ -364,7 +375,8 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		mode = Settings;
 	}
 	public void MenuButton3(){
-		new LevelEditor();
+		LE = new LevelEditor(this);
+		mode = Level_Editor;
 	}
 	public void MenuButton4(){
 		System.out.println("Exit");
@@ -381,7 +393,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	public void mouseReleased(MouseEvent me) {
 		
 		
-		
+		if(mode != Level_Editor){
 		this.ReleaseX = me.getX();
 		this.ReleaseY = me.getY();
 		
@@ -390,6 +402,11 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		
 		PressedX = 0;
 		PressedY = 0;
+		}
+		
+		if(mode == Level_Editor && LE != null){
+			LE.mouseReleased(me);
+		}
 		
 	}
 	

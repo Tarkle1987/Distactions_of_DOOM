@@ -42,7 +42,7 @@ import com.sun.opengl.util.GLUT;
  * @author 
  * 
  */
-public class LevelEditor extends Frame implements GLEventListener, MouseListener {
+public class LevelEditor implements GLEventListener, MouseListener {
 	static final long serialVersionUID = 1;
 
 	// Screen size.
@@ -74,13 +74,19 @@ public class LevelEditor extends Frame implements GLEventListener, MouseListener
 
 	private ArrayList<Point2D.Float> points;
 	private ArrayList<int[]> Mazes;
+	
+	private Menu that;
+	
+	protected boolean dispose = false;
 
 	/**
 	 * When instantiating, a GLCanvas is added for us to play with. An animator
 	 * is created to continuously render the canvas.
 	 */
-	public LevelEditor() {
-		super("MinorProject");
+	public LevelEditor(final Menu that) {
+//		super("MinorProject");
+		this.that = that;
+		
 		for (int i = 0; i<Mazeconf.length; i++){
 			for (int j = 0; j<Mazeconf.length; j++){
 				Mazeconf[i][j]=0;
@@ -102,44 +108,44 @@ public class LevelEditor extends Frame implements GLEventListener, MouseListener
 		points = new ArrayList<Point2D.Float>();
 
 		// Set the desired size and background color of the frame
-		setSize(screenWidth, screenHeight);
+		that.setSize(screenWidth, screenHeight);
 		//setBackground(Color.white);
-		setBackground(new Color(0.95f, 0.95f, 0.95f));
+		that.setBackground(new Color(0.95f, 0.95f, 0.95f));
 
 		// When the "X" close button is called, the application should exit.
-		this.addWindowListener(new WindowAdapter() {
+		that.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				dispose();
+				that.dispose();
 			}
 		});
 
 		// The OpenGL capabilities should be set before initializing the
 		// GLCanvas. We use double buffering and hardware acceleration.
-		GLCapabilities caps = new GLCapabilities();
-		caps.setDoubleBuffered(true);
-		caps.setHardwareAccelerated(true);
-
-		// Create a GLCanvas with the specified capabilities and add it to this
-		// frame. Now, we have a canvas to draw on using JOGL.
-		canvas = new GLCanvas(caps);
-		add(canvas);
-
-		// Set the canvas' GL event listener to be this class. Doing so gives
-		// this class control over what is rendered on the GL canvas.
-		canvas.addGLEventListener(this);
-
-		// Also add this class as mouse listener, allowing this class to react
-		// to mouse events that happen inside the GLCanvas.
-		canvas.addMouseListener(this);
-
-		// An Animator is a JOGL help class that can be used to make sure our
-		// GLCanvas is continuously being re-rendered. The animator is run on a
-		// separate thread from the main thread.
-		Animator anim = new Animator(canvas);
-		anim.start();
-
-		// With everything set up, the frame can now be displayed to the user.
-		setVisible(true);
+//		GLCapabilities caps = new GLCapabilities();
+//		caps.setDoubleBuffered(true);
+//		caps.setHardwareAccelerated(true);
+//
+//		// Create a GLCanvas with the specified capabilities and add it to this
+//		// frame. Now, we have a canvas to draw on using JOGL.
+//		canvas = new GLCanvas(caps);
+//		add(canvas);
+//
+//		// Set the canvas' GL event listener to be this class. Doing so gives
+//		// this class control over what is rendered on the GL canvas.
+//		canvas.addGLEventListener(this);
+//
+//		// Also add this class as mouse listener, allowing this class to react
+//		// to mouse events that happen inside the GLCanvas.
+//		canvas.addMouseListener(this);
+//
+//		// An Animator is a JOGL help class that can be used to make sure our
+//		// GLCanvas is continuously being re-rendered. The animator is run on a
+//		// separate thread from the main thread.
+//		Animator anim = new Animator(canvas);
+//		anim.start();
+//
+//		// With everything set up, the frame can now be displayed to the user.
+//		setVisible(true);
 	}
 
 	private void drawVertical(){
@@ -628,7 +634,7 @@ public class LevelEditor extends Frame implements GLEventListener, MouseListener
 				//save
 			}
 			else if (me.getY() < 6 * buttonSize) {
-				dispose();
+				dispose = true;
 				//exit
 			}
 
