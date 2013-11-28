@@ -81,38 +81,50 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			if(momentum <= 0){
 				momentum = 100*16;
 			
-				double random = Math.random();
+				double random = Math.random()*2*Math.PI;
 			
-				if(random <= 0.5){
-					random = random * -2;
-				}else{
-					random = (random - 0.5)*2;
-				}
-			
-				dX = random;
-			
-				random = Math.random();
-			
-				if(random <= 0.5){
-					random = random * -2;
-				}else{
-					random = (random - 0.5)*2;
-				}
-			
-				dZ = random;
-			
-				dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
-			
-			
-				dX = dX/dLength;
-				dZ = dZ/dLength;
-			
+				dX = Math.cos(random);
+				dZ = Math.sin(random);
+				
+//				if(random <= 0.5){
+//					random = random * -2;
+//				}else{
+//					random = (random - 0.5)*2;
+//				}
+//			
+//				dX = random;
+//			
+//				random = Math.random();
+//			
+//				if(random <= 0.5){
+//					random = random * -2;
+//				}else{
+//					random = (random - 0.5)*2;
+//				}
+//			
+//				dZ = random;
+//			
+//				dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+//			
+//			
+//				dX = dX/dLength;
+//				dZ = dZ/dLength;
+//			
 			}else{
 				dX = directionX;
 				dZ = directionZ;
 			}
 			
 		}
+		
+			int signX =1,signZ = 1;
+			
+			if(dX < 0 ){
+				signX = -1;
+			}
+			if(dZ < 0){
+				signZ = -1;
+			}
 		
 		
 			locationX = locationX + dX * speed*deltaTime;
@@ -122,15 +134,18 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
 					maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
 				locationX = locationX - dX * speed*deltaTime;
+				locationZ = locationZ - dZ * speed*deltaTime + signZ*(dZ/dZ)*speed*deltaTime;
 				
 				if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
 						maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
-					locationX = locationX + dX * speed*deltaTime;
-					locationZ = locationZ - dZ * speed*deltaTime;
+					locationX = locationX + signX*(dX/dX)*speed*deltaTime;
+					locationZ = locationZ - signZ*(dZ/dZ)*speed*deltaTime;
 					
 					if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
 							maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
-						locationX = locationX - dX * speed*deltaTime;
+						locationX = locationX -  signX*(dX/dX)*speed*deltaTime;
+						
+						momentum = 0;
 					}
 				}
 			}
