@@ -114,7 +114,6 @@ public class Book extends GameObject implements VisibleObject {
 	public Tile getPosition() 
 	{
 		Tile res = new Tile(this.getLocationX(), this.getLocationZ());
-		System.out.println(res.toString());
 		return res;
 	}
 
