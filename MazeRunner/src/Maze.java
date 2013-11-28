@@ -4,6 +4,22 @@ import javax.media.opengl.GL;
 
 import com.sun.opengl.util.GLUT;
 
+import java.awt.image.DataBufferByte;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.Buffer;
+import java.nio.IntBuffer;
+
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+
+import com.sun.corba.se.impl.ior.ByteBuffer;
+import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
+
 /**
  * Maze represents the maze used by MazeRunner.
  * <p>
@@ -28,8 +44,12 @@ public class Maze implements VisibleObject {
 	
 	public final double MAZE_SIZE = 22;
 	public final double SQUARE_SIZE = 5;
-
+	private Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
+	private boolean initie = true;
+	private int textswitch;
 	private static int[][] maze = new int[22][22];
+	private static int[][] textswitchArray = new int[22][22];
+	
 //	{{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 //	{1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
 //	{1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1 },
