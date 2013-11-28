@@ -533,6 +533,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		
 		switchTo2D(drawable);
 		
+	
+
+		
 		HealthBar bar = new HealthBar(screenHeight,player.hp);
 		bar.display(gl);
 	
@@ -556,6 +559,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	    gl.glLoadIdentity();
 	    gl.glOrtho(0, drawable.getWidth(), 0, drawable.getHeight(), -1, 1);
 	    gl.glMatrixMode(GL.GL_MODELVIEW);
+	    gl.glDisable(GL.GL_CULL_FACE);
+	    gl.glDisable(GL.GL_TEXTURE_2D);
 	    gl.glDisable(GL.GL_LIGHTING);
 	    gl.glLoadIdentity();
 	}
@@ -567,6 +572,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	    gl.glEnable(GL.GL_DEPTH_TEST);
 	    gl.glMatrixMode(GL.GL_PROJECTION);
 	    gl.glEnable(GL.GL_LIGHTING);
+	    gl.glEnable(GL.GL_TEXTURE_2D);
+	    gl.glEnable(GL.GL_CULL_FACE);
 	    gl.glPopMatrix();
 	    gl.glMatrixMode(GL.GL_MODELVIEW);
 	}
