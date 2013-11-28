@@ -90,6 +90,139 @@ public class Maze implements VisibleObject {
 			return false;
 	}
 	
+	public boolean isEind(int x, int z){
+		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE )
+			return maze[x][z] == 5;
+		else
+			return false;
+	}
+	
+	public boolean isBegin(int x, int z){
+		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE )
+			return maze[x][z] == 4;
+		else
+			return false;
+	}
+	
+	public static void fillTextMuur(){
+		for (int i =0;i<22;i++){
+			for (int j = 0; j<22; j++){
+				if (maze[i][j]==1){
+					textswitchArray[i][j]=(int) Math.ceil(Math.random()*14);
+				}
+			}
+		}
+	}
+	
+	
+	public void textures(){
+		try{
+			InputStream stream = getClass().getResourceAsStream("Muur.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Muur.jpg"); 
+			this.muurTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Vloer.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Vloer.jpg"); 
+			this.floorTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
+		try{
+			InputStream stream = getClass().getResourceAsStream("Plafond.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Plafond.jpg"); 
+			this.plafondTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
+		try{
+			InputStream stream = getClass().getResourceAsStream("BiebLinks.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "BiebLinks.jpg"); 
+			this.bLinksTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
+		try{
+			InputStream stream = getClass().getResourceAsStream("BiebRechts.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "BiebRechts.jpg"); 
+			this.bRechtsTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
+		try{
+			InputStream stream = getClass().getResourceAsStream("Da Vinci.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Da Vinci.jpg"); 
+			this.portret1 = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Darwin.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Darwin.jpg"); 
+			this.portret2 = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Einstein.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Einstein.jpg"); 
+			this.portret3 = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Galileo.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Galileo.jpg"); 
+			this.portret4 = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Newton.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Newton.jpg"); 
+			this.portret5 = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Tesla.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Tesla.jpg"); 
+			this.portret6 = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Kamerrechts.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Kamerrechts.jpg"); 
+			this.kRechtsTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Kamerlinks.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Kamerlinks.jpg"); 
+			this.kLinksTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		
+	}
+	
 	public static void setMaze(int[][] temp) {
 		maze = temp;
 	}
@@ -109,6 +242,20 @@ public class Maze implements VisibleObject {
 		int gX = convertToGridX( x );
 		int gZ = convertToGridZ( z );
 		return isWall( gX, gZ );
+	}
+	
+	public boolean isEind( double x, double z )
+	{
+		int gX = convertToGridX( x );
+		int gZ = convertToGridZ( z );
+		return isEind( gX, gZ );
+	}
+	
+	public boolean isBegin( double x, double z )
+	{
+		int gX = convertToGridX( x );
+		int gZ = convertToGridZ( z );
+		return isBegin( gX, gZ );
 	}
 	 
 	/**
@@ -132,24 +279,15 @@ public class Maze implements VisibleObject {
 	}
 	
 	public void display(GL gl) {
+		
 		GLUT glut = new GLUT();
-
-        // Setting the wall colour and material.
-        float wallColour[] = { 0.5f, 0.0f, 0.7f, 1.0f };				// The walls are purple.
-        gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the wall.
-
-        // draw the grid with the current material
-		for( int i = 0; i < MAZE_SIZE; i++ )
-		{
-	        for( int j = 0; j < MAZE_SIZE; j++ )
-			{
-	            gl.glPushMatrix();
-				gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
-				if ( isWall(i, j) )
-					glut.glutSolidCube( (float) SQUARE_SIZE );
-				gl.glPopMatrix();
-			}
+		if(initie){
+			textures();
+			initie = false;
 		}
+        // Setting the wall colour and material.
+        // draw the grid with the current material
+        paintWall(gl);
 		paintSingleFloorTile( gl, MAZE_SIZE * SQUARE_SIZE );	// Paint the floor.
 		paintSingleRoofTile(gl,MAZE_SIZE*SQUARE_SIZE,SQUARE_SIZE);
 	}
@@ -160,33 +298,294 @@ public class Maze implements VisibleObject {
 	 * @param gl	the GL context in which should be drawn
 	 * @param size	the size of the tile
 	 */
+	private void paintWall(GL gl)
+	{
+		float wallColour[] = { 0.0f, 0.0f, 0.0f, 0.0f };				// The walls are purple.
+        gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the wall.
+		for( int i = 0; i < MAZE_SIZE; i++ )
+		{
+	        for( int j = 0; j < MAZE_SIZE; j++ )
+			{
+	        	gl.glEnable(GL.GL_TEXTURE_2D);
+	        	gl.glPushMatrix();
+				gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
+				if ( isWall(i, j)){
+					if (i==1&&j==21){
+					}
+					else if (i==0&&j==20){				
+					}
+					else if (i==21&&j==1){
+					}
+					else if (i==20&&j==0){
+					}
+					else{
+						textswitch = textswitchArray[i][j];
+						switch (textswitch){
+						case 1: 
+							muurTexture.enable();
+							muurTexture.bind();
+							break;
+						case 2:
+							portret1.enable();
+							portret1.bind();
+							break;
+						case 3:
+							muurTexture.enable();
+							muurTexture.bind();
+							break;
+						case 4:
+							portret2.enable();
+							portret2.bind();
+							break;
+						case 5:
+							muurTexture.enable();
+							muurTexture.bind();
+							break;
+						case 6:
+							portret3.enable();
+							portret3.bind();
+							break;
+						case 7:
+							muurTexture.enable();
+							muurTexture.bind();
+							break;
+						case 8:
+							portret4.enable();
+							portret4.bind();
+							break;
+						case 9:
+							portret5.enable();
+							portret5.bind();
+							break;
+						case 10:
+							portret6.enable();
+							portret6.bind();
+							break;
+						case 11:
+							muurTexture.enable();
+							muurTexture.bind();
+							break;
+						case 12:
+							muurTexture.enable();
+							muurTexture.bind();
+							break;
+						case 13:
+							muurTexture.enable();
+							muurTexture.bind();
+							break;
+						case 14:
+							muurTexture.enable();
+							muurTexture.bind();
+							break;
+						}
+
+
+		            
+		            gl.glBegin(GL.GL_QUADS);
+		            float size = (float) SQUARE_SIZE;
+		            final float[] frontUL = {(float) (-0.5*size),(float) (0.5*size),(float) (0.5*size)};
+		            final float[] frontUR = {(float) (0.5*size),(float) (0.5*size),(float) (0.5*size)};
+		            final float[] frontLR = {(float) (0.5*size),(float) (-0.5*size),(float) (0.5*size)};
+		            final float[] frontLL = {(float) (-0.5*size),(float) (-0.5*size),(float) (0.5*size)};
+		            final float[] backUL = {(float) (-0.5*size),(float) (0.5*size),(float) (-0.5*size)};
+		            final float[] backUR = {(float) (0.5*size),(float) (0.5*size),(float) (-0.5*size)};
+		            final float[] backLR = {(float) (0.5*size),(float) (-0.5*size),(float) (-0.5*size)};
+		            final float[] backLL = {(float) (-0.5*size),(float) (-0.5*size),(float) (-0.5*size)};
+		            // Front Face.
+		            gl.glNormal3f(0.0f, 0.0f, 1.0f);
+		            gl.glTexCoord2f(0.0f, 0.0f);
+		            gl.glVertex3fv(frontUR, 0);
+		            gl.glTexCoord2f(1.0f, 0.0f);
+		            gl.glVertex3fv(frontUL, 0);
+		            gl.glTexCoord2f(1.0f, 1.0f);
+		            gl.glVertex3fv(frontLL, 0);
+		            gl.glTexCoord2f(0.0f, 1.0f);
+		            gl.glVertex3fv(frontLR, 0);
+		            // Back Face.
+		            gl.glNormal3f(0.0f, 0.0f, -1.0f);
+		            gl.glTexCoord2f(0.0f, 0.0f);
+		            gl.glVertex3fv(backUL, 0);
+		            gl.glTexCoord2f(1.0f, 0.0f);
+		            gl.glVertex3fv(backUR, 0);
+		            gl.glTexCoord2f(1.0f, 1.0f);
+		            gl.glVertex3fv(backLR, 0);
+		            gl.glTexCoord2f(0.0f, 1.0f);
+		            gl.glVertex3fv(backLL, 0);
+		            // right face
+		            gl.glNormal3f(1.0f, 0.0f, 0.0f);
+		            gl.glTexCoord2f(0.0f, 0.0f);
+		            gl.glVertex3fv(backUR, 0);
+		            gl.glTexCoord2f(1.0f, 0.0f);
+		            gl.glVertex3fv(frontUR, 0);
+		            gl.glTexCoord2f(1.0f, 1.0f);
+		            gl.glVertex3fv(frontLR, 0);
+		            gl.glTexCoord2f(0.0f, 1.0f);
+		            gl.glVertex3fv(backLR, 0);
+		         // left face
+		            gl.glNormal3f(-1.0f, 0.0f, 0.0f);
+		            gl.glTexCoord2f(0.0f, 0.0f);
+		            gl.glVertex3fv(frontUL, 0);
+		            gl.glTexCoord2f(1.0f, 0.0f);
+		            gl.glVertex3fv(backUL, 0);
+		            gl.glTexCoord2f(1.0f, 1.0f);
+		            gl.glVertex3fv(backLL, 0);
+		            gl.glTexCoord2f(0.0f, 1.0f);
+		            gl.glVertex3fv(frontLL, 0);
+		            gl.glEnd(); 
+					}
+				}
+				if (isEind(i,j)){
+					System.out.println(i + " "+ j);
+					bRechtsTexture.enable();
+					bRechtsTexture.bind();
+					gl.glBegin(GL.GL_QUADS);
+			            float size = (float) SQUARE_SIZE;
+			            final float[] frontUL = {(float) (-0.5*size),(float) (0.5*size),(float) (0.5*size)};
+			            final float[] frontUR = {(float) (0.5*size),(float) (0.5*size),(float) (0.5*size)};
+			            final float[] frontLR = {(float) (0.5*size),(float) (-0.5*size),(float) (0.5*size)};
+			            final float[] frontLL = {(float) (-0.5*size),(float) (-0.5*size),(float) (0.5*size)};
+			            final float[] backUL = {(float) (-0.5*size),(float) (0.5*size),(float) (-0.5*size)};
+			            final float[] backUR = {(float) (0.5*size),(float) (0.5*size),(float) (-0.5*size)};
+			            final float[] backLR = {(float) (0.5*size),(float) (-0.5*size),(float) (-0.5*size)};
+			            final float[] backLL = {(float) (-0.5*size),(float) (-0.5*size),(float) (-0.5*size)};
+			         // Back Face.
+			            gl.glNormal3f(0.0f, 0.0f, -1.0f);
+			            gl.glTexCoord2f(0.0f, 0.0f);
+			            gl.glVertex3fv(frontUL, 0);
+			            gl.glTexCoord2f(1.0f, 0.0f);
+			            gl.glVertex3fv(frontUR, 0);
+			            gl.glTexCoord2f(1.0f, 1.0f);
+			            gl.glVertex3fv(frontLR, 0);
+			            gl.glTexCoord2f(0.0f, 1.0f);
+			            gl.glVertex3fv(frontLL, 0);
+			            gl.glEnd();
+			        bLinksTexture.enable();
+			        bLinksTexture.bind();
+			        gl.glBegin(GL.GL_QUADS);
+			     // right face
+		            gl.glNormal3f(1.0f, 0.0f, 0.0f);
+		            gl.glTexCoord2f(0.0f, 0.0f);
+		            gl.glVertex3fv(backUL, 0);
+		            gl.glTexCoord2f(1.0f, 0.0f);
+		            gl.glVertex3fv(frontUL, 0);
+		            gl.glTexCoord2f(1.0f, 1.0f);
+		            gl.glVertex3fv(frontLL, 0);
+		            gl.glTexCoord2f(0.0f, 1.0f);
+		            gl.glVertex3fv(backLL, 0);
+			            gl.glEnd();  
+				}
+				if (isBegin(i,j)){
+					System.out.println(i + " "+ j);
+					kRechtsTexture.enable();
+					kRechtsTexture.bind();
+					gl.glBegin(GL.GL_QUADS);
+			            float size = (float) SQUARE_SIZE;
+			            final float[] frontUL = {(float) (-0.5*size),(float) (0.5*size),(float) (0.5*size)};
+			            final float[] frontUR = {(float) (0.5*size),(float) (0.5*size),(float) (0.5*size)};
+			            final float[] frontLR = {(float) (0.5*size),(float) (-0.5*size),(float) (0.5*size)};
+			            final float[] frontLL = {(float) (-0.5*size),(float) (-0.5*size),(float) (0.5*size)};
+			            final float[] backUL = {(float) (-0.5*size),(float) (0.5*size),(float) (-0.5*size)};
+			            final float[] backUR = {(float) (0.5*size),(float) (0.5*size),(float) (-0.5*size)};
+			            final float[] backLR = {(float) (0.5*size),(float) (-0.5*size),(float) (-0.5*size)};
+			            final float[] backLL = {(float) (-0.5*size),(float) (-0.5*size),(float) (-0.5*size)};
+			         // rechter plaatje
+			            gl.glNormal3f(0.0f, 0.0f, -1.0f);
+			            gl.glTexCoord2f(0.0f, 0.0f);
+			            gl.glVertex3fv(backUR, 0);
+			            gl.glTexCoord2f(1.0f, 0.0f);
+			            gl.glVertex3fv(backUL, 0);
+			            gl.glTexCoord2f(1.0f, 1.0f);
+			            gl.glVertex3fv(backLL, 0);
+			            gl.glTexCoord2f(0.0f, 1.0f);
+			            gl.glVertex3fv(backLR, 0);
+			            gl.glEnd();
+			        kLinksTexture.enable();
+			        kLinksTexture.bind();
+			        	gl.glBegin(GL.GL_QUADS);
+			     // Linker plaatje
+			            gl.glNormal3f(1.0f, 0.0f, 0.0f);
+			            gl.glTexCoord2f(0.0f, 0.0f);
+			            gl.glVertex3fv(frontUR, 0);
+			            gl.glTexCoord2f(1.0f, 0.0f);
+			            gl.glVertex3fv(backUR, 0);
+			            gl.glTexCoord2f(1.0f, 1.0f);
+			            gl.glVertex3fv(backLR, 0);
+			            gl.glTexCoord2f(0.0f, 1.0f);
+			            gl.glVertex3fv(frontLR, 0);
+			            gl.glEnd();  
+				}
+				gl.glPopMatrix();
+			}
+		}
+	}
+	/**
+	 * paintSingleFloorTile(GL, double) paints a single floor tile, to represent the floor of the entire maze.
+	 * 
+	 * @param gl	the GL context in which should be drawn
+	 * @param size	the size of the tile
+	 */
 	private void paintSingleFloorTile(GL gl, double size)
 	{
         // Setting the floor color and material.
-        float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f };				// The floor is blue.
+        float wallColour[] = { 0.0f, 0.0f, 0.0f, 0.0f };				// The floor is blue.
         gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the floor.
-
+        floorTexture.enable();
+        floorTexture.bind();
+        
         gl.glNormal3d(0, 1, 0);
-		gl.glBegin(GL.GL_QUADS);
-	        gl.glVertex3d(0, 0, 0);
-	        gl.glVertex3d(0, 0, size);
-	        gl.glVertex3d(size, 0, size);
-	        gl.glVertex3d(size, 0, 0);		
-		gl.glEnd();	
+		for(int i = 0; i < size; i++)
+		{
+			for(int j= 0; j < size; j++)
+			{
+	        gl.glBegin(GL.GL_QUADS);
+		        gl.glVertex3d((0 + (i*SQUARE_SIZE)), 0, 0 + (j*SQUARE_SIZE));
+		        gl.glTexCoord2f(0.0f, 0.0f);
+		        gl.glVertex3d(0 + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
+		        gl.glTexCoord2f(0.0f, 1.0f);
+		        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
+		        gl.glTexCoord2f(1.0f, 1.0f);
+		        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, 0 + (j*SQUARE_SIZE));
+		        gl.glTexCoord2f(1.0f, 0.0f);
+			gl.glEnd();	
+			}
+		}
+		floorTexture.disable();
 	}	
 	private void paintSingleRoofTile(GL gl, double size,double height)
 	{
         // Setting the floor color and material.
-        float wallColour[] = { 0.0f, 0.0f, 1.0f, 1.0f };				// The floor is blue.
-        gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the floor.
-
-        gl.glNormal3d(0, 1, 0);
-		gl.glBegin(GL.GL_QUADS);
-	        gl.glVertex3d(size, height, 0);	
-	        gl.glVertex3d(size, height, size);
-	        gl.glVertex3d(0, height, size);
-	        gl.glVertex3d(0, height, 0);
-		gl.glEnd();	
+       
+//        gl.glNormal3d(0, 1, 0);
+//		gl.glBegin(GL.GL_QUADS);
+//	        gl.glVertex3d(size, height, 0);	
+//	        gl.glVertex3d(size, height, size);
+//	        gl.glVertex3d(0, height, size);
+//	        gl.glVertex3d(0, height, 0);
+//		gl.glEnd();	
+		
+		float wallColour[] = { 0.0f, 0.0f, 0.0f, 0.0f };				// The floor is blue.
+	    gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the floor.
+	    plafondTexture.enable();
+	    plafondTexture.bind();
+	    
+	    gl.glNormal3d(0, 1, 0);
+		for(int i = 0; i < size; i++)
+		{
+			for(int j= 0; j < size; j++)
+			{
+	        gl.glBegin(GL.GL_QUADS);
+	        	gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), height, 0 + (j*SQUARE_SIZE));
+	            gl.glTexCoord2f(0.0f, 0.0f);
+		        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), height, SQUARE_SIZE + (j*SQUARE_SIZE));
+		        gl.glTexCoord2f(0.0f, 1.0f);
+		        gl.glVertex3d(0 + (i*SQUARE_SIZE), height, SQUARE_SIZE + (j*SQUARE_SIZE));
+		        gl.glTexCoord2f(1.0f, 1.0f);
+		        gl.glVertex3d((0 + (i*SQUARE_SIZE)), height, 0 + (j*SQUARE_SIZE));
+		        gl.glTexCoord2f(1.0f, 0.0f);
+			gl.glEnd();	
+			}
+		}
+		plafondTexture.disable();
 	}
 
 	@Override
