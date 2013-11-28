@@ -200,7 +200,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		visibleObjects.add(b4);
 //		visibleObjects.add(b5);
 
-		c1 = new CompanionCube(14,  0,  4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
+		c1 = new CompanionCube(6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,  0,  5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 1.5);
 		visibleObjects.add(c1);
 		
 		//this.setUndecorated(true);
