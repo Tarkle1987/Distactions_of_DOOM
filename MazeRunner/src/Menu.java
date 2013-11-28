@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -13,11 +14,14 @@ import java.awt.event.WindowEvent;
 
 
 
+
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -351,7 +355,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	public void MenuButton1(){
 		SelectWin YS = new SelectWin();
 		YS.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		YS.setSize(150,200);
+		YS.setSize(150,250);
 		YS.setVisible(true);
 		YS.setTitle("Choose");
 		
@@ -437,15 +441,17 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 			private JLabel wat;
 			
 			public SelectWin(){
-				setLayout(new FlowLayout());
+				Container pane = this.getContentPane();
+				BoxLayout layout = new BoxLayout(pane,BoxLayout.Y_AXIS);
+				setLayout(layout);
 				SN = new JLabel("Select a Maze: ");
-				add(SN);
+				pane.add(SN);
 				wat = new JLabel("");
-				add(wat);
+				pane.add(wat);
 				Maze1 = new JTextField(15);
-				add(Maze1);
+				pane.add(Maze1);
 				submit2 = new JButton("Submit");
-				add(submit2);
+				pane.add(submit2);
 				
 				Mazescont temp = Mazescont.read("Mazes.txt");
 				String output = "<html>";
