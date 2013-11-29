@@ -103,8 +103,8 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			Mazeconf[i][Mazeconf.length-1]= 1;
 		}
 
-		//		Mazeconf[1][20]=5;
-		//		Mazeconf[20][1]=4;
+				Mazeconf[1][20]=5;
+				Mazeconf[20][1]=4;
 		points = new ArrayList<Point2D.Float>();
 
 		// Set the desired size and background color of the frame
