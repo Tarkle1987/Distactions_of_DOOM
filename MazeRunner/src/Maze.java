@@ -73,6 +73,7 @@ public class Maze implements VisibleObject {
 //	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 //	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }};
 	
+	
 	/**
 	 * isWall(int x, int z) checks for a wall.
 	 * <p>
@@ -115,7 +116,7 @@ public class Maze implements VisibleObject {
 	}
 	
 	
-	public void textures(){
+	public void textures(GL gl){
 		try{
 			InputStream stream = getClass().getResourceAsStream("Muur.jpg");
 			TextureData data = TextureIO.newTextureData(stream, false, "Muur.jpg"); 
@@ -224,7 +225,9 @@ public class Maze implements VisibleObject {
 	}
 	
 	public static void setMaze(int[][] temp) {
+	
 		maze = temp;
+		fillTextMuur();
 	}
 	
 	/**
@@ -281,15 +284,17 @@ public class Maze implements VisibleObject {
 	public void display(GL gl) {
 		
 		GLUT glut = new GLUT();
-		if(initie){
-			textures();
-			initie = false;
-		}
+//		if(initie){
+//			textures();
+//			initie = false;
+//		}
         // Setting the wall colour and material.
         // draw the grid with the current material
-        paintWall(gl);
-		paintSingleFloorTile( gl, MAZE_SIZE * SQUARE_SIZE );	// Paint the floor.
-		paintSingleRoofTile(gl,MAZE_SIZE*SQUARE_SIZE,SQUARE_SIZE);
+      
+		paintWall(gl);
+		paintSingleFloorTile( gl, MAZE_SIZE );	// Paint the floor.
+		paintSingleRoofTile(gl,MAZE_SIZE,SQUARE_SIZE);
+	
 	}
 	
 	/**
@@ -379,8 +384,8 @@ public class Maze implements VisibleObject {
 							break;
 						}
 
-
-		            
+				
+						
 		            gl.glBegin(GL.GL_QUADS);
 		            float size = (float) SQUARE_SIZE;
 		            final float[] frontUL = {(float) (-0.5*size),(float) (0.5*size),(float) (0.5*size)};
@@ -435,7 +440,7 @@ public class Maze implements VisibleObject {
 					}
 				}
 				if (isEind(i,j)){
-					System.out.println(i + " "+ j);
+				
 					bRechtsTexture.enable();
 					bRechtsTexture.bind();
 					gl.glBegin(GL.GL_QUADS);
@@ -475,7 +480,7 @@ public class Maze implements VisibleObject {
 			            gl.glEnd();  
 				}
 				if (isBegin(i,j)){
-					System.out.println(i + " "+ j);
+		
 					kRechtsTexture.enable();
 					kRechtsTexture.bind();
 					gl.glBegin(GL.GL_QUADS);

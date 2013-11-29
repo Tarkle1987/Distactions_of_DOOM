@@ -92,6 +92,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		initJOGL();							// Initialize JOGL.
 		initObjects();						// Initialize all the objects!
 		
+		
 		// Set the frame to visible. This automatically calls upon OpenGL to prevent a blank screen.
 		setVisible(true);
 	}
@@ -166,9 +167,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		
 		
-		player = new Player( 6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
+		player = new Player( 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
 							 maze.SQUARE_SIZE / 2,							// y-position
-							 5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// z-position
+							 1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// z-position
 							 90, 0 );										// horizontal and vertical angle
 
 	    camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
@@ -180,27 +181,27 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the players startpoint as a Tile.
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */   
-	    Tile startPlayer = new Tile(6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,
-				 5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2);
-	    Tile cubeEen = new Tile( 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
-		Tile beerEen = new Tile(10, 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5);
-		Tile beerTwee = new Tile(8,8);
-		Tile beerDrie = new Tile(8,10);
-		Tile beerVier = new Tile(10,20);
-		Tile beerVijf = new Tile(16,16);
-		  
-		b1 = new Beer(beerEen, 1.0, 1);
-		b2 = new Beer(beerTwee, 1, 2);
-		b3 = new Beer(beerDrie, 1, 3);
-		b4 = new Beer(beerVier, 1, 4);
-		b5 = new Beer(beerVijf, 1, 5);
+//	    Tile startPlayer = new Tile(6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,
+//				 5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2);
+//	    Tile cubeEen = new Tile( 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
+//		Tile beerEen = new Tile(10, 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5);
+//		Tile beerTwee = new Tile(8,8);
+//		Tile beerDrie = new Tile(8,10);
+//		Tile beerVier = new Tile(10,20);
+//		Tile beerVijf = new Tile(16,16);
+//		  
+//		b1 = new Beer(beerEen, 1.0, 1);
+//		b2 = new Beer(beerTwee, 1, 2);
+//		b3 = new Beer(beerDrie, 1, 3);
+//		b4 = new Beer(beerVier, 1, 4);
+//		b5 = new Beer(beerVijf, 1, 5);
 //		visibleObjects.add(b1);
 //		visibleObjects.add(b2);
 //		visibleObjects.add(b3);
 //		visibleObjects.add(b4);
 //		visibleObjects.add(b5);
 
-		c1 = new CompanionCube(6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,  0,  5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 1.5);
+		c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 		visibleObjects.add(c1);
 		
 		//this.setUndecorated(true);
@@ -209,6 +210,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.screenWidth = screenWidth;
 		input.screenHeight = screenHeight;
 		input.mouseReset();
+		
+
 		
 	     
 	}
@@ -258,6 +261,10 @@ public class MazeRunner extends Frame implements GLEventListener {
         
         // Set the shading model.
         gl.glShadeModel( GL.GL_SMOOTH );
+        
+        maze.textures(gl);
+        
+        previousTime = Calendar.getInstance().getTimeInMillis();
 	}
 	
 	/**
