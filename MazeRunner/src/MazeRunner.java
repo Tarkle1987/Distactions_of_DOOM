@@ -262,11 +262,20 @@ public class MazeRunner extends Frame implements GLEventListener {
         // Set the shading model.
         gl.glShadeModel( GL.GL_SMOOTH );
         
+        
+        // Loading textures
+        displayLoadscreen(drawable);
+        
         maze.textures(gl);
         
         previousTime = Calendar.getInstance().getTimeInMillis();
 	}
 	
+	private void displayLoadscreen(GLAutoDrawable drawable) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a new frame and handles all of the drawing.
 	 * <p>
@@ -600,9 +609,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		if(player.getGodMode()){
 			
 			
-			player.locationX = 6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+			player.locationX = 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
 			player.locationY = maze.SQUARE_SIZE / 2;
-			player.locationZ = 5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+			player.locationZ = 1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
 			player.setVerAngle(0);
 			player.setHorAngle(90);
 			
