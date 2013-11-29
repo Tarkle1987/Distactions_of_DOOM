@@ -47,7 +47,7 @@ public class Maze implements VisibleObject {
 	private Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
 	private boolean initie = true;
 	private int textswitch;
-	private static int[][] maze = new int[22][22];
+	protected static int[][] maze = new int[22][22];
 	private static int[][] textswitchArray = new int[22][22];
 	
 //	{{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
