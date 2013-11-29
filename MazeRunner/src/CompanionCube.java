@@ -9,13 +9,13 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 	public double size;
 	private double speed;
-	
+
 	private double angle;
 	protected double newangle;
 	private double anglespeed;
-	
+
 	private int sightrange = 0;
-	
+
 	private double directionX = 0;
 	private double directionZ = 0;
 	private double sightX = 0;
@@ -23,9 +23,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	private int signX = 1;
 	private int signZ = 1;
 	int momentum = 10 *16;
-	
+
 	public CompanionCube(double x, double y, double z,  double size){
-		
+
 		super(x,y + size/2,z);
 		this.size = size;
 		speed = 0.01;
@@ -33,206 +33,206 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		newangle = angle;
 		anglespeed = 0.1;
 	}
-	
-	
+
+
 	public void display(GL gl) {
 		// TODO Auto-generated method stub
 		GLUT glut = new GLUT();
-		
+
 		float CubeColor[] = { 1f, 0.627f, 0f, 1f };
 		gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, CubeColor, 0);
-		
+
 		gl.glPushMatrix();
 		gl.glTranslated(locationX,locationY,locationZ);
-		
+
 		gl.glRotated(angle, 0,1,0);
-		
-		
+
+
 		glut.glutSolidCube( (float) size);
 		gl.glPopMatrix();
 	}
-	
+
 	public void CubeMove(int deltaTime, Maze maze, double X, double Z){
 
 		// De kubus bewegen als de speler ertegenaan loopt ( alleen in X of in Z richting )
-//		switch (CubeTouchDetection(X,Z)){
-//		case 1: while(X > this.locationX - size/2 -1){this.locationX = this.locationX + speed*deltaTime;}
-//			break;
-//		case 2: while(Z > this.locationZ - size/2 -1){this.locationZ = this.locationZ + speed*deltaTime;}
-//			break;
-//		case 3: while(X < this.locationX + size/2 + 1){this.locationX = this.locationX - speed*deltaTime;}
-//			break;
-//		case 4: while(Z < this.locationZ + size/2 + 1){this.locationZ = this.locationZ - speed*deltaTime;}
-//			break;
-//		}
-		
-		
-		
+		//		switch (CubeTouchDetection(X,Z)){
+		//		case 1: while(X > this.locationX - size/2 -1){this.locationX = this.locationX + speed*deltaTime;}
+		//			break;
+		//		case 2: while(Z > this.locationZ - size/2 -1){this.locationZ = this.locationZ + speed*deltaTime;}
+		//			break;
+		//		case 3: while(X < this.locationX + size/2 + 1){this.locationX = this.locationX - speed*deltaTime;}
+		//			break;
+		//		case 4: while(Z < this.locationZ + size/2 + 1){this.locationZ = this.locationZ - speed*deltaTime;}
+		//			break;
+		//		}
+
+
+
 		// kubus loopt richting player
 		double dX = X - locationX;
 		double dZ = Z - locationZ;
-		
+
 		double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
-		
+
 		if(dLength < sightrange && dLength > 2){
-		
+
 			dX = dX/dLength;
 			dZ = dZ/dLength;
-			
+
 		}else{
 			momentum = momentum - deltaTime;
-			
+
 			if(momentum <= 0){
 				momentum = 100*16;
-			
+
 				double random = Math.random()*2*Math.PI;
-			
+
 				dX = Math.cos(random);
 				dZ = Math.sin(random);
-				
-		
+
+
 			}else{
 				dX = directionX;
 				dZ = directionZ;
 			}
-			
+
 			/*
 			 * **********************************************
 			 * *		Corridor Walk in progress        	*
 			 * **********************************************
 			 */
-//			if(CheckCorridorX(maze)){
-//				if(dZ < 0 && signZ > 0){
-//					dZ = dZ*signZ;
-//				}else if(dZ > 0 && signZ < 0){
-//					dZ = dZ * signZ;
-//				}
-//			}
-//			if(CheckCorridorZ(maze)){
-//				if(dX < 0 && signX > 0){
-//					dX = dX*signX;
-//				}else if(dX > 0 && signX < 0){
-//					dX = dX * signX;
-//				}
-//			}
-			
+			//			if(CheckCorridorX(maze)){
+			//				if(dZ < 0 && signZ > 0){
+			//					dZ = dZ*signZ;
+			//				}else if(dZ > 0 && signZ < 0){
+			//					dZ = dZ * signZ;
+			//				}
+			//			}
+			//			if(CheckCorridorZ(maze)){
+			//				if(dX < 0 && signX > 0){
+			//					dX = dX*signX;
+			//				}else if(dX > 0 && signX < 0){
+			//					dX = dX * signX;
+			//				}
+			//			}
+
 			System.out.println("CorridorX:  "+ CheckCorridorX(maze));
 			System.out.println("CorridorZ:  "+ CheckCorridorZ(maze));
-			
+
 		}
-		
+
 		sightX = dX;
 		sightZ = dZ;
-		
-			signX =1;
-			signZ = 1;
-			
-			if(dX < 0 ){
-				signX = -1;
-			}
-			if(dZ < 0){
-				signZ = -1;
-			}
-		
-		
-			locationX = locationX + dX * speed*deltaTime;
-			locationZ = locationZ + dZ * speed*deltaTime;
-		
-			
+
+		signX =1;
+		signZ = 1;
+
+		if(dX < 0 ){
+			signX = -1;
+		}
+		if(dZ < 0){
+			signZ = -1;
+		}
+
+
+		locationX = locationX + dX * speed*deltaTime;
+		locationZ = locationZ + dZ * speed*deltaTime;
+
+
+		if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
+				maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
+			locationX = locationX - dX * speed*deltaTime;
+			locationZ = locationZ - dZ * speed*deltaTime + signZ*(dZ/dZ)*speed*deltaTime;
+
+			sightX = 0;
+			sightZ = signZ*(dZ/dZ);
+
+
 			if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
 					maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
-				locationX = locationX - dX * speed*deltaTime;
-				locationZ = locationZ - dZ * speed*deltaTime + signZ*(dZ/dZ)*speed*deltaTime;
-				
-				sightX = 0;
-				sightZ = signZ*(dZ/dZ);
+				locationX = locationX + signX*(dX/dX)*speed*deltaTime;
+				locationZ = locationZ - signZ*(dZ/dZ)*speed*deltaTime;
 
-				
+				sightX = signX*(dX/dX);
+				sightZ = 0;
+
+
 				if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
 						maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
-					locationX = locationX + signX*(dX/dX)*speed*deltaTime;
-					locationZ = locationZ - signZ*(dZ/dZ)*speed*deltaTime;
-					
-					sightX = signX*(dX/dX);
-					sightZ = 0;
+					locationX = locationX -  signX*(dX/dX)*speed*deltaTime;
 
-					
-					if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
-							maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
-						locationX = locationX -  signX*(dX/dX)*speed*deltaTime;
-						
-						sightX = dX;
-						sightZ = dZ;
-						
-						momentum = 0;
-					}
+					sightX = dX;
+					sightZ = dZ;
+
+					momentum = 0;
 				}
 			}
+		}
 
-			directionX = dX;
-			directionZ = dZ;
-		
+		directionX = dX;
+		directionZ = dZ;
+
 	}
-		
+
 	private void CubeRotate(int deltaTime){
 		// trying to let the cube turn to the player
-		
+
 		// Vector van de speler bepalen ten opzichte van de kubus
 		double dx = this.sightX;
 		double dz = this.sightZ;
-		
+
 		// Lengte van de vector bepalen
 		double dlength = Math.sqrt(Math.pow(dx, 2)+Math.pow(dz, 2));
-		
-		
+
+
 		// activeerd wanneer de speler zich binnen de zichtradius bevindt
-		
-		
-			// Hoek berekenen tussen de kubus en de speler
-			dx = dx/dlength;
-			dz = dz/dlength;
-	
-			newangle = -Math.toDegrees(Math.atan2(dz, dx));	
-		
-		
+
+
+		// Hoek berekenen tussen de kubus en de speler
+		dx = dx/dlength;
+		dz = dz/dlength;
+
+		newangle = -Math.toDegrees(Math.atan2(dz, dx));	
+
+
 		// De kubus een nieuwe hoek meegeven zodat het verschil met de hoek van de speler kleiner wordt
 		if(angle < newangle){
-			
+
 			if((angle - newangle) < -180){
 				angle = angle - anglespeed*deltaTime;
 			}else{
 				angle = angle + anglespeed*deltaTime;
 			}
-			
+
 			if(angle > 180)
 				angle = angle - 360;
 			if(angle < -180)
 				angle = angle + 360;
 		}
 		if(angle > newangle){
-		
-			
+
+
 			if((angle - newangle) > 180){
 				angle = angle + anglespeed*deltaTime;
 			}else{
 				angle = angle - anglespeed*deltaTime;
 			}
-			
+
 			if(angle > 180)
 				angle = angle - 360;
 			if(angle < -180)
 				angle = angle + 360;
 		}
-		
+
 	}
-	
+
 	public int CubeTouchDetection(double X, double Z){
 		int quadrant = 0;
-		
+
 		X = X - this.locationX;
 		Z = Z - this.locationZ;
-		
-			
+
+
 		if(X > -size/2 -1 && X < 0.9*(-size/2)){
 			if(Z > -size/2 && Z < size/2){
 				quadrant = 1;
@@ -259,45 +259,47 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	public void update(int deltaTime, Maze maze, ArrayList<VisibleObject> visibleObjects ,Player player) {
 		double X = player.locationX;
 		double Z = player.locationZ;
-		
-	
-		
+
+
+
 		// Bewegen van kubus naar player / door player
 		CubeMove(deltaTime, maze, X,Z);
-		
+
 		// kubus roteerd naar de player
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
-		
+
 	}
 
 	public boolean CheckCorridorX(Maze maze){
 		boolean corridor = false;
-		
+
 		int i = maze.convertToGridX(this.locationX);
 		int j = maze.convertToGridZ(this.locationZ);
-		
-		if(maze.maze[i-1][j] == 1 && maze.maze[i+1][j] == 1){
-			corridor = true;
+		if(i>0 && i < maze.MAZE_SIZE-1)
+		{
+			if(maze.maze[i-1][j] == 1 && maze.maze[i+1][j] == 1){
+				corridor = true;
+			}
 		}
-		
 		return corridor;
 	}
 	public boolean CheckCorridorZ(Maze maze){
 		boolean corridor = false;
-		
+
 		int i = maze.convertToGridX(this.locationX);
 		int j = maze.convertToGridZ(this.locationZ);
-		
-		if(maze.maze[i][j-1] == 1 && maze.maze[i][j+1] == 1){
-			corridor = true;
+		if(j>0 && j < maze.MAZE_SIZE-1)
+		{
+			if(maze.maze[i][j-1] == 1 && maze.maze[i][j+1] == 1){
+				corridor = true;
+			}
 		}
-		
 		return corridor;
 	}
-	
+
 
 	@Override
 	public Tile getPosition() 
@@ -316,7 +318,7 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	@Override
 	public void setDestroy(boolean set) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
