@@ -224,7 +224,9 @@ public class Maze implements VisibleObject {
 	}
 	
 	public static void setMaze(int[][] temp) {
+	
 		maze = temp;
+		fillTextMuur();
 	}
 	
 	/**
@@ -287,9 +289,11 @@ public class Maze implements VisibleObject {
 		}
         // Setting the wall colour and material.
         // draw the grid with the current material
-        paintWall(gl);
+      
+		paintWall(gl);
 		paintSingleFloorTile( gl, MAZE_SIZE * SQUARE_SIZE );	// Paint the floor.
 		paintSingleRoofTile(gl,MAZE_SIZE*SQUARE_SIZE,SQUARE_SIZE);
+	
 	}
 	
 	/**
@@ -379,8 +383,8 @@ public class Maze implements VisibleObject {
 							break;
 						}
 
-
-		            
+				
+						
 		            gl.glBegin(GL.GL_QUADS);
 		            float size = (float) SQUARE_SIZE;
 		            final float[] frontUL = {(float) (-0.5*size),(float) (0.5*size),(float) (0.5*size)};
