@@ -53,7 +53,7 @@ public class Tile
 
 	@Override
 	public String toString() {
-		return xpos + ", " + zpos + ";";
+		return xpos + ", " + zpos;
 	}
 
 }

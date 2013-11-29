@@ -47,7 +47,7 @@ public class Maze implements VisibleObject {
 	private Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
 	private boolean initie = true;
 	private int textswitch;
-	private static int[][] maze = new int[22][22];
+	protected static int[][] maze = new int[22][22];
 	private static int[][] textswitchArray = new int[22][22];
 	
 //	{{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -72,6 +72,7 @@ public class Maze implements VisibleObject {
 //	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
 //	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 //	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }};
+	
 	
 	/**
 	 * isWall(int x, int z) checks for a wall.
@@ -115,7 +116,7 @@ public class Maze implements VisibleObject {
 	}
 	
 	
-	public void textures(){
+	public void textures(GL gl){
 		try{
 			InputStream stream = getClass().getResourceAsStream("Muur.jpg");
 			TextureData data = TextureIO.newTextureData(stream, false, "Muur.jpg"); 
@@ -283,10 +284,10 @@ public class Maze implements VisibleObject {
 	public void display(GL gl) {
 		
 		GLUT glut = new GLUT();
-		if(initie){
-			textures();
-			initie = false;
-		}
+//		if(initie){
+//			textures();
+//			initie = false;
+//		}
         // Setting the wall colour and material.
         // draw the grid with the current material
       
@@ -439,7 +440,7 @@ public class Maze implements VisibleObject {
 					}
 				}
 				if (isEind(i,j)){
-					System.out.println(i + " "+ j);
+				
 					bRechtsTexture.enable();
 					bRechtsTexture.bind();
 					gl.glBegin(GL.GL_QUADS);
@@ -479,7 +480,7 @@ public class Maze implements VisibleObject {
 			            gl.glEnd();  
 				}
 				if (isBegin(i,j)){
-					System.out.println(i + " "+ j);
+		
 					kRechtsTexture.enable();
 					kRechtsTexture.bind();
 					gl.glBegin(GL.GL_QUADS);
