@@ -42,8 +42,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Maze maze; 										// The maze.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	private boolean init = true;
+	private String fileName = "Eerste test.obj";
 
 	private CompanionCube c1;
+	private MazeObject MO;
 	private Beer b1, b2, b3, b4, b5;
 
 	
@@ -203,6 +205,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 		visibleObjects.add(c1);
+		MO = CustomMazeObject.readFromOBJ("Eerste test.obj");
+		visibleObjects.add(MO);
 		
 		//this.setUndecorated(true);
 		player.setControl(input);
