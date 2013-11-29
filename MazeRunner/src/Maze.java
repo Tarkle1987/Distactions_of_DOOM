@@ -291,8 +291,8 @@ public class Maze implements VisibleObject {
         // draw the grid with the current material
       
 		paintWall(gl);
-		paintSingleFloorTile( gl, MAZE_SIZE * SQUARE_SIZE );	// Paint the floor.
-		paintSingleRoofTile(gl,MAZE_SIZE*SQUARE_SIZE,SQUARE_SIZE);
+		paintSingleFloorTile( gl, MAZE_SIZE );	// Paint the floor.
+		paintSingleRoofTile(gl,MAZE_SIZE,SQUARE_SIZE);
 	
 	}
 	
