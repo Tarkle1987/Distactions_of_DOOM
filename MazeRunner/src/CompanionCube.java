@@ -18,6 +18,10 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	
 	private double directionX = 0;
 	private double directionZ = 0;
+	private double sightX = 0;
+	private double sightZ = 0;
+	private int signX = 1;
+	private int signZ = 1;
 	int momentum = 10 *16;
 	
 	public CompanionCube(double x, double y, double z,  double size){
@@ -27,7 +31,7 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		speed = 0.01;
 		angle = 0;
 		newangle = angle;
-		anglespeed = 0.4;
+		anglespeed = 0.1;
 	}
 	
 	
@@ -86,38 +90,42 @@ public class CompanionCube extends GameObject implements VisibleObject {
 				dX = Math.cos(random);
 				dZ = Math.sin(random);
 				
-//				if(random <= 0.5){
-//					random = random * -2;
-//				}else{
-//					random = (random - 0.5)*2;
-//				}
-//			
-//				dX = random;
-//			
-//				random = Math.random();
-//			
-//				if(random <= 0.5){
-//					random = random * -2;
-//				}else{
-//					random = (random - 0.5)*2;
-//				}
-//			
-//				dZ = random;
-//			
-//				dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
-//			
-//			
-//				dX = dX/dLength;
-//				dZ = dZ/dLength;
-//			
+		
 			}else{
 				dX = directionX;
 				dZ = directionZ;
 			}
 			
+			/*
+			 * **********************************************
+			 * *		Corridor Walk in progress        	*
+			 * **********************************************
+			 */
+//			if(CheckCorridorX(maze)){
+//				if(dZ < 0 && signZ > 0){
+//					dZ = dZ*signZ;
+//				}else if(dZ > 0 && signZ < 0){
+//					dZ = dZ * signZ;
+//				}
+//			}
+//			if(CheckCorridorZ(maze)){
+//				if(dX < 0 && signX > 0){
+//					dX = dX*signX;
+//				}else if(dX > 0 && signX < 0){
+//					dX = dX * signX;
+//				}
+//			}
+			
+			System.out.println("CorridorX:  "+ CheckCorridorX(maze));
+			System.out.println("CorridorZ:  "+ CheckCorridorZ(maze));
+			
 		}
 		
-			int signX =1,signZ = 1;
+		sightX = dX;
+		sightZ = dZ;
+		
+			signX =1;
+			signZ = 1;
 			
 			if(dX < 0 ){
 				signX = -1;
@@ -136,45 +144,56 @@ public class CompanionCube extends GameObject implements VisibleObject {
 				locationX = locationX - dX * speed*deltaTime;
 				locationZ = locationZ - dZ * speed*deltaTime + signZ*(dZ/dZ)*speed*deltaTime;
 				
+				sightX = 0;
+				sightZ = signZ*(dZ/dZ);
+
+				
 				if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
 						maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
 					locationX = locationX + signX*(dX/dX)*speed*deltaTime;
 					locationZ = locationZ - signZ*(dZ/dZ)*speed*deltaTime;
 					
+					sightX = signX*(dX/dX);
+					sightZ = 0;
+
+					
 					if(maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ)||maze.isWall(locationX,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX,locationZ-(size*Math.sqrt(2))/2)||
 							maze.isWall(locationX+(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX+(size*Math.sqrt(2))/2, locationZ-(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ+(size*Math.sqrt(2))/2)||maze.isWall(locationX-(size*Math.sqrt(2))/2,locationZ-(size*Math.sqrt(2))/2)){
 						locationX = locationX -  signX*(dX/dX)*speed*deltaTime;
+						
+						sightX = dX;
+						sightZ = dZ;
 						
 						momentum = 0;
 					}
 				}
 			}
 
-		
 			directionX = dX;
 			directionZ = dZ;
+		
 	}
 		
-	private void CubeRotate(int deltaTime, double X, double Z){
+	private void CubeRotate(int deltaTime){
 		// trying to let the cube turn to the player
 		
 		// Vector van de speler bepalen ten opzichte van de kubus
-		double dx = X - this.locationX;
-		double dz = Z - this.locationZ;
+		double dx = this.sightX;
+		double dz = this.sightZ;
 		
 		// Lengte van de vector bepalen
 		double dlength = Math.sqrt(Math.pow(dx, 2)+Math.pow(dz, 2));
 		
 		
 		// activeerd wanneer de speler zich binnen de zichtradius bevindt
-		if(dlength < sightrange){ 
+		
 		
 			// Hoek berekenen tussen de kubus en de speler
 			dx = dx/dlength;
 			dz = dz/dlength;
 	
 			newangle = -Math.toDegrees(Math.atan2(dz, dx));	
-		}
+		
 		
 		// De kubus een nieuwe hoek meegeven zodat het verschil met de hoek van de speler kleiner wordt
 		if(angle < newangle){
@@ -241,14 +260,44 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		double X = player.locationX;
 		double Z = player.locationZ;
 		
-		// kubus roteerd naar de player
-		CubeRotate(deltaTime, X,Z);
+	
 		
 		// Bewegen van kubus naar player / door player
 		CubeMove(deltaTime, maze, X,Z);
 		
+		// kubus roteerd naar de player
+		CubeRotate(deltaTime);
+		CubeRotate(deltaTime);
+		CubeRotate(deltaTime);
+		CubeRotate(deltaTime);
+		
 	}
 
+	public boolean CheckCorridorX(Maze maze){
+		boolean corridor = false;
+		
+		int i = maze.convertToGridX(this.locationX);
+		int j = maze.convertToGridZ(this.locationZ);
+		
+		if(maze.maze[i-1][j] == 1 && maze.maze[i+1][j] == 1){
+			corridor = true;
+		}
+		
+		return corridor;
+	}
+	public boolean CheckCorridorZ(Maze maze){
+		boolean corridor = false;
+		
+		int i = maze.convertToGridX(this.locationX);
+		int j = maze.convertToGridZ(this.locationZ);
+		
+		if(maze.maze[i][j-1] == 1 && maze.maze[i][j+1] == 1){
+			corridor = true;
+		}
+		
+		return corridor;
+	}
+	
 
 	@Override
 	public Tile getPosition() 

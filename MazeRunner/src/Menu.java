@@ -370,6 +370,8 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		YS.setVisible(true);
 		YS.setTitle("Choose");
 		
+		dispose();
+		
 	}
 	public void MenuButton2(){
 		mode = Settings;

@@ -42,8 +42,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Maze maze; 										// The maze.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	private boolean init = true;
+	private String fileName = "Eerste test.obj";
 
 	private CompanionCube c1;
+	private MazeObject MO;
 	private Beer b1, b2, b3, b4, b5;
 
 	
@@ -203,6 +205,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 		visibleObjects.add(c1);
+		MO = CustomMazeObject.readFromOBJ("Eerste test.obj");
+		visibleObjects.add(MO);
 		
 		//this.setUndecorated(true);
 		player.setControl(input);
@@ -262,11 +266,20 @@ public class MazeRunner extends Frame implements GLEventListener {
         // Set the shading model.
         gl.glShadeModel( GL.GL_SMOOTH );
         
+        
+        // Loading textures
+        displayLoadscreen(drawable);
+        
         maze.textures(gl);
         
         previousTime = Calendar.getInstance().getTimeInMillis();
 	}
 	
+	private void displayLoadscreen(GLAutoDrawable drawable) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a new frame and handles all of the drawing.
 	 * <p>
@@ -600,9 +613,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		if(player.getGodMode()){
 			
 			
-			player.locationX = 6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+			player.locationX = 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
 			player.locationY = maze.SQUARE_SIZE / 2;
-			player.locationZ = 5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
+			player.locationZ = 1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
 			player.setVerAngle(0);
 			player.setHorAngle(90);
 			
