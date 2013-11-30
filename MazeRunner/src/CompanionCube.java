@@ -96,11 +96,7 @@ public class CompanionCube extends GameObject implements VisibleObject {
 				dZ = directionZ;
 			}
 
-			/*
-			 * **********************************************
-			 * *		Corridor Walk in progress        	*
-			 * **********************************************
-			 */
+			
 			int[] Surround = CheckSurround(maze);
 			
 			if(Surround[0] == 1 && Surround[1] == 0 && Surround[2] == 1 && Surround[3] == 0){
