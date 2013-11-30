@@ -101,20 +101,20 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			 * *		Corridor Walk in progress        	*
 			 * **********************************************
 			 */
-//			if(CheckCorridorX(maze)){
-//				if(dZ < 0 && signZ > 0){
-//					dZ = dZ*signZ;
-//				}else if(dZ > 0 && signZ < 0){
-//					dZ = dZ * signZ;
-//				}
-//			}
-//			if(CheckCorridorZ(maze)){
-//				if(dX < 0 && signX > 0){
-//					dX = dX*signX;
-//				}else if(dX > 0 && signX < 0){
-//					dX = dX * signX;
-//				}
-//			}
+			if(CheckCorridorX(maze)){
+				if(dZ < 0 && signZ > 0){
+					dZ = dZ*-1;
+				}else if(dZ > 0 && signZ < 0){
+					dZ = dZ * -1;
+				}
+			}
+			if(CheckCorridorZ(maze)){
+				if(dX < 0 && signX > 0){
+					dX = dX*-1;
+				}else if(dX > 0 && signX < 0){
+					dX = dX * -1;
+				}
+			}
 			
 			System.out.println("CorridorX:  "+ CheckCorridorX(maze));
 			System.out.println("CorridorZ:  "+ CheckCorridorZ(maze));
