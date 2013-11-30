@@ -101,42 +101,22 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			 * *		Corridor Walk in progress        	*
 			 * **********************************************
 			 */
-<<<<<<< HEAD
-			if(CheckCorridorX(maze)){
+			int[] Surround = CheckSurround(maze);
+			
+			if(Surround[0] == 1 && Surround[1] == 0 && Surround[2] == 1 && Surround[3] == 0){
 				if(dZ < 0 && signZ > 0){
 					dZ = dZ*-1;
 				}else if(dZ > 0 && signZ < 0){
 					dZ = dZ * -1;
 				}
 			}
-			if(CheckCorridorZ(maze)){
+			if(Surround[0] == 0 && Surround[1] == 1 && Surround[2] == 0 && Surround[3] == 1){
 				if(dX < 0 && signX > 0){
 					dX = dX*-1;
 				}else if(dX > 0 && signX < 0){
 					dX = dX * -1;
 				}
 			}
-			
-=======
-			//			if(CheckCorridorX(maze)){
-			//				if(dZ < 0 && signZ > 0){
-			//					dZ = dZ*signZ;
-			//				}else if(dZ > 0 && signZ < 0){
-			//					dZ = dZ * signZ;
-			//				}
-			//			}
-			//			if(CheckCorridorZ(maze)){
-			//				if(dX < 0 && signX > 0){
-			//					dX = dX*signX;
-			//				}else if(dX > 0 && signX < 0){
-			//					dX = dX * signX;
-			//				}
-			//			}
-
->>>>>>> 5b0236195d55056c97472d9de0d06a8cc99523fb
-			System.out.println("CorridorX:  "+ CheckCorridorX(maze));
-			System.out.println("CorridorZ:  "+ CheckCorridorZ(maze));
-
 		}
 
 		sightX = dX;
@@ -290,33 +270,21 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		CubeRotate(deltaTime);
 
 	}
-
-	public boolean CheckCorridorX(Maze maze){
-		boolean corridor = false;
-
+	
+	public int[] CheckSurround(Maze maze){
+		int[] Surround = new int[4];
+		
 		int i = maze.convertToGridX(this.locationX);
 		int j = maze.convertToGridZ(this.locationZ);
-		if(i>0 && i < maze.MAZE_SIZE-1)
-		{
-			if(maze.maze[i-1][j] == 1 && maze.maze[i+1][j] == 1){
-				corridor = true;
-			}
-		}
-		return corridor;
+		
+		Surround[0] = maze.maze[i-1][j];	// Left (X-1)
+		Surround[1] = maze.maze[i][j - 1];	// Down (Y-1)
+		Surround[2] = maze.maze[i+1][j];	// Right (X+1)
+		Surround[3] = maze.maze[i][j+1];	// Up   (Y+1)
+				
+		return Surround;
 	}
-	public boolean CheckCorridorZ(Maze maze){
-		boolean corridor = false;
 
-		int i = maze.convertToGridX(this.locationX);
-		int j = maze.convertToGridZ(this.locationZ);
-		if(j>0 && j < maze.MAZE_SIZE-1)
-		{
-			if(maze.maze[i][j-1] == 1 && maze.maze[i][j+1] == 1){
-				corridor = true;
-			}
-		}
-		return corridor;
-	}
 
 
 	@Override
