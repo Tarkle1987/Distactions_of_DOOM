@@ -164,6 +164,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Add the maze that we will be using.
 		maze = new Maze();
 		visibleObjects.add( maze );
+		
+		System.out.println(maze.maze.length);
 
 		// Initialize the player.
 		input = new UserInput(canvas);
@@ -211,13 +213,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 		visibleObjects.add(c1);
 
-		Trap = CustomMazeObject.readFromOBJ("Trap.obj");
-		Trap.setCor(20*size, 1*size);
-		Trap.setNorm(0.5f, 0, 0);
-		visibleObjects.add(Trap);
-		Smart = CustomMazeObject.readFromOBJ("Smart.obj");
-		Smart.setCor(10*size, 10*size);
-		visibleObjects.add(Smart);
+//		Trap = CustomMazeObject.readFromOBJ("Trap.obj");
+//		Trap.setCor(20*size, 1*size);
+//		Trap.setNorm(0.5f, 0, 0);
+//		visibleObjects.add(Trap);
+//		Smart = CustomMazeObject.readFromOBJ("Smart.obj");
+//		Smart.setCor(10*size, 10*size);
+//		visibleObjects.add(Smart);
 
 		
 		//this.setUndecorated(true);
@@ -284,8 +286,10 @@ public class MazeRunner extends Frame implements GLEventListener {
         
         maze.textures();
         
-        previousTime = Calendar.getInstance().getTimeInMillis();
         Routeplanner.testRoute(maze);
+        
+        previousTime = Calendar.getInstance().getTimeInMillis();
+       
 	}
 	
 	private void displayLoadscreen(GLAutoDrawable drawable) {
