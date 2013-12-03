@@ -24,6 +24,7 @@ public abstract class MazeObject implements VisibleObject{
 	
 	protected Texture texture;
 	protected int[][] texturePoints = { {1, 1}, {1, 0}, {0, 0} , {0, 1}}; 
+	private float wallColour[] = { 0f, 0.0f, 0.0f, 0.0f };
 	
 	float restitution;
 
@@ -84,10 +85,11 @@ public abstract class MazeObject implements VisibleObject{
 
 	}
 	
-	public void setCor(float i, float j)
+	public void setCor(float i, float j, float k)
 	{
 		x = i;
 		y = j;
+		z = k;
 	}
 	
 	public void setNorm(float i, float j, float k)
@@ -96,13 +98,30 @@ public abstract class MazeObject implements VisibleObject{
 		ny = j;
 		nz = k;
 	}
+	
+	public void addColour(String kleur)
+	{
+		if (kleur.equals("oranje")){
+			wallColour[0] = 1f;
+			wallColour[1] = 0f;
+			wallColour[2] = 0f;
+			wallColour[3] = 0f;
+		}
+		
+		if (kleur.equals("wit")){
+			wallColour[0] = 1f;
+			wallColour[1] = 1f;
+			wallColour[2] = 1f;
+			wallColour[3] = 0f;
+		}
+	}
 	/**
 	 * Draw the object
 	 * @param gl
 	 * @param wallColour	Colour the object should get
 	 */
 
-	public void draw(GL gl, float[] wallColour)
+	public void draw(GL gl)
 	{
 		for(int j = 0; j < faces.size(); j++)
 		{
@@ -120,7 +139,7 @@ public abstract class MazeObject implements VisibleObject{
 			
 			normal.get(norm);
 			
-			gl.glNormal3d(norm[0], norm[1]-1, norm[2]);
+			gl.glNormal3d(norm[0], norm[1], norm[2]);
 			
 			if (test){
 			for(int i = 0; i < 2; i++)
@@ -138,7 +157,7 @@ public abstract class MazeObject implements VisibleObject{
 				if(texture != null && i < 5)
 					gl.glTexCoord2f(texturePoints[i][0], texturePoints[i][1]);
 				position.get(pos);
-				gl.glVertex3f(pos[0]+x, pos[1], pos[2]+y);
+				gl.glVertex3f(pos[0]+x, pos[1]+z, pos[2]+y);
 			}
 			gl.glEnd();
 			if(texture != null)
@@ -189,6 +208,27 @@ public abstract class MazeObject implements VisibleObject{
 			vert[0] =((float)(x*cos - z * sin - xRotate * cos + zRotate * sin + xRotate));
 			vert[2] = ((float)(x*sin + z * cos - zRotate * cos - xRotate * sin + zRotate));
 			
+			vertex.set(vert);
+		}
+	}
+	
+	public void rotateVerticesZ(float angle, double xRotate, double yRotate)
+	{
+		for(int i = 0; i < vertices.size(); i++)
+		{
+			Vector3f vertex = vertices.get(i);
+			float[] vert = new float[3];
+			
+			vertex.get(vert);
+			float x = vert[0];
+			float y = vert[1];
+			float z = vert[2];
+			System.out.println(vertices.get(1));
+			double cos = Math.cos(Math.toRadians(angle));
+			double sin = Math.sin(Math.toRadians(angle));
+			vert[0] = ((float)(x*cos - z * sin - xRotate * cos + yRotate * sin + xRotate));
+			vert[2] = ((float)(x*sin + z * cos - yRotate * cos - xRotate * sin + yRotate));
+						
 			vertex.set(vert);
 		}
 	}

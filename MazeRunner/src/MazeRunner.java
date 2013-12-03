@@ -1,11 +1,15 @@
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
 
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
 
 import com.sun.opengl.util.*;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,8 +49,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private String fileName = "Eerste test.obj";
 
 	private CompanionCube c1;
-	private MazeObject Trap;
-	private MazeObject Smart;
+	private MazeObject Trap, Smart, Smarto, Smartw;
+	private Texture Smart1texture;
 	private Beer b1, b2, b3, b4, b5;
 
 	
@@ -94,7 +98,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		initJOGL();							// Initialize JOGL.
 		initObjects();						// Initialize all the objects!
-		
 		
 		// Set the frame to visible. This automatically calls upon OpenGL to prevent a blank screen.
 		setVisible(true);
@@ -154,6 +157,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * visualObjects list of MazeRunner through the add method, so it will be displayed 
 	 * automagically. 
 	 */
+	
+	public void initTextures(GL gl){
+		try{
+			InputStream stream = getClass().getResourceAsStream("Muur.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Muur.jpg"); 
+			Smart1texture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+	}
+	
 	private void initObjects()	{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
@@ -205,15 +220,20 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		visibleObjects.add(b5);
 
 		float size = (float)maze.SQUARE_SIZE;
-	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-		visibleObjects.add(c1);
-		Trap = CustomMazeObject.readFromOBJ("Trap.obj");
-		Trap.setCor(20*size, 1*size);
-		Trap.setNorm(0.5f, 0, 0);
+//	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+//		visibleObjects.add(c1);
+		Trap = CustomMazeObject.readFromOBJ("Trap2.obj", 35);
+		Trap.setCor((float)1.5*size, (float)19*size, 0);
+		Trap.rotateVerticesZ(-90, 1, 1);
 		visibleObjects.add(Trap);
-		Smart = CustomMazeObject.readFromOBJ("Smart.obj");
-		Smart.setCor(10*size, 10*size);
-		visibleObjects.add(Smart);
+		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
+		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
+		Smarto.addColour("wit");
+		visibleObjects.add(Smarto);
+		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
+		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
+		Smartw.addColour("oranje");
+		visibleObjects.add(Smartw);
 		
 		//this.setUndecorated(true);
 		player.setControl(input);
@@ -278,6 +298,7 @@ public class MazeRunner extends Frame implements GLEventListener {
         displayLoadscreen(drawable);
         
         maze.textures(gl);
+        initTextures(gl);
         
         previousTime = Calendar.getInstance().getTimeInMillis();
 	}
