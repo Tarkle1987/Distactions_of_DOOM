@@ -210,9 +210,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		float size = (float)maze.SQUARE_SIZE;
 	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 		visibleObjects.add(c1);
-<<<<<<< HEAD
 
-=======
 		Trap = CustomMazeObject.readFromOBJ("Trap.obj");
 		Trap.setCor(20*size, 1*size);
 		Trap.setNorm(0.5f, 0, 0);
@@ -220,7 +218,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Smart = CustomMazeObject.readFromOBJ("Smart.obj");
 		Smart.setCor(10*size, 10*size);
 		visibleObjects.add(Smart);
->>>>>>> 97759bcc1aabdc15b5bab5924246b15b8caabd13
+
 		
 		//this.setUndecorated(true);
 		player.setControl(input);
