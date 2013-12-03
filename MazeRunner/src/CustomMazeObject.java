@@ -6,6 +6,8 @@ import java.util.Scanner;
 import javax.media.opengl.GL;
 import javax.vecmath.Vector3f;
 
+import com.sun.opengl.util.texture.Texture;
+
 public class CustomMazeObject extends MazeObject{
 	
 	public CustomMazeObject()
@@ -13,7 +15,7 @@ public class CustomMazeObject extends MazeObject{
 		super();
 	}
 	
-	public static MazeObject readFromOBJ(String fileName)
+	public static MazeObject readFromOBJ(String fileName, float scale)
 	{
 		MazeObject res = new CustomMazeObject();
 		try{
@@ -25,9 +27,9 @@ public class CustomMazeObject extends MazeObject{
 				if(line.startsWith("v"))
 				{
 					String coordinates[] = line.split("[ ]");
-					float x = Float.parseFloat(coordinates[1]) * 10;
-					float y = Float.parseFloat(coordinates[2]) * 10;
-					float z = Float.parseFloat(coordinates[3]) * 10;
+					float x = Float.parseFloat(coordinates[1]) * scale;
+					float y = Float.parseFloat(coordinates[2]) * scale;
+					float z = Float.parseFloat(coordinates[3]) * scale;
 					res.vertices.add(new Vector3f(x, y, z));
 					
 				}
@@ -59,8 +61,7 @@ public class CustomMazeObject extends MazeObject{
 	@Override
 	public void display(GL gl) {
 		// TODO Auto-generated method stub
-		float wallColour[] = { 0.0f, 0.0f, 0.0f, 0.0f };	
-		draw(gl, wallColour);
+		draw(gl);
 	}
 
 	@Override
