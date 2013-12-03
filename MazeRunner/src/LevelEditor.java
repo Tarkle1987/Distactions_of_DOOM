@@ -46,11 +46,14 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	static final long serialVersionUID = 1;
 
 	// Screen size.
-	private  int screenWidth = 1200, screenHeight = 945;
+	private  int screenWidth = 1800, screenHeight = 705;
 	private  int rast = 20;
-	private int rastwidth = screenHeight-45;
-	private int buttonpos = rastwidth+50;
+	private int rastwidth = screenHeight-100;
+	private int rastspace = 50;
+	private int buttonpos = rastwidth+100;
 	private int[][] Mazeconf = new int[rast+2][rast+2];
+	private int[][] Mazeconf2 = new int[rast+2][rast+2];
+	private int[][] Mazeconf3 = new int[rast+2][rast+2];
 	private int[][] SaveMaze = new int[22][22];
 	private int unit = rastwidth/rast;
 	private float buttonSize = unit *2;
@@ -62,6 +65,8 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	private byte[] trap90 = Image.loadImage("Trap90.jpg");
 	private byte[] smart45 = Image.loadImage("Smart45.jpg");
 	private byte[] smart90 = Image.loadImage("Smart90.jpg");
+	private byte[] trapop45 = Image.loadImage("TrapOp45.jpg");
+	private byte[] trapop90 = Image.loadImage("TrapOp90.jpg");
 	// A GLCanvas is a component that can be added to a frame. The drawing
 	// happens on this component.
 	private GLCanvas canvas;
@@ -90,6 +95,8 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		for (int i = 0; i<Mazeconf.length; i++){
 			for (int j = 0; j<Mazeconf.length; j++){
 				Mazeconf[i][j]=0;
+				Mazeconf2[i][j]=0;
+				Mazeconf3[i][j]=0;
 			}
 		}
 
@@ -101,9 +108,17 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			Mazeconf[Mazeconf.length-1][i]= 1;
 			Mazeconf[i][0]=1;
 			Mazeconf[i][Mazeconf.length-1]= 1;
+			Mazeconf2[0][i]=1;
+			Mazeconf2[Mazeconf.length-1][i]= 1;
+			Mazeconf2[i][0]=1;
+			Mazeconf2[i][Mazeconf.length-1]= 1;
+			Mazeconf3[0][i]=1;
+			Mazeconf3[Mazeconf.length-1][i]= 1;
+			Mazeconf3[i][0]=1;
+			Mazeconf3[i][Mazeconf.length-1]= 1;
 		}
 
-				Mazeconf[1][20]=5;
+				Mazeconf3[1][20]=5;
 				Mazeconf[20][1]=4;
 		points = new ArrayList<Point2D.Float>();
 
@@ -312,16 +327,24 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			for (int j = 1;j<Mazeconf.length-1;j++){
 				switch (Mazeconf[j][i]){
 				case 0:
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,45,45, vloer45);
+//					gl.glColor3f(1f, 1f,1f);
+//					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, vloer45);
 					break;
 				case 1:
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,45,45, muur45);
+//					gl.glColor3f(0.0f, 0.0f, 0.0f);
+//					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, muur45);
 					break;
 				case 2:
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,45,45, trap45);
+//					gl.glColor3f(0.5f, 0.5f, 0.0f);
+//					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, trap45);
 					break;
 				case 3:
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,45,45, smart45);
+//					gl.glColor3f(0.5f, 0.0f, 0.5f);
+//					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, smart45);
 					break;
 				case 4:
 					gl.glColor3f(0.5f, 0.5f, 0.5f);
@@ -330,6 +353,90 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 5:
 					gl.glColor3f(0.75f, 0f, 0.5f);
 					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					break;
+				
+				case 6:
+//					gl.glColor3f(0.5f, 0.5f, 0.5f);
+//					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, trapop45);
+					break;
+				}
+			}
+		}
+		for (int i = 1; i<Mazeconf2.length-1;i++){
+			for (int j = 1;j<Mazeconf2.length-1;j++){
+				switch (Mazeconf2[j][i]){
+				case 0:
+//					gl.glColor3f(1f, 1f,1f);
+//					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, vloer45);
+					break;
+				case 1:
+//					gl.glColor3f(0.0f, 0.0f, 0.0f);
+//					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, muur45);
+					break;
+				case 2:
+//					gl.glColor3f(0.5f, 0.5f, 0.0f);
+//					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, trap45);
+					break;
+				case 3:
+//					gl.glColor3f(0.5f, 0.0f, 0.5f);
+//					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, smart45);
+					break;
+				case 4:
+					gl.glColor3f(0.5f, 0.5f, 0.5f);
+					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
+					break;
+				case 5:
+					gl.glColor3f(0.75f, 0f, 0.5f);
+					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
+					break;
+				case 6:
+//					gl.glColor3f(0.5f, 0.5f, 0.5f);
+//					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, trapop45);
+					break;
+				}
+			}
+		}
+		for (int i = 1; i<Mazeconf3.length-1;i++){
+			for (int j = 1;j<Mazeconf3.length-1;j++){
+				switch (Mazeconf3[j][i]){
+				case 0:
+//					gl.glColor3f(1f, 1f,1f);
+//					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, vloer45);
+					break;
+				case 1:
+//					gl.glColor3f(0.0f, 0.0f, 0.0f);
+//					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, muur45);
+					break;
+				case 2:
+//					gl.glColor3f(0.5f, 0.5f, 0.0f);
+//					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, trap45);
+					break;
+				case 3:
+//					gl.glColor3f(0.5f, 0.0f, 0.5f);
+//					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, smart45);
+					break;
+				case 4:
+					gl.glColor3f(0.5f, 0.5f, 0.5f);
+					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
+					break;
+				case 5:
+					gl.glColor3f(0.75f, 0f, 0.5f);
+					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
+					break;
+				case 6:
+//					gl.glColor3f(0.5f, 0.5f, 0.5f);
+//					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, trapop45);
 					break;
 				}
 			}
@@ -342,9 +449,20 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	private void drawRaster(GL gl){
 		gl.glColor3f(0f, 0f, 0f);
 		gl.glLineWidth(1);
+		//level 1
 		for (int i = 0; i<=rast; i++){
 			lineOnScreen(gl, i*unit, 0,i*unit, rastwidth);
 			lineOnScreen(gl, 0, i*unit,rastwidth, i*unit);
+		}
+		//level 2
+		for (int i = 0; i<=rast; i++){
+			lineOnScreen(gl, i*unit+rastwidth+rastspace, 0,i*unit+rastwidth+rastspace, rastwidth);
+			lineOnScreen(gl, rastwidth+rastspace, i*unit,2*rastwidth+rastspace, i*unit);
+		}
+		//level 3
+		for (int i = 0; i<=rast; i++){
+			lineOnScreen(gl, i*unit+2*rastwidth+2*rastspace, 0,i*unit+2*rastwidth+2*rastspace, rastwidth);
+			lineOnScreen(gl, 2*rastwidth+2*rastspace, i*unit,3*rastwidth+2*rastspace, i*unit);
 		}
 	}
 	/**
@@ -356,30 +474,38 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		// Editor boxes
 
 		// Vloer
-		Image.drawImage(gl, buttonpos,(int) (screenHeight - buttonSize),90,90, vloer90);
-		drawText(gl,"Add Floor", (int) (buttonpos+buttonSize+10),(int) (screenHeight - 0.5*buttonSize));
+//		gl.glColor3f(1f, 1f, 1f);
+//		boxOnScreen(gl, 0,buttonpos-buttonSize, buttonSize);
+		Image.drawImage(gl, 0,(int)(buttonpos-buttonSize),56,56, vloer90);
+		drawText(gl,"Add Floor",  (int) (buttonSize+10),(int) (buttonpos-0.5*buttonSize));
 		// Muur
-		Image.drawImage(gl, buttonpos,(int) (screenHeight - 2*buttonSize),90,90, muur90);
-		drawText(gl,"Add Wall", (int) (buttonpos+buttonSize+10),(int) (screenHeight - 1.5*buttonSize));
+//		gl.glColor3f(0.0f, 0.0f, 0.0f);
+//		boxOnScreen(gl, buttonSize+200, buttonpos-buttonSize, buttonSize);
+		Image.drawImage(gl, (int) buttonSize+200,(int)(buttonpos-buttonSize),56,56, muur90);
+		drawText(gl,"Add Wall", (int) (2*buttonSize+210),(int) (buttonpos-0.5*buttonSize));
 		// Trap
-		Image.drawImage(gl, buttonpos,(int) (screenHeight - 3*buttonSize),90,90, trap90);
-		drawText(gl,"Add Stairs", (int) (buttonpos+buttonSize+10),(int) (screenHeight - 2.5*buttonSize));
+//		gl.glColor3f(0.5f, 0.5f, 0.0f);
+//		boxOnScreen(gl, 2*buttonSize+400, buttonpos-buttonSize, buttonSize);
+		Image.drawImage(gl, (int) (2*buttonSize+400),(int)(buttonpos-buttonSize),56,56, trap90);
+		drawText(gl,"Add Stairs", (int) (3*buttonSize+410),(int) (buttonpos-0.5*buttonSize));
 		// Smart
-		Image.drawImage(gl, buttonpos,(int) (screenHeight - 4*buttonSize),90,90, smart90);
-		drawText(gl,"Add Smartdrug", (int) (buttonpos+buttonSize+10),(int) (screenHeight - 3.5*buttonSize));
+//		gl.glColor3f(0.5f, 0.0f, 0.5f);
+//		boxOnScreen(gl, 3*buttonSize+600, buttonpos-buttonSize, buttonSize);
+		Image.drawImage(gl, (int) (3*buttonSize+600),(int)(buttonpos-buttonSize),56,56, smart90);
+		drawText(gl,"Add Smartdrug", (int) (4*buttonSize+610),(int) (buttonpos-0.5*buttonSize));
 		// Save
 		gl.glColor3f(0f, 1.0f, 0.5f);
-		boxOnScreen(gl, buttonpos, screenHeight - 5*buttonSize, buttonSize);
-		drawText(gl,"Save Maze", (int) (buttonpos+buttonSize+10),(int) (screenHeight - 4.5*buttonSize));
+		boxOnScreen(gl, 4*buttonSize+800, buttonpos-buttonSize, buttonSize);
+		drawText(gl,"Save Maze", (int) (5*buttonSize+810),(int) (buttonpos-0.5*buttonSize));
 		//Exit
 		gl.glColor3f(0.1f, 0.1f, 0.1f);
-		boxOnScreen(gl, buttonpos, screenHeight - 6*buttonSize, buttonSize);
+		boxOnScreen(gl, 5*buttonSize+1000, buttonpos-buttonSize, buttonSize);
 		// Draw a cross on top of exit box
 		gl.glLineWidth(3);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
-		lineOnScreen(gl, buttonpos,screenHeight - 5*buttonSize, buttonpos+buttonSize,screenHeight - 6*buttonSize);
-		lineOnScreen(gl, buttonpos,screenHeight - 6*buttonSize, buttonpos+buttonSize,screenHeight - 5*buttonSize);
-		drawText(gl,"Exit LevelEditor", (int) (buttonpos+buttonSize+10),(int) (screenHeight - 5.5*buttonSize));
+		lineOnScreen(gl, 5*buttonSize+1000,buttonpos, 6*buttonSize+1000,buttonpos-buttonSize);
+		lineOnScreen(gl, 5*buttonSize+1000,buttonpos-buttonSize, 6*buttonSize+1000,buttonpos);
+		drawText(gl,"Exit LevelEditor", (int) (6*buttonSize+1010),(int) (buttonpos-0.5*buttonSize));
 
 		//		// Draw a point on top of the first box
 		//		gl.glPointSize(5.0f);
@@ -404,12 +530,32 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	}
 
 
-	private boolean isBed(int X, int Y){
-		return (Mazeconf[Mazeconf.length-Y-2][X+1]==4);
+	private boolean isBegin(int X, int Y){
+		return (Mazeconf[Mazeconf.length-Y-2][Mazeconf.length-X-2]==4);
 	}
-
+	
 	private boolean isEind(int X, int Y){
-		return (Mazeconf[Mazeconf.length-Y-2][X+1]==5);
+		return (Mazeconf3[Mazeconf3.length-Y-2][Mazeconf3.length-X-2]==5);
+	}
+	
+	private boolean isEindTrap(int X, int Y){
+		return (Mazeconf[Mazeconf.length-Y-2][Mazeconf3.length-X-2]==6);
+	}
+	
+	private boolean isEindTrap2(int X, int Y){
+		return (Mazeconf2[Mazeconf2.length-Y-2][Mazeconf2.length-X-2]==6);
+	}
+	
+	private boolean isEindTrap3(int X, int Y){
+		return (Mazeconf3[Mazeconf3.length-Y-2][Mazeconf3.length-X-2]==6);
+	}
+	
+	private boolean isTrap(int X, int Y){
+		return (Mazeconf[Mazeconf.length-Y-2][Mazeconf3.length-X-2]==2);
+	}
+	
+	private boolean isTrap2(int X, int Y){
+		return (Mazeconf2[Mazeconf2.length-Y-2][Mazeconf2.length-X-2]==2);
 	}
 
 	private int[] bevat(int v){
@@ -418,6 +564,32 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		for (int i = 0; i<Mazeconf.length; i++){
 			for (int j = 0; j<Mazeconf.length;j++){
 				if(Mazeconf[i][j]==v){
+					i1= i; j1= j; contains = 1;
+				}
+			}
+		}
+		return new int[] {contains, i1, j1};
+	}
+	
+	private int[] bevat2(int v){
+
+		int contains = 0, i1 = 0, j1 = 0;
+		for (int i = 0; i<Mazeconf2.length; i++){
+			for (int j = 0; j<Mazeconf2.length;j++){
+				if(Mazeconf2[i][j]==v){
+					i1= i; j1= j; contains = 1;
+				}
+			}
+		}
+		return new int[] {contains, i1, j1};
+	}
+	
+	private int[] bevat3(int v){
+
+		int contains = 0, i1 = 0, j1 = 0;
+		for (int i = 0; i<Mazeconf3.length; i++){
+			for (int j = 0; j<Mazeconf3.length;j++){
+				if(Mazeconf3[i][j]==v){
 					i1= i; j1= j; contains = 1;
 				}
 			}
@@ -440,89 +612,182 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		switch (drawMode) {
 		case DM_VLOER:
 			if (points.size() >= 1)	{
-				if (points.get(0).x<=rastwidth){
-					// If the draw mode is "point" and the user has supplied at
-					// least one point, draw that point.
-					p1 = points.get(0);
-					int rastX = (((int) p1.x)/(unit));
-					int rastY = (((int) p1.y)/(unit));
-					if (!isBed(rastX,rastY)&&!isEind(rastX,rastY)){
-						Mazeconf[Mazeconf.length-rastY-2][Mazeconf.length-rastX-2]=0;
+				if (points.get(0).y<rastwidth){
+					if (points.get(0).x<=rastwidth){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastX = (((int) p1.x)/(unit));
+						int rastY = (((int) p1.y)/(unit));
+						if (!isBegin(rastX,rastY)&&!isTrap(rastX,rastY)){
+							Mazeconf[Mazeconf.length-rastY-2][Mazeconf.length-rastX-2]=0;
+						}
 					}
-					//					System.out.println(unit);
-					//					System.out.println(rastX + " " + rastY + " " + unit);
-					//					System.out.println(Mazeconf[Mazeconf.length-rastY-2][rast-rastX]);
-					//					drawMaze(gl);
-					//					drawRaster(gl);
+					else if (points.get(0).x<=2*rastwidth+rastspace&&points.get(0).x>=rastwidth+rastspace){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastX2 = ((int) ((p1.x-(rastwidth+rastspace))/(unit)));
+						int rastY2 = (((int) p1.y)/(unit));
+						if (!isEindTrap2(rastX2,rastY2)&&!isTrap2(rastX2,rastY2)){
+							Mazeconf2[Mazeconf2.length-rastY2-2][Mazeconf2.length-rastX2-2]=0;
+						}
+						
+					}
+					else if (points.get(0).x<=3*rastwidth+2*rastspace&&points.get(0).x>=2*rastwidth+2*rastspace){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastX3 = ((int) ((p1.x-(2*rastwidth+2*rastspace))/(unit)));
+						int rastY3 = (((int) p1.y)/(unit));
+						if (!isEind(rastX3,rastY3)&&!isEindTrap3(rastX3,rastY3)){
+							Mazeconf3[Mazeconf3.length-rastY3-2][Mazeconf3.length-rastX3-2]=0;
+						}
+					}
 				}
 			}
 			points.clear();
 			break;
-		case DM_MUUR:
-			if (points.size() >= 1) {
-				if (points.get(0).x<=rastwidth){
-					// If the draw mode is "line" and the user has supplied at least
-					// two points, draw a line between those points
-					p1 = points.get(0);
-					int rastXm = (((int) p1.x)/(unit));
-					int rastYm = (((int) p1.y)/(unit));
-					if (!isBed(rastXm,rastYm)&&!isEind(rastXm,rastYm)){
-						Mazeconf[Mazeconf.length-rastYm-2][Mazeconf.length-rastXm-2]=1;
-						//					System.out.println(unit);
-						//					System.out.println(rastXm + " " + rastYm);
-						//					System.out.println(Mazeconf[Mazeconf.length-rastYm-2][rast-rastXm]);
-						//					drawMaze(gl);
-						//					drawRaster(gl);
+		case DM_MUUR:			
+			if (points.size() >= 1)	{
+				if (points.get(0).y<rastwidth){
+					if (points.get(0).x<=rastwidth){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastXm = (((int) p1.x)/(unit));
+						int rastYm = (((int) p1.y)/(unit));
+						if (!isBegin(rastXm,rastYm)&&!isTrap(rastXm,rastYm)){
+							Mazeconf[Mazeconf.length-rastYm-2][Mazeconf.length-rastXm-2]=1;
+						}
+					}
+					else if (points.get(0).x<=2*rastwidth+rastspace&&points.get(0).x>=rastwidth+rastspace){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastXm2 = ((int) ((p1.x-(rastwidth+rastspace))/(unit)));
+						int rastYm2 = (((int) p1.y)/(unit));
+						if(!isEindTrap2(rastXm2,rastYm2)&&!isTrap2(rastXm2,rastYm2)){
+							Mazeconf2[Mazeconf2.length-rastYm2-2][Mazeconf2.length-rastXm2-2]=1;
+						}
+					
+					}
+					else if (points.get(0).x<=3*rastwidth+2*rastspace&&points.get(0).x>=2*rastwidth+2*rastspace){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastXm3 = (((int) (p1.x-(2*rastwidth+2*rastspace))/(unit)));
+						int rastYm3 = (((int) p1.y)/(unit));
+						if (!isEind(rastXm3,rastYm3)&&!isEindTrap3(rastXm3,rastYm3)){
+							Mazeconf3[Mazeconf3.length-rastYm3-2][Mazeconf3.length-rastXm3-2]=1;
+						}
 					}
 				}
 			}
 			points.clear();
 			break;
 		case DM_TRAP:
-			if (points.size() >= 1) {
-				if (points.get(0).x<=rastwidth){
-					if (bevat(2)[0]==1){
-						Mazeconf[bevat(2)[1]][bevat(2)[2]]=0;
+			if (points.size() >= 1)	{
+				if (points.get(0).y<rastwidth){
+					if (points.get(0).x<=rastwidth){
+						if (bevat(2)[0]==1){
+							Mazeconf[bevat(2)[1]][bevat(2)[2]]=0;
+						}
+						if (bevat2(6)[0]==1){
+							Mazeconf2[bevat2(6)[1]][bevat2(6)[2]]=0;
+						}
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastXt = (((int) p1.x)/(unit));
+						int rastYt = (((int) p1.y)/(unit));
+						if (!isBegin(rastXt,rastYt)){
+							Mazeconf[Mazeconf.length-rastYt-2][Mazeconf.length-rastXt-2]=2;
+							Mazeconf2[Mazeconf2.length-rastYt-2][Mazeconf2.length-rastXt-2]=6;
+						}
 					}
-					p1 = points.get(0);
-					int rastXt = (((int) p1.x)/(unit));
-					int rastYt = (((int) p1.y)/(unit));
-					if (!isBed(rastXt,rastYt)&&!isEind(rastXt,rastYt)){
-						Mazeconf[Mazeconf.length-rastYt-2][Mazeconf.length-rastXt-2]=2;
+					else if (points.get(0).x<=2*rastwidth+rastspace&&points.get(0).x>=rastwidth+rastspace){
+						if (bevat2(2)[0]==1){
+							Mazeconf2[bevat2(2)[1]][bevat2(2)[2]]=0;
+						}
+						if (bevat3(6)[0]==1){
+							Mazeconf3[bevat3(6)[1]][bevat3(6)[2]]=0;
+						}
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastXt2 = ((int) ((p1.x-(rastwidth+rastspace))/(unit)));
+						int rastYt2 = (((int) p1.y)/(unit));
+						if (!isBegin(rastXt2,rastYt2)&&!isEindTrap2(rastXt2,rastYt2)&&!isEind(rastXt2,rastYt2)){
+							Mazeconf2[Mazeconf2.length-rastYt2-2][Mazeconf2.length-rastXt2-2]=2;
+							Mazeconf3[Mazeconf3.length-rastYt2-2][Mazeconf3.length-rastXt2-2]=6;
+						}
 					}
-					//					System.out.println(unit);
-					//					System.out.println(rastXt + " " + rastYt);
-					//					System.out.println(Mazeconf[Mazeconf.length-rastYt-2][rast-rastXt]);
-					//					drawMaze(gl);
-					//					drawRaster(gl);
-
 				}
 			}
 			points.clear();
 			break;
 		case DM_SMART:
-			if (points.size() >= 1) {
-				if (points.get(0).x<=rastwidth){
-					if (bevat(3)[0]==1){
-						Mazeconf[bevat(3)[1]][bevat(3)[2]]=0;
-					}
-					p1 = points.get(0);
-					int rastXs = (((int) p1.x)/(unit));
-					int rastYs = (((int) p1.y)/(unit));
-					if (!isBed(rastXs,rastYs)&&!isEind(rastXs,rastYs)){
-						Mazeconf[Mazeconf.length-rastYs-2][Mazeconf.length-rastXs-2]=3;
-					}
+//			if (points.size() >= 1) {
+//				if (points.get(0).x<=rastwidth){
+//					if (bevat(3)[0]==1){
+//						Mazeconf[bevat(3)[1]][bevat(3)[2]]=0;
+//					}
+//					p1 = points.get(0);
+//					int rastXs = (((int) p1.x)/(unit));
+//					int rastYs = (((int) p1.y)/(unit));
+//					if (!isBed(rastXs,rastYs)&&!isEind(rastXs,rastYs)){
+//						Mazeconf[Mazeconf.length-rastYs-2][Mazeconf.length-rastXs-2]=3;
+					
 					//					System.out.println(unit);
 					//					System.out.println(rastXs + " " + rastYs);
 					//					System.out.println(Mazeconf[Mazeconf.length-rastYs-2][rast-rastXs]);
 					//					drawMaze(gl);
 					//					drawRaster(gl);
+//				}
+//			}
+//			points.clear();
+//			break;
+			if (points.size() >= 1)	{
+				if (points.get(0).y<rastwidth){
+					if (points.get(0).x<=rastwidth){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastXs = (((int) p1.x)/(unit));
+						int rastYs = (((int) p1.y)/(unit));
+						if (!isBegin(rastXs,rastYs)&&!isTrap(rastXs,rastYs)){
+							Mazeconf[Mazeconf.length-rastYs-2][Mazeconf.length-rastXs-2]=3;
+						}
+					}
+					else if (points.get(0).x<=2*rastwidth+rastspace&&points.get(0).x>=rastwidth+rastspace){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastXs2 = ((int) ((p1.x-(rastwidth+rastspace))/(unit)));
+						int rastYs2 = (((int) p1.y)/(unit));
+						if (!isEindTrap2(rastXs2,rastYs2)&&!isTrap2(rastXs2,rastYs2)){
+							Mazeconf2[Mazeconf2.length-rastYs2-2][Mazeconf2.length-rastXs2-2]=3;
+						}
+					
+					}
+					else if (points.get(0).x<=3*rastwidth+2*rastspace&&points.get(0).x>=2*rastwidth+2*rastspace){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastXs3 = (((int) (p1.x-(2*rastwidth+2*rastspace))/(unit)));
+						int rastYs3 = (((int) p1.y)/(unit));
+						if (!isEind(rastXs3,rastYs3)&&!isEindTrap3(rastXs3,rastYs3)){
+							Mazeconf3[Mazeconf3.length-rastYs3-2][Mazeconf3.length-rastXs3-2]=3;
+						}
+					}
 				}
 			}
 			points.clear();
 			break;
 		}
 	}
+			
 
 	/**
 	 * Help method that uses GL calls to draw a point.
@@ -579,8 +844,8 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		// Set the new screen size and adjusting the viewport
 		screenWidth = width;
 		screenHeight = height;
-		rastwidth = height;
-		buttonpos = rastwidth+50;
+		rastwidth = height-100;
+		buttonpos = rastwidth+100;
 		unit = rastwidth/rast;
 		buttonSize = unit *2;
 		gl.glViewport(0, 0, screenWidth, screenHeight);
@@ -598,33 +863,33 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	public void mouseReleased(MouseEvent me) {
 		// Check if the coordinates correspond to any of the top left buttons
 		boolean buttonPressed = false;
-		if (me.getX()>buttonpos && me.getX() < buttonpos + buttonSize) {
-			if (me.getY() < buttonSize) {
+		if (me.getY()<buttonSize){
+			if (me.getX() < buttonSize) {
 				// The first button is clicked
 				drawMode = DM_VLOER;
 				System.out.println("Draw mode: DRAW_VLOER");
 				buttonPressed = true;
-			}else if (me.getY() < 2 * buttonSize) {
+			}else if (me.getX() > buttonSize+200&& me.getX()<buttonSize+200+buttonSize) {
 				// The second button is clicked
 				points.clear();
 				drawMode = DM_MUUR;
 				System.out.println("Draw mode: DRAW_MUUR");
 				buttonPressed = true;
-			}else if (me.getY() < 3 * buttonSize) {
+			}else if (me.getX() > 2 * buttonSize+400&& me.getX()<2 * buttonSize+400+buttonSize) {
 				// The third button is clicked
 				points.clear();
 				drawMode = DM_TRAP;
 				System.out.println("Draw mode: DRAW_TRAP");
 				buttonPressed = true;
 			}
-			else if (me.getY() < 4 * buttonSize) {
+			else if (me.getX() > 3 * buttonSize+600&& me.getX()<3 * buttonSize+600+buttonSize) {
 				// The third button is clicked
 				points.clear();
 				drawMode = DM_SMART;
 				System.out.println("Draw mode: DRAW_SMART");
 				buttonPressed = true;
 			}
-			else if (me.getY() < 5 * buttonSize) {
+			else if (me.getX() > 4 * buttonSize+800&& me.getX()<4 * buttonSize+800+buttonSize) {
 				SaveWin SW = new SaveWin();
 				SW.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				SW.setSize(300,150);
@@ -633,10 +898,11 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				System.out.println("SAVE");
 				//save
 			}
-			else if (me.getY() < 6 * buttonSize) {
+			else if (me.getX() > 5 * buttonSize+1000&& me.getX()<5 * buttonSize+1000+buttonSize) {
 				dispose = true;
 				//exit
 			}
+			System.out.println(drawMode);
 
 		}
 
@@ -660,7 +926,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 
 			// Add a new point to the points list.
 			points.add(new Point2D.Float(me.getX(), screenHeight - me.getY()));
-			System.out.println(points.get(0).getX() + ", "+ points.get(0).getY());
+//			System.out.println(points.get(0).getX() + ", "+ points.get(0).getY());
 			String Mazeres = "";
 			for (int i = 0; i<Mazeconf.length; i++){
 				for (int j = 0; j<Mazeconf.length; j++){
@@ -671,7 +937,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				}
 			}
 
-			System.out.println(Mazeres);
+//			System.out.println(Mazeres);
 		}
 	}
 
@@ -732,7 +998,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				}
 
 				int[][] m = Mazeconf;
-				Mazes tempMaze = new Mazes(m,naamtemp);
+				int[][] m2 = Mazeconf2;
+				int[][] m3 = Mazeconf3;
+				Mazes tempMaze = new Mazes(m,m2,m3,naamtemp);
 				tempMaze.addtofile("Mazes.txt");
 				dispose();
 			}

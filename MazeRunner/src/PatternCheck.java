@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 
@@ -54,6 +55,7 @@ public class PatternCheck
 					Vertex crosspoint = new Vertex(new Tile(x,z), "I");
 					crosspoints.add(crosspoint);
 				}
+				/*
 				if(patternJ(x,z,maze)) 
 				{
 					Vertex crosspoint = new Vertex(new Tile(x,z), "J");
@@ -74,6 +76,7 @@ public class PatternCheck
 					Vertex crosspoint = new Vertex(new Tile(x,z), "M");
 					crosspoints.add(crosspoint);
 				}
+				*/
 			}
 	}
 	
@@ -90,13 +93,13 @@ public class PatternCheck
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 1 && z < maze.MAZE_SIZE-1 )
 		{
 			return ((Maze.maze[x-1][z-1] 	== 1) &&  //left & up
-					(Maze.maze[x-1][z] 		==	0) && //up
+					(Maze.maze[x-1][z] 		!=	1) && //up
 					(Maze.maze[x-1][z+1]	== 1) && //right & up 
-					(Maze.maze[x][z-1] 		==	0) && // left
-					(Maze.maze[x][z] 		== 	0) &&//center
-					(Maze.maze[x][z+1] 		== 	0) && // right
+					(Maze.maze[x][z-1] 		!=	1) && // left
+					(Maze.maze[x][z] 		!= 	1) &&//center
+					(Maze.maze[x][z+1] 		!= 	1) && // right
 					(Maze.maze[x+1][z-1] 	== 1) && // left & under
-					(Maze.maze[x+1][z] 		== 	0) && //under
+					(Maze.maze[x+1][z] 		!= 	1) && //under
 					(Maze.maze[x+1][z+1] 	== 1)); //right & under
 		}
 		else
@@ -107,15 +110,16 @@ public class PatternCheck
 	{
 		// X1X 
 		// 100
-		// X01 
+		// X0X 
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 0 && z < maze.MAZE_SIZE-1 )
 		{
-			return ((Maze.maze[x-1][z] ==	1) && //up
-					(Maze.maze[x][z-1] == 	1) && // left
-					(Maze.maze[x][z] == 	0) &&//center
-					(Maze.maze[x][z+1] == 	0) && // right
-					(Maze.maze[x+1][z] == 	0) && //under
-					(Maze.maze[x+1][z+1] == 1)); //right & under
+			return ((Maze.maze[x-1][z] 	==	1) && //up
+					(Maze.maze[x][z-1] 	== 	1) && // left
+					(Maze.maze[x][z] 	!= 	1) &&//center
+					(Maze.maze[x][z+1] 	!= 	1) && // right
+					(Maze.maze[x+1][z] 	!= 	1) //&& //under
+					//(Maze.maze[x+1][z+1] == 1)
+					); //right & under
 		}
 		else
 			return false;
@@ -124,85 +128,86 @@ public class PatternCheck
 	{
 		// X1X 
 		// 001
-		// 10X 
+		// X0X 
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 0 && z < maze.MAZE_SIZE-1 )
 		{
-			return ((Maze.maze[x-1][z] ==	1) && //up
-					(Maze.maze[x][z-1] == 	0) && // left
-					(Maze.maze[x][z] == 	0) &&//center
-					(Maze.maze[x][z+1] == 	1) && // right
-					(Maze.maze[x+1][z-1] == 1) && // left & under
-					(Maze.maze[x+1][z] == 	0)); //under); 
+			return ((Maze.maze[x-1][z] 	==	1) && //up
+					(Maze.maze[x][z-1] 	!= 	1) && // left
+					(Maze.maze[x][z] 	!= 	1) &&//center
+					(Maze.maze[x][z+1] 	== 	1) && // right
+					//(Maze.maze[x+1][z-1] == 1) && // left & under
+					(Maze.maze[x+1][z] 	!= 	1)); //under); 
 		}
 		else
 			return false;
 	}
 	private boolean patternD(int x, int z, Maze maze)
 	{
-		// 10X 
+		// X0X 
 		// 001
 		// X1X 
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 0 && z < maze.MAZE_SIZE-1 )
 		{
-			return ((Maze.maze[x-1][z-1] == 1) &&  //left & up
-					(Maze.maze[x-1][z] ==	0) && //up
-					(Maze.maze[x][z-1] == 	0) && // left
-					(Maze.maze[x][z] == 	0) &&//center
-					(Maze.maze[x][z+1] == 	1) && // right
-					(Maze.maze[x+1][z] == 	1)); //under
+			return (//(Maze.maze[x-1][z-1] == 1) &&  //left & up
+					(Maze.maze[x-1][z] 	!=	1) && //up
+					(Maze.maze[x][z-1] 	!= 	1) && // left
+					(Maze.maze[x][z] 	!= 	1) &&//center
+					(Maze.maze[x][z+1] 	== 	1) && // right
+					(Maze.maze[x+1][z] 	== 	1)); //under
 		}
 		else
 			return false;
 	}
 	private boolean patternE(int x, int z, Maze maze)
 	{
-		// X01 
+		// X0X 
 		// 100
 		// X1X 
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 0 && z < maze.MAZE_SIZE-1 )
 		{
-			return ((Maze.maze[x-1][z] ==	0) && //up
-					(Maze.maze[x-1][z+1] == 1) && //right & up 
-					(Maze.maze[x][z-1] == 	1) && // left
-					(Maze.maze[x][z] == 	0) &&//center
-					(Maze.maze[x][z+1] == 	0) && // right
-					(Maze.maze[x+1][z] == 	1)); // under
+			return ((Maze.maze[x-1][z] 	!=	1) && //up
+					//(Maze.maze[x-1][z+1] == 1) && //right & up 
+					(Maze.maze[x][z-1] 	== 	1) && // left
+					(Maze.maze[x][z] 	!= 	1) &&//center
+					(Maze.maze[x][z+1] 	!= 	1) && // right
+					(Maze.maze[x+1][z] 	== 	1)); // under
 		}
 		else
 			return false;
 	}
 	private boolean patternF(int x, int z, Maze maze)
 	{
-		// X01 
+		// X0X 
 		// 100
-		// X01 
+		// X0X 
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 0 && z < maze.MAZE_SIZE-1 )
 		{
-			return ((Maze.maze[x-1][z] ==	0) && //up
-					(Maze.maze[x-1][z+1] == 1) && //right & up 
-					(Maze.maze[x][z-1] == 	1) && // left
-					(Maze.maze[x][z] == 	0) &&//center
-					(Maze.maze[x][z+1] ==	0) && // right
-					(Maze.maze[x+1][z] == 	0) && //under
-					(Maze.maze[x+1][z+1] == 1)); //right & under
+			return ((Maze.maze[x-1][z] 	!=	1) && //up
+					//(Maze.maze[x-1][z+1] == 1) && //right & up 
+					(Maze.maze[x][z-1] 	== 	1) && // left
+					(Maze.maze[x][z] 	!= 	1) &&//center
+					(Maze.maze[x][z+1] 	!=	1) && // right
+					(Maze.maze[x+1][z] 	!= 	1) //&& //under
+					//(Maze.maze[x+1][z+1] == 1)
+					); //right & under
 		}
 		else
 			return false;
 	}
 	private boolean patternG(int x, int z, Maze maze)
 	{
-		// 10X 
+		// X0X 
 		// 001
-		// 10X 
+		// X0X 
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 0 && z < maze.MAZE_SIZE-1 )
 		{
-			return ((Maze.maze[x-1][z-1] == 1) &&  //left & up
-					(Maze.maze[x-1][z] ==	0) && //up
-					(Maze.maze[x][z-1] == 	0) && // left
-					(Maze.maze[x][z] == 	0) &&//center
-					(Maze.maze[x][z+1] == 	1) && // right
-					(Maze.maze[x+1][z-1] == 1) && // left & under
-					(Maze.maze[x+1][z] == 	0)); //under
+			return (//(Maze.maze[x-1][z-1] == 1) &&  //left & up
+					(Maze.maze[x-1][z] 	!=	1) && //up
+					(Maze.maze[x][z-1] 	!= 	1) && // left
+					(Maze.maze[x][z] 	!= 	1) &&//center
+					(Maze.maze[x][z+1] 	== 	1) && // right
+					//(Maze.maze[x+1][z-1] == 1) && // left & under
+					(Maze.maze[x+1][z] 	!= 	1)); //under
 		}
 		else
 			return false;
@@ -211,38 +216,40 @@ public class PatternCheck
 	{
 		// X1X 
 		// 000
-		// 101 
+		// X0X 
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 0 && z < maze.MAZE_SIZE-1 )
 		{
-			return ((Maze.maze[x-1][z] ==	1) && //up
-					(Maze.maze[x][z-1] == 	0) && // left
-					(Maze.maze[x][z] == 	0) &&//center
-					(Maze.maze[x][z+1] == 	0) && // right
-					(Maze.maze[x+1][z-1] == 1) && // left & under
-					(Maze.maze[x+1][z] == 	0) && //under
-					(Maze.maze[x+1][z+1] == 1)); //right & under
+			return ((Maze.maze[x-1][z] 	==	1) && //up
+					(Maze.maze[x][z-1] 	!= 	1) && // left
+					(Maze.maze[x][z] 	!= 	1) &&//center
+					(Maze.maze[x][z+1] 	!= 	1) && // right
+					//(Maze.maze[x+1][z-1] == 1) && // left & under
+					(Maze.maze[x+1][z] 	!= 	1) //&& //under
+					//(Maze.maze[x+1][z+1] == 1)
+					); //right & under
 		}
 		else
 			return false;
 	}
 	private boolean patternI(int x, int z, Maze maze)
 	{
-		// 101 
+		// X0X 
 		// 000
 		// X1X 
 		if( x >= 1 && x < maze.MAZE_SIZE-1 && z >= 0 && z < maze.MAZE_SIZE-1 )
 		{
-			return ((Maze.maze[x-1][z-1] == 1) &&  //left & up
-					(Maze.maze[x-1][z] ==	0) && //up
-					(Maze.maze[x-1][z+1] == 1) && //right & up 
-					(Maze.maze[x][z-1] == 	0) && // left
-					(Maze.maze[x][z] == 	0) &&//center
-					(Maze.maze[x][z+1] == 	0) && // right
-					(Maze.maze[x+1][z] == 	1)); //under
+			return (//(Maze.maze[x-1][z-1] == 1) &&  //left & up
+					(Maze.maze[x-1][z] 	!=	1) && //up
+					//(Maze.maze[x-1][z+1] == 1) && //right & up 
+					(Maze.maze[x][z-1] 	!= 	1) && // left
+					(Maze.maze[x][z] 	!= 	1) &&//center
+					(Maze.maze[x][z+1] 	!= 	1) && // right
+					(Maze.maze[x+1][z] 	== 	1)); //under
 		}
 		else
 			return false;
 	}
+	/*
 	private boolean patternJ(int x, int z, Maze maze) {
 		// 101 
 		// 101
@@ -315,4 +322,5 @@ public class PatternCheck
 		else
 			return false;
 	}	
+	*/
 }
