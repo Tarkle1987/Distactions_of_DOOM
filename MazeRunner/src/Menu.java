@@ -492,7 +492,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 					boolean status = false;
 					for (int i = 0; i<temp.getArray().size(); i++){
 						if (temp.getMazes(i).getNaam().equals(stemp)){
-							Maze.setMaze(temp.getMazes(i).getArray());
+							Maze.setMaze(temp.getMazes(i));
 							dispose();
 							status = true;
 							new MazeRunner();

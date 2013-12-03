@@ -204,7 +204,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		visibleObjects.add(b5);
 
 		c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-		visibleObjects.add(c1);
+		//visibleObjects.add(c1);
 		MO = CustomMazeObject.readFromOBJ("Eerste test.obj");
 		visibleObjects.add(MO);
 		
@@ -270,9 +270,10 @@ public class MazeRunner extends Frame implements GLEventListener {
         // Loading textures
         displayLoadscreen(drawable);
         
-        maze.textures(gl);
+        maze.textures();
         
         previousTime = Calendar.getInstance().getTimeInMillis();
+        Routeplanner.testRoute(maze);
 	}
 	
 	private void displayLoadscreen(GLAutoDrawable drawable) {

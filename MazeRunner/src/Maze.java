@@ -41,14 +41,14 @@ import com.sun.opengl.util.texture.TextureIO;
  *
  */
 public class Maze implements VisibleObject {
-	
-	public final double MAZE_SIZE = 22;
+	public final double SINGLE_SIZE = 22;
+	public final double MAZE_SIZE = 2*SINGLE_SIZE;
 	public final double SQUARE_SIZE = 5;
 	private Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
 	private boolean initie = true;
 	private int textswitch;
-	protected static int[][] maze = new int[22][22];
-	private static int[][] textswitchArray = new int[22][22];
+	protected static int[][] maze = new int[44][44];
+	private static int[][] textswitchArray = new int[44][44];
 	
 //	{{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 //	{1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
@@ -72,7 +72,6 @@ public class Maze implements VisibleObject {
 //	{1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
 //	{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
 //	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }};
-	
 	
 	/**
 	 * isWall(int x, int z) checks for a wall.
@@ -106,8 +105,8 @@ public class Maze implements VisibleObject {
 	}
 	
 	public static void fillTextMuur(){
-		for (int i =0;i<22;i++){
-			for (int j = 0; j<22; j++){
+		for (int i =0;i<44;i++){
+			for (int j = 0; j<44; j++){
 				if (maze[i][j]==1){
 					textswitchArray[i][j]=(int) Math.ceil(Math.random()*14);
 				}
@@ -116,7 +115,7 @@ public class Maze implements VisibleObject {
 	}
 	
 	
-	public void textures(GL gl){
+	public void textures(){
 		try{
 			InputStream stream = getClass().getResourceAsStream("Muur.jpg");
 			TextureData data = TextureIO.newTextureData(stream, false, "Muur.jpg"); 
@@ -224,9 +223,27 @@ public class Maze implements VisibleObject {
 		
 	}
 	
-	public static void setMaze(int[][] temp) {
-	
-		maze = temp;
+	public static void setMaze(Mazes temp) {
+		for (int i = 0; i<22;i++){
+			for (int j = 0;j<22;j++){
+				maze[i][j]=temp.getArray(1)[i][j];
+			}
+		}
+		for (int i = 0; i<22;i++){
+			for (int j = 22;j<44;j++){
+				maze[i][j]=temp.getArray(2)[i][j-22];
+			}
+		}
+		for (int i = 22; i<44;i++){
+			for (int j = 0;j<22;j++){
+				maze[i][j]=temp.getArray(3)[i-22][j];
+			}
+		}
+		for (int i = 22; i<44;i++){
+			for (int j = 22;j<44;j++){
+				maze[i][j]=0;
+			}
+		}
 		fillTextMuur();
 	}
 	
@@ -284,10 +301,10 @@ public class Maze implements VisibleObject {
 	public void display(GL gl) {
 		
 		GLUT glut = new GLUT();
-//		if(initie){
-//			textures();
-//			initie = false;
-//		}
+		if(initie){
+			textures();
+			initie = false;
+		}
         // Setting the wall colour and material.
         // draw the grid with the current material
       
@@ -315,9 +332,9 @@ public class Maze implements VisibleObject {
 	        	gl.glPushMatrix();
 				gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
 				if ( isWall(i, j)){
-					if (i==1&&j==21){
+					if (i==23&&j==21){
 					}
-					else if (i==0&&j==20){				
+					else if (i==22&&j==20){				
 					}
 					else if (i==21&&j==1){
 					}
@@ -440,7 +457,7 @@ public class Maze implements VisibleObject {
 					}
 				}
 				if (isEind(i,j)){
-				
+					System.out.println(i + " "+ j);
 					bRechtsTexture.enable();
 					bRechtsTexture.bind();
 					gl.glBegin(GL.GL_QUADS);
@@ -480,7 +497,6 @@ public class Maze implements VisibleObject {
 			            gl.glEnd();  
 				}
 				if (isBegin(i,j)){
-		
 					kRechtsTexture.enable();
 					kRechtsTexture.bind();
 					gl.glBegin(GL.GL_QUADS);
@@ -538,7 +554,6 @@ public class Maze implements VisibleObject {
         floorTexture.bind();
         
         gl.glNormal3d(0, 1, 0);
-        System.out.print(size);
 		for(int i = 0; i < size; i++)
 		{
 			for(int j= 0; j < size; j++)
