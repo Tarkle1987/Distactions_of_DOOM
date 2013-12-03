@@ -114,6 +114,19 @@ public class Maze implements VisibleObject {
 		}
 	}
 	
+	public float eindI(){
+		return 1;
+	}
+	public float eindJ(){
+		return 20;
+	}
+	public float smartI(){
+		return 15;
+	}
+	public float SmartJ(){
+		return 15;
+	}
+	
 	
 	public void textures(){
 		try{
@@ -554,6 +567,7 @@ public class Maze implements VisibleObject {
         floorTexture.bind();
         
         gl.glNormal3d(0, 1, 0);
+
 		for(int i = 0; i < size; i++)
 		{
 			for(int j= 0; j < size; j++)

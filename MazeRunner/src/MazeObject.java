@@ -13,11 +13,15 @@ import com.sun.opengl.util.texture.Texture;
  *	referencing those points, to create three dimensional objects that are in the maze.
  *
  */
-public abstract class MazeObject  implements VisibleObject{
+public abstract class MazeObject implements VisibleObject{
 
 	ArrayList<Vector3f> vertices;
 	ArrayList<int[]> faces;
 	ArrayList<Vector3f> normals;
+	
+	protected float x,y,z,nx,ny,nz;
+	
+	private boolean test = true;
 	
 	protected Texture texture;
 	protected int[][] texturePoints = { {1, 1}, {1, 0}, {0, 0} , {0, 1}}; 
@@ -81,6 +85,18 @@ public abstract class MazeObject  implements VisibleObject{
 
 	}
 	
+	public void setCor(float i, float j)
+	{
+		x = i;
+		y = j;
+	}
+	
+	public void setNorm(float i, float j, float k)
+	{
+		nx = i;
+		ny = j;
+		nz = k;
+	}
 	/**
 	 * Draw the object
 	 * @param gl
@@ -105,7 +121,15 @@ public abstract class MazeObject  implements VisibleObject{
 			
 			normal.get(norm);
 			
-			gl.glNormal3d(norm[0], norm[1], norm[2]);
+			gl.glNormal3d(norm[0], norm[1]-1, norm[2]);
+			
+			if (test){
+			for(int i = 0; i < 2; i++)
+			{
+				System.out.print(norm[i]);
+			}
+			test = false;
+			}
 			gl.glBegin(GL.GL_POLYGON);
 			
 			for(int i = 0; i < face.length; i++)
@@ -115,7 +139,7 @@ public abstract class MazeObject  implements VisibleObject{
 				if(texture != null && i < 5)
 					gl.glTexCoord2f(texturePoints[i][0], texturePoints[i][1]);
 				position.get(pos);
-				gl.glVertex3f(pos[0], pos[1], pos[2]);
+				gl.glVertex3f(pos[0]+x, pos[1], pos[2]+y);
 			}
 			gl.glEnd();
 			if(texture != null)

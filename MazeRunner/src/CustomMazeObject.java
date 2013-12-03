@@ -16,7 +16,6 @@ public class CustomMazeObject extends MazeObject{
 	public static MazeObject readFromOBJ(String fileName)
 	{
 		MazeObject res = new CustomMazeObject();
-		
 		try{
 			Scanner sc = new Scanner(new File(fileName));
 			
