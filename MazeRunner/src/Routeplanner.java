@@ -91,12 +91,16 @@ public class Routeplanner
 		{
 			vertices[i] = crosspoints.get(i);
 		}
-		computePaths(vertices[4]);
-		for (Vertex v : vertices)
+		if(crosspoints.size() >0)
 		{
-			System.out.println("Distance to [" + v + "]: " + v.minDistance);
-			List<Vertex> path = getShortestPathTo(v);
-			System.out.println("Path: " + path);
+			computePaths(vertices[4]);
+
+			for (Vertex v : vertices)
+			{
+				System.out.println("Distance to [" + v + "]: " + v.minDistance);
+				List<Vertex> path = getShortestPathTo(v);
+				System.out.println("Path: " + path);
+			}
 		}
 	}
 
@@ -115,9 +119,9 @@ public class Routeplanner
 				}
 			}
 			else
-				{
-					newAdjacencies = new Edge[1];
-				}
+			{
+				newAdjacencies = new Edge[1];
+			}
 			newAdjacencies[newAdjacencies.length-1] = edge;
 			return newAdjacencies;
 		}
