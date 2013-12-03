@@ -202,11 +202,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		visibleObjects.add(b3);
 //		visibleObjects.add(b4);
 //		visibleObjects.add(b5);
+//		MO = CustomMazeObject.readFromOBJ("Eerste test.obj");
+//		visibleObjects.add(MO);
 
 		c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 		visibleObjects.add(c1);
-		MO = CustomMazeObject.readFromOBJ("Eerste test.obj");
-		visibleObjects.add(MO);
+
 		
 		//this.setUndecorated(true);
 		player.setControl(input);
