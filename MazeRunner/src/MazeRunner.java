@@ -158,16 +158,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * automagically. 
 	 */
 	
-	public void initTextures(GL gl){
-		try{
-			InputStream stream = getClass().getResourceAsStream("Muur.jpg");
-			TextureData data = TextureIO.newTextureData(stream, false, "Muur.jpg"); 
-			Smart1texture = TextureIO.newTexture(data);
-		} catch(Exception e){
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
 	
 	private void initObjects()	{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
@@ -224,36 +214,24 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		visibleObjects.add(MO);
 
 
-		float size = (float)maze.SQUARE_SIZE;
-<<<<<<< HEAD
-//	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-//		visibleObjects.add(c1);
-		Trap = CustomMazeObject.readFromOBJ("Trap2.obj", 35);
-		Trap.setCor((float)1.5*size, (float)19*size, 0);
-		Trap.rotateVerticesZ(-90, 1, 1);
-		visibleObjects.add(Trap);
-		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
-		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smarto.addColour("wit");
-		visibleObjects.add(Smarto);
-		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
-		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smartw.addColour("oranje");
-		visibleObjects.add(Smartw);
-=======
+	    float size = (float)maze.SQUARE_SIZE;
 	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 		visibleObjects.add(c1);
-
-//		Trap = CustomMazeObject.readFromOBJ("Trap.obj");
-//		Trap.setCor(20*size, 1*size);
-//		Trap.setNorm(0.5f, 0, 0);
+//		Trap = CustomMazeObject.readFromOBJ("Trap2.obj", 35);
+//		Trap.setCor((float)1.5*size, (float)19*size, 0);
+//		Trap.rotateVerticesZ(-90, 1, 1);
 //		visibleObjects.add(Trap);
-//		Smart = CustomMazeObject.readFromOBJ("Smart.obj");
-//		Smart.setCor(10*size, 10*size);
-//		visibleObjects.add(Smart);
+//		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
+//		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
+//		Smarto.addColour("wit");
+//		visibleObjects.add(Smarto);
+//		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
+//		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
+//		Smartw.addColour("oranje");
+//		visibleObjects.add(Smartw);
 
->>>>>>> 90bcf3370f18c1ee4c42b2b36c4ff5fa0631b3fa
-		
+
+
 		//this.setUndecorated(true);
 		player.setControl(input);
 		
@@ -315,13 +293,8 @@ public class MazeRunner extends Frame implements GLEventListener {
         
         // Loading textures
         displayLoadscreen(drawable);
-        
-<<<<<<< HEAD
-        maze.textures(gl);
-        initTextures(gl);
-=======
+
         maze.textures();
->>>>>>> 90bcf3370f18c1ee4c42b2b36c4ff5fa0631b3fa
         
         Routeplanner.testRoute(maze);
         
