@@ -17,6 +17,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 	private int sightrange = 0;
 
+	
+	private double dX = 0;
+	private double dZ = 0;
 	private double directionX = 0;
 	private double directionZ = 0;
 	private double sightX = 0;
@@ -98,22 +101,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			}
 
 			
-			int[] Surround = CheckSurround(maze);
+			CheckSurround(maze);
 			
-			if(Surround[0] == 1 && Surround[1] == 0 && Surround[2] == 1 && Surround[3] == 0){
-				if(dZ < 0 && signZ > 0){
-					dZ = dZ*-1;
-				}else if(dZ > 0 && signZ < 0){
-					dZ = dZ * -1;
-				}
-			}
-			if(Surround[0] == 0 && Surround[1] == 1 && Surround[2] == 0 && Surround[3] == 1){
-				if(dX < 0 && signX > 0){
-					dX = dX*-1;
-				}else if(dX > 0 && signX < 0){
-					dX = dX * -1;
-				}
-			}
+	
 		}
 
 		sightX = dX;
@@ -268,18 +258,35 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 	}
 	
-	public int[] CheckSurround(Maze maze){
+	public void CheckSurround(Maze maze){
 		int[] Surround = new int[4];
 		
 		int i = maze.convertToGridX(this.locationX);
 		int j = maze.convertToGridZ(this.locationZ);
 		
+		if(i > 0 && i < 44 && j > 0 && j < 44){
 		Surround[0] = maze.maze[i-1][j];	// Left (X-1)
 		Surround[1] = maze.maze[i][j - 1];	// Down (Y-1)
 		Surround[2] = maze.maze[i+1][j];	// Right (X+1)
 		Surround[3] = maze.maze[i][j+1];	// Up   (Y+1)
+		}
+		
+		if(Surround[0] == 1 && Surround[1] == 0 && Surround[2] == 1 && Surround[3] == 0){
+			if(dZ < 0 && signZ > 0){
+				dZ = dZ*-1;
+			}else if(dZ > 0 && signZ < 0){
+				dZ = dZ * -1;
+			}
+		}
+		if(Surround[0] == 0 && Surround[1] == 1 && Surround[2] == 0 && Surround[3] == 1){
+			if(dX < 0 && signX > 0){
+				dX = dX*-1;
+			}else if(dX > 0 && signX < 0){
+				dX = dX * -1;
+			}
+		}
 				
-		return Surround;
+
 	}
 
 

@@ -169,8 +169,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Add the maze that we will be using.
 		maze = new Maze();
 		visibleObjects.add( maze );
-		
-		System.out.println(maze.maze.length);
 
 		// Initialize the player.
 		input = new UserInput(canvas);
@@ -297,8 +295,6 @@ public class MazeRunner extends Frame implements GLEventListener {
         maze.textures();
         
         Routeplanner.testRoute(maze);
-        
-        previousTime = Calendar.getInstance().getTimeInMillis();
        
 	}
 	
@@ -474,12 +470,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();		
 		long currentTime = now.getTimeInMillis();
-		if(input.getWaspauzed() == true){
+		if(input.getWaspauzed() == true || init){
 			
-			previousTime = now.getTimeInMillis();
+			previousTime = currentTime;
 			input.waspauzed = false;
 		}
 		int deltaTime = (int)(currentTime - previousTime);
+		System.out.println(deltaTime);
 		previousTime = currentTime;
 		
 		// Seconden tellen
@@ -489,6 +486,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 			clock.seconds = clock.seconds +1;
 			miliseconds = miliseconds - 1000;
 		}
+		
+		System.out.println("seconds: " + clock.seconds);
 
 	
 //		input.xp = screenWidth/2;
@@ -498,8 +497,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 
         
 		// Update any movement since last frame.
+		if(clock.seconds > 1)
 		updateMovement(deltaTime);
+		
 		updateCamera();
+		
+		
 		
 		 if(init){
 	        	player.setHorAngle(90);
