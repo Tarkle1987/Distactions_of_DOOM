@@ -158,16 +158,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * automagically. 
 	 */
 	
-	public void initTextures(GL gl){
-		try{
-			InputStream stream = getClass().getResourceAsStream("Muur.jpg");
-			TextureData data = TextureIO.newTextureData(stream, false, "Muur.jpg"); 
-			Smart1texture = TextureIO.newTexture(data);
-		} catch(Exception e){
-			e.printStackTrace();
-			System.exit(0);
-		}
-	}
 	
 	private void initObjects()	{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
@@ -238,14 +228,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Smartw.addColour("oranje");
 		visibleObjects.add(Smartw);
 
-//		Trap = CustomMazeObject.readFromOBJ("Trap.obj");
-//		Trap.setCor(20*size, 1*size);
-//		Trap.setNorm(0.5f, 0, 0);
-//		visibleObjects.add(Trap);
-//		Smart = CustomMazeObject.readFromOBJ("Smart.obj");
-//		Smart.setCor(10*size, 10*size);
-//		visibleObjects.add(Smart);
-		
 		//this.setUndecorated(true);
 		player.setControl(input);
 		
@@ -307,12 +289,11 @@ public class MazeRunner extends Frame implements GLEventListener {
         
         // Loading textures
         displayLoadscreen(drawable);
-        
-        initTextures(gl);
+//        initTextures(gl);
         maze.textures();
         
-        previousTime = Calendar.getInstance().getTimeInMillis();
         Routeplanner.testRoute(maze);
+       
 	}
 	
 	private void displayLoadscreen(GLAutoDrawable drawable) {
@@ -487,12 +468,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();		
 		long currentTime = now.getTimeInMillis();
-		if(input.getWaspauzed() == true){
+		if(input.getWaspauzed() == true || init){
 			
-			previousTime = now.getTimeInMillis();
+			previousTime = currentTime;
 			input.waspauzed = false;
 		}
 		int deltaTime = (int)(currentTime - previousTime);
+		System.out.println(deltaTime);
 		previousTime = currentTime;
 		
 		// Seconden tellen
@@ -502,6 +484,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 			clock.seconds = clock.seconds +1;
 			miliseconds = miliseconds - 1000;
 		}
+		
+		System.out.println("seconds: " + clock.seconds);
 
 	
 //		input.xp = screenWidth/2;
@@ -511,8 +495,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 
         
 		// Update any movement since last frame.
+		if(clock.seconds > 1)
 		updateMovement(deltaTime);
+		
 		updateCamera();
+		
+		
 		
 		 if(init){
 	        	player.setHorAngle(90);
