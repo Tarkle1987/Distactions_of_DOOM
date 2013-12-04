@@ -155,6 +155,19 @@ public class Routeplanner
 		int X = maze.convertToGridX(objectTile.getX());
 		int Z = maze.convertToGridZ(objectTile.getZ());
 		
+		if(X >21)
+			if(X < 42)
+			X = X -21;
+			else
+				return closestCrosspoint;
+		if(Z>21)
+			if(Z<42)
+			Z = Z-21;
+			else
+				return closestCrosspoint;
+		if(X < 0 || Z<0)
+			return closestCrosspoint;
+		
 		ArrayList<Vertex> closestCrosspointsObject = new ArrayList<Vertex>();
 		ArrayList<Double> distanceToCrosspointsObject = new ArrayList<Double>();
 		
