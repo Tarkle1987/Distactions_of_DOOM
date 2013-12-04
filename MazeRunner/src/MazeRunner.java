@@ -189,8 +189,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the players startpoint as a Tile.
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */   
-//	    Tile startPlayer = new Tile(6 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,
-//				 5 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2);
+//	    Tile startPlayer = new Tile(20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,
+//				1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2);
 //	    Tile cubeEen = new Tile( 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
 //		Tile beerEen = new Tile(10, 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5);
 //		Tile beerTwee = new Tile(8,8);
@@ -236,10 +236,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.screenWidth = screenWidth;
 		input.screenHeight = screenHeight;
 		input.mouseReset();
-		
 
-		
-	     
+     
 	}
 
 /*
@@ -293,9 +291,6 @@ public class MazeRunner extends Frame implements GLEventListener {
         displayLoadscreen(drawable);
 
         maze.textures();
-        
-        Routeplanner.testRoute(maze);
-       
 	}
 	
 	private void displayLoadscreen(GLAutoDrawable drawable) {
@@ -431,7 +426,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 				player.update(-deltaTime);
 			}
 		}
-		
+		Tile PlayerTile = new Tile(player.locationX, player.locationZ);
+		Tile companionTile = new Tile(c1.locationX, c1.locationZ);
+	    Routeplanner.testRoute(maze, companionTile,PlayerTile);
 	}
 
 	/**
