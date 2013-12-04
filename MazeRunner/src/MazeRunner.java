@@ -223,7 +223,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 
 		float size = (float)maze.SQUARE_SIZE;
-<<<<<<< HEAD
 //	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 //		visibleObjects.add(c1);
 		Trap = CustomMazeObject.readFromOBJ("Trap2.obj", 35);
@@ -238,19 +237,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smartw.addColour("oranje");
 		visibleObjects.add(Smartw);
-=======
-	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-		visibleObjects.add(c1);
 
-		Trap = CustomMazeObject.readFromOBJ("Trap.obj");
-		Trap.setCor(20*size, 1*size);
-		Trap.setNorm(0.5f, 0, 0);
-		visibleObjects.add(Trap);
-		Smart = CustomMazeObject.readFromOBJ("Smart.obj");
-		Smart.setCor(10*size, 10*size);
-		visibleObjects.add(Smart);
-
->>>>>>> 90bcf3370f18c1ee4c42b2b36c4ff5fa0631b3fa
+//		Trap = CustomMazeObject.readFromOBJ("Trap.obj");
+//		Trap.setCor(20*size, 1*size);
+//		Trap.setNorm(0.5f, 0, 0);
+//		visibleObjects.add(Trap);
+//		Smart = CustomMazeObject.readFromOBJ("Smart.obj");
+//		Smart.setCor(10*size, 10*size);
+//		visibleObjects.add(Smart);
 		
 		//this.setUndecorated(true);
 		player.setControl(input);
@@ -314,12 +308,8 @@ public class MazeRunner extends Frame implements GLEventListener {
         // Loading textures
         displayLoadscreen(drawable);
         
-<<<<<<< HEAD
-        maze.textures(gl);
         initTextures(gl);
-=======
         maze.textures();
->>>>>>> 90bcf3370f18c1ee4c42b2b36c4ff5fa0631b3fa
         
         previousTime = Calendar.getInstance().getTimeInMillis();
         Routeplanner.testRoute(maze);
