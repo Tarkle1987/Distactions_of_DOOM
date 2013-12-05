@@ -8,14 +8,22 @@ import com.sun.opengl.util.GLUT;
 
 public class CompanionCube extends GameObject implements VisibleObject {
 
+	// Cube properties
 	public double size;
 	private double speed;
-
 	private double angle;
 	protected double newangle;
 	private double anglespeed;
 
-	private int sightrange = 0;
+	
+	// Follow player attributes
+	private double[] PlayerLocation = new double[2];
+	private boolean follow = false;
+	
+	private int sightrange = 20;
+	private boolean sight = false;
+	
+	// Movement Variables
 	private double directionX = 0;
 	private double directionZ = 0;
 	private double sightX = 0;
@@ -28,7 +36,7 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 		super(x,y + size/2,z);
 		this.size = size;
-		speed = 0.01;
+		speed = 0.005;
 		angle = 0;
 		newangle = angle;
 		anglespeed = 0.1;
@@ -36,7 +44,6 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 
 	public void display(GL gl) {
-		// TODO Auto-generated method stub
 		GLUT glut = new GLUT();
 
 		float CubeColor[] = { 1f, 0.627f, 0f, 1f };
@@ -53,7 +60,8 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	}
 
 	public void CubeMove(int deltaTime, Maze maze, double X, double Z){
-
+		
+		
 		// De kubus bewegen als de speler ertegenaan loopt ( alleen in X of in Z richting )
 		//		switch (CubeTouchDetection(X,Z)){
 		//		case 1: while(X > this.locationX - size/2 -1){this.locationX = this.locationX + speed*deltaTime;}
@@ -66,20 +74,58 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		//			break;
 		//		}
 
-
+		System.out.println(X);
 
 		// kubus loopt richting player
 		double dX = X - locationX;
 		double dZ = Z - locationZ;
 
 		double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+		
+		sight = CheckSight(X,Z, maze);
+		
+		if(sight){
+			momentum = 0;
+			follow = true;
+			
+			PlayerLocation[0] = X;
+			PlayerLocation[1] = Z;
+			
+			if(maze.isWall(PlayerLocation[0], PlayerLocation[1])){
+				follow = false;
+			}
+			
+			if(dLength > size){
+				dX = dX/dLength;
+				dZ = dZ/dLength;}
+			else{
+				dX = 0;
+				dZ = 0;
+			}
+	
+			System.out.println("Follow player");
 
-		if(dLength < sightrange && dLength > 2){
-
-			dX = dX/dLength;
-			dZ = dZ/dLength;
-
+		}else if(follow){
+			momentum = 0;
+			System.out.println("Last Known Location");
+			dX = PlayerLocation[0] - locationX;
+			dZ = PlayerLocation[1] - locationZ;
+			
+			System.out.println(PlayerLocation[0] + " " + locationX);
+			
+			dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+			
+			if(dLength > size){
+				dX = dX / dLength;
+				dZ = dZ / dLength;
+			}else{
+				dX = 0;
+				dZ = 0;
+				
+				follow = false;
+			}
 		}else{
+			System.out.println("Free movement");
 			momentum = momentum - deltaTime;
 
 			if(momentum <= 0){
@@ -291,6 +337,51 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		
 		return dW;
 
+	}
+	
+	private boolean CheckSight(double X, double Z, Maze maze){
+		boolean sight = false;
+		
+		double dX = X - locationX;
+		double dZ = Z - locationZ;
+
+		double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+		
+		dX  = dX / dLength;
+		dZ = dZ / dLength;
+		
+		if(dLength < sightrange){
+			sight = true;
+			
+			double x = locationX;
+			double z = locationZ;
+			
+			double dx = X - x;
+			double dz = Z - z;
+			
+			double dL = Math.sqrt(Math.pow(dx,2)+Math.pow(dz,2));
+			
+			
+			while(dL > size){
+				x = x + dX;
+				z = z + dZ;
+				
+				if(maze.isWall(x, z)){
+					sight = false;
+				}
+				
+				dx = X - x;
+				dz = Z - z;
+				
+				dL = Math.sqrt(Math.pow(dx,2)+Math.pow(dz,2));
+			}
+			
+		}
+		
+		
+		
+		
+		return sight;
 	}
 
 
