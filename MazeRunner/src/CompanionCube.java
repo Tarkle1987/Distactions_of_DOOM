@@ -16,10 +16,6 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	private double anglespeed;
 
 	private int sightrange = 0;
-
-	
-	private double dX = 0;
-	private double dZ = 0;
 	private double directionX = 0;
 	private double directionZ = 0;
 	private double sightX = 0;
@@ -101,7 +97,10 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			}
 
 			
-			CheckSurround(maze);
+			double[] dW = CheckSurround(maze, dX, dZ);
+			
+			dX = dW[0];
+			dZ = dW[1];
 			
 	
 		}
@@ -258,8 +257,10 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 	}
 	
-	public void CheckSurround(Maze maze){
+	public double[] CheckSurround(Maze maze, double X, double Z){
 		int[] Surround = new int[4];
+		double dX = X;
+		double dZ = Z;
 		
 		int i = maze.convertToGridX(this.locationX);
 		int j = maze.convertToGridZ(this.locationZ);
@@ -285,7 +286,10 @@ public class CompanionCube extends GameObject implements VisibleObject {
 				dX = dX * -1;
 			}
 		}
-				
+			
+		double[] dW = {dX , dZ };
+		
+		return dW;
 
 	}
 
