@@ -101,6 +101,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		
 		// Set the frame to visible. This automatically calls upon OpenGL to prevent a blank screen.
 		setVisible(true);
+
 	}
 	
 	/**
@@ -213,20 +214,20 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 
 		float size = (float)maze.SQUARE_SIZE;
-//	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-//		visibleObjects.add(c1);
-		Trap = CustomMazeObject.readFromOBJ("Trap2.obj", 35);
-		Trap.setCor((float)1.5*size, (float)19*size, 0);
-		Trap.rotateVerticesZ(-90, 1, 1);
-		visibleObjects.add(Trap);
-		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
-		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smarto.addColour("wit");
-		visibleObjects.add(Smarto);
-		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
-		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smartw.addColour("oranje");
-		visibleObjects.add(Smartw);
+	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+		visibleObjects.add(c1);
+
+		int[] coordT = Maze.CoordTrap(Maze.maze);
+		Trap(coordT[0], coordT[1]);
+		Trap(coordT[2], coordT[3]);
+		int[] coordS = Maze.CoordSmart(Maze.maze);
+		for (int i = 0; i<coordS[0];i++){
+			Smarto Smo = new Smarto((float)coordS[1+i*2],(float)coordS[2+i*2]);
+			visibleObjects.add(Smo);
+			Smartw Smw = new Smartw((float)coordS[1+i*2],(float)coordS[2+i*2]);
+			visibleObjects.add(Smw);
+		}
+		
 
 		//this.setUndecorated(true);
 		player.setControl(input);
@@ -236,6 +237,32 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.mouseReset();
 
      
+	}
+	
+public void Trap(float x, float z) {
+		
+		float size = (float)maze.SQUARE_SIZE;
+		MazeObject Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj", 35);
+		Kaft1.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
+		Kaft1.rotateVerticesZ(-90, 1, 1);
+		Kaft1.addColour("oranje");
+		visibleObjects.add(Kaft1);
+		MazeObject Kaft2 = CustomMazeObject.readFromOBJ("Kaft2.obj", 35);
+		Kaft2.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
+		Kaft2.rotateVerticesZ(-90, 1, 1);
+		Kaft2.addColour("oranje");
+		visibleObjects.add(Kaft2);
+		MazeObject Kaft3 = CustomMazeObject.readFromOBJ("Kaft3.obj", 35);
+		Kaft3.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
+		Kaft3.rotateVerticesZ(-90, 1, 1);
+		Kaft3.addColour("oranje");
+		visibleObjects.add(Kaft3);
+		MazeObject Papier = CustomMazeObject.readFromOBJ("Papier.obj", 35);
+		Papier.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
+		Papier.rotateVerticesZ(-90, 1, 1);
+		Papier.addColour("wit");
+		visibleObjects.add(Papier);
+	
 	}
 
 /*
@@ -287,8 +314,9 @@ public class MazeRunner extends Frame implements GLEventListener {
         
         // Loading textures
         displayLoadscreen(drawable);
-//        initTextures(gl);
+
         maze.textures();
+
 	}
 	
 	private void displayLoadscreen(GLAutoDrawable drawable) {
@@ -366,8 +394,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Setting the new screen size and adjusting the viewport.
 		screenWidth = width;
 		screenHeight = height;
-
-//		System.out.println("width: " + width + " height: " + height);
 		
 		input.boundx = this.getBounds().getWidth() - width;
 		input.boundy = this.getBounds().getHeight() - height;
@@ -405,12 +431,28 @@ public class MazeRunner extends Frame implements GLEventListener {
 		for(int i = 0; i<visibleObjects.size(); i++){
 
 			visibleObjects.get(i).update(deltaTime, maze, visibleObjects ,player);
+			
 			if(visibleObjects.get(i) instanceof Book){
 				Book b = (Book)visibleObjects.get(i);
 				if(b.destroy){
 					visibleObjects.remove(i);
 				}
 			}
+			
+			else if(visibleObjects.get(i) instanceof Smarto){
+				Smarto so = (Smarto) visibleObjects.get(i);
+					if(so.destroy){
+						visibleObjects.remove(i);
+					}
+				}
+				else if(visibleObjects.get(i) instanceof Smartw){
+					Smartw sw = (Smartw) visibleObjects.get(i);
+						if(sw.destroy){
+							visibleObjects.remove(i);
+						}
+					}
+			
+			
 		}
 		
 		
@@ -426,7 +468,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 		Tile PlayerTile = new Tile(player.locationX, player.locationZ);
 		Tile companionTile = new Tile(c1.locationX, c1.locationZ);
-	    Routeplanner.testRoute(maze, companionTile,PlayerTile);
+//	    Routeplanner.testRoute(maze, companionTile,PlayerTile);
 	}
 
 	/**
@@ -465,13 +507,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();		
 		long currentTime = now.getTimeInMillis();
-		if(input.getWaspauzed() == true || init){
+		if(input.getWaspauzed() == true){
 			
 			previousTime = currentTime;
 			input.waspauzed = false;
 		}
 		int deltaTime = (int)(currentTime - previousTime);
-		System.out.println(deltaTime);
+	
+		if(deltaTime > 1000){
+			deltaTime = 16;
+		}
+		
+
 		previousTime = currentTime;
 		
 		// Seconden tellen
@@ -481,18 +528,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 			clock.seconds = clock.seconds +1;
 			miliseconds = miliseconds - 1000;
 		}
-		
-		System.out.println("seconds: " + clock.seconds);
-
-	
-//		input.xp = screenWidth/2;
-//        input.yp = screenHeight/2;
-//        input.mouseReset(screenWidth/2 + this.getX(),screenHeight/2 + this.getY());
-
 
         
 		// Update any movement since last frame.
-		if(clock.seconds > 1)
 		updateMovement(deltaTime);
 		
 		updateCamera();
