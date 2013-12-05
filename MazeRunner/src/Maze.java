@@ -470,7 +470,7 @@ public class Maze implements VisibleObject {
 					}
 				}
 				if (isEind(i,j)){
-					System.out.println(i + " "+ j);
+		
 					bRechtsTexture.enable();
 					bRechtsTexture.bind();
 					gl.glBegin(GL.GL_QUADS);
