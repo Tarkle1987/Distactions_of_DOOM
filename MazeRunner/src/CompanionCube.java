@@ -6,7 +6,7 @@ import javax.media.opengl.GL;
 import com.sun.opengl.util.GLUT;
 
 
-public class CompanionCube extends GameObject implements VisibleObject {
+public class CompanionCube extends GameObject implements Lifeform {
 
 	// Cube properties
 	public double size;
@@ -20,10 +20,14 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	private double[] PlayerLocation = new double[2];
 	private boolean follow = false;
 	
-	private int sightrange = 20;
+	private int sightrange = 60;
+	private int hearingrange = 10;
 	private boolean sight = false;
 	
 	// Movement Variables
+	private boolean stun = false;
+	private int stuntimer = 0;
+	
 	private double directionX = 0;
 	private double directionZ = 0;
 	private double sightX = 0;
@@ -36,7 +40,7 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 		super(x,y + size/2,z);
 		this.size = size;
-		speed = 0.005;
+		speed = 0.009;
 		angle = 0;
 		newangle = angle;
 		anglespeed = 0.1;
@@ -286,12 +290,18 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 
 	@Override
-	public void update(int deltaTime, Maze maze, ArrayList<VisibleObject> visibleObjects ,Player player) {
+	public void update(int deltaTime, Maze maze, Player player) {
 		double X = player.locationX;
 		double Z = player.locationZ;
 
+		stuntimer = stuntimer - deltaTime;
+		
+		if(stuntimer <= 0){
+			stun = false;
+		}
 
 
+		if(!stun){
 		// Bewegen van kubus naar player / door player
 		CubeMove(deltaTime, maze, X,Z);
 
@@ -300,6 +310,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
+		}else {
+			System.out.println("Stunned");
+		}
 
 	}
 	
@@ -350,7 +363,9 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		dX  = dX / dLength;
 		dZ = dZ / dLength;
 		
-		if(dLength < sightrange){
+		double hoek = Math.asin(dX*sightX + dZ*sightZ);		
+		
+		if((dLength < sightrange && hoek > 0 && hoek < 90) || dLength < hearingrange){
 			sight = true;
 			
 			double x = locationX;
@@ -385,25 +400,26 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	}
 
 
-
 	@Override
-	public Tile getPosition() 
-	{
-		return new Tile(this.getLocationX(), this.getLocationZ());
-	}
-
-
-	@Override
-	public boolean getDestroy() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public void setDestroy(boolean set) {
-		// TODO Auto-generated method stub
-
+	public boolean isHit(Projectile p) {
+		boolean hit = false;
+		
+		double x = p.locationX;
+		double y = p.locationY;
+		double z = p.locationZ;
+		
+		if((x > locationX - size) && (x < locationX + size) 
+				&& (y > locationY - size) && (y < locationY + size) 
+				&& (z > locationZ - size) && (z < locationZ + size)){
+			hit = true;
+		}
+		
+		if(hit){
+			stun = true;
+			stuntimer = 1000;
+		}
+		
+		return hit;
 	}
 
 }
