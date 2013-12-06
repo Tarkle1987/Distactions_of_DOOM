@@ -458,15 +458,12 @@ public void Trap(float x, float z) {
 				player.update(-deltaTime);
 			}
 		}
-<<<<<<< HEAD
 
-//	    Routeplanner.testRoute(maze, companionTile,PlayerTile);
-=======
-		Tile PlayerTile = new Tile(player.locationX, player.locationZ);
-		Tile companionTile = new Tile(c1.locationX, c1.locationZ);
-		Routeplanner nieuw = new Routeplanner();
-		nieuw.testRoute(maze, companionTile, PlayerTile);
->>>>>>> 4b84a8c59b4ef476ae7125e10502dba4ae7dcafe
+//		Tile PlayerTile = new Tile(player.locationX, player.locationZ);
+//		Tile companionTile = new Tile(c1.locationX, c1.locationZ);
+//		Routeplanner nieuw = new Routeplanner();
+//		nieuw.testRoute(maze, companionTile, PlayerTile);
+
 	}
 
 	/**
