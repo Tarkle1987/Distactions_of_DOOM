@@ -468,7 +468,7 @@ public void Trap(float x, float z) {
 		}
 		Tile PlayerTile = new Tile(player.locationX, player.locationZ);
 		Tile companionTile = new Tile(c1.locationX, c1.locationZ);
-//	    Routeplanner.testRoute(maze, companionTile,PlayerTile);
+	    Routeplanner.testRoute(maze, companionTile,PlayerTile);
 	}
 
 	/**

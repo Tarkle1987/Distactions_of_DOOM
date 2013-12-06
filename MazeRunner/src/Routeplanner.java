@@ -419,7 +419,7 @@ public class Routeplanner
 				{
 					if(vertices[n].getX() == m && vertices[n].getZ() == Z)
 					{
-						double DifX = vertices[n].getX() - maze.convertToGridX(objectTile.getX());
+						double DifX = (double) X - m;
 						if(DifX < 0.0)
 							DifX = DifX*-1;
 						distanceToCrosspointsObject.add(DifX);
@@ -439,7 +439,7 @@ public class Routeplanner
 				{
 					if(vertices[n].getX() == m && vertices[n].getZ() == Z)
 					{
-						double DifX = vertices[n].getX() - maze.convertToGridX(objectTile.getX());
+						double DifX = (double) m - X;
 						if(DifX < 0.0)
 							DifX = DifX*-1;
 						distanceToCrosspointsObject.add(DifX);
@@ -459,7 +459,7 @@ public class Routeplanner
 				{
 					if(vertices[n].getX() == X && vertices[n].getZ() == m)
 					{
-						double DifZ = vertices[n].getZ() - maze.convertToGridZ(objectTile.getZ());
+						double DifZ = (double) Z - m;
 						if(DifZ < 0.0)
 							DifZ = DifZ*-1;
 						distanceToCrosspointsObject.add(DifZ);
@@ -479,7 +479,7 @@ public class Routeplanner
 				{
 					if(vertices[n].getX() == X && vertices[n].getZ() == m)
 					{
-						double DifZ = vertices[n].getZ() - maze.convertToGridZ(objectTile.getZ());
+						double DifZ = (double) m - Z;
 						if(DifZ < 0.0)
 							DifZ = DifZ*-1;
 						distanceToCrosspointsObject.add(DifZ);
