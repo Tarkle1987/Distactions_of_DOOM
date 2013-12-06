@@ -6,8 +6,9 @@ import java.util.Collections;
 
 public class Routeplanner
 {
+	Vertex[] vertices;
 
-	public static void computePaths(Vertex source)
+	public void computePaths(Vertex source)
 	{
 		source.minDistance = 0.;
 		PriorityQueue<Vertex> vertexQueue = new PriorityQueue<Vertex>();
@@ -64,48 +65,52 @@ public class Routeplanner
 		return res;
 	}
 
+	public void init(int[][] currentMaze)
+	{
+		PatternCheck patterns = new PatternCheck(currentMaze);
+		ArrayList<Vertex> crosspoints = patterns.getCrossPoints();
 
-	public static void testRoute(Maze maze, Tile objectTile, Tile targetTile)
+		for(int k =0; k < crosspoints.size(); k++)
+		{
+			switch(crosspoints.get(k).pattern)
+			{
+			case "A": SetAdjacensiesA(crosspoints, k, currentMaze);
+			break; 									// 4 mogelijkheden
+			case "B": SetAdjacensiesB(crosspoints, k, currentMaze);
+			break; 									// 2 mogelijkheden
+			case "C": SetAdjacensiesC(crosspoints, k, currentMaze);
+			break; 										// 2 mogelijkheden
+			case "D": SetAdjacensiesD(crosspoints, k, currentMaze);
+			break; 										// 2 mogelijkheden
+			case "E":SetAdjacensiesE(crosspoints, k, currentMaze);
+			break; 									// 2 mogelijkheden
+			case "F":SetAdjacensiesF(crosspoints, k, currentMaze);
+			break; 									// 3 mogelijkheden
+			case "G":SetAdjacensiesG(crosspoints, k, currentMaze);
+			break; 									// 3 mogelijkheden
+			case "H":SetAdjacensiesH(crosspoints, k, currentMaze);
+			break; 									// 3 mogelijkheden
+			case "I":SetAdjacensiesI(crosspoints, k, currentMaze);
+			break;										// 3 mogelijkheden
+			default: break;
+			}
+
+		}
+		this.vertices = new Vertex[crosspoints.size()];
+		for(int i =0; i <crosspoints.size(); i++)
+		{
+			this.vertices[i] = crosspoints.get(i);
+		}
+	}
+
+	public void testRoute(Maze maze, Tile objectTile, Tile targetTile)
 	{
 		if(inTheSameMaze(maze, objectTile,targetTile))
 		{
 			int[][] currentMaze = new int[22][22];
 			currentMaze = createMaze(maze,objectTile);
 
-			PatternCheck patterns = new PatternCheck(currentMaze);
-			ArrayList<Vertex> crosspoints = patterns.getCrossPoints();
-
-			for(int k =0; k < crosspoints.size(); k++)
-			{
-				switch(crosspoints.get(k).pattern)
-				{
-				case "A": SetAdjacensiesA(crosspoints, k, currentMaze);
-				break; 									// 4 mogelijkheden
-				case "B": SetAdjacensiesB(crosspoints, k, currentMaze);
-				break; 									// 2 mogelijkheden
-				case "C": SetAdjacensiesC(crosspoints, k, currentMaze);
-				break; 										// 2 mogelijkheden
-				case "D": SetAdjacensiesD(crosspoints, k, currentMaze);
-				break; 										// 2 mogelijkheden
-				case "E":SetAdjacensiesE(crosspoints, k, currentMaze);
-				break; 									// 2 mogelijkheden
-				case "F":SetAdjacensiesF(crosspoints, k, currentMaze);
-				break; 									// 3 mogelijkheden
-				case "G":SetAdjacensiesG(crosspoints, k, currentMaze);
-				break; 									// 3 mogelijkheden
-				case "H":SetAdjacensiesH(crosspoints, k, currentMaze);
-				break; 									// 3 mogelijkheden
-				case "I":SetAdjacensiesI(crosspoints, k, currentMaze);
-				break;										// 3 mogelijkheden
-				default: break;
-				}
-
-			}
-			Vertex[] vertices = new Vertex[crosspoints.size()];
-			for(int i =0; i <crosspoints.size(); i++)
-			{
-				vertices[i] = crosspoints.get(i);
-			}
+			init(currentMaze);
 
 			ArrayList<Vertex> closestCrosspointsObject = new ArrayList<Vertex>();
 			ArrayList<Double> DistancesObject = new ArrayList<Double>();
@@ -133,7 +138,7 @@ public class Routeplanner
 				closestCrosspointsPlayer = closestCrosspoint(maze,currentMaze ,vertices,targetTile);
 				DistancesPlayer = distanceToCrosspoints(maze,currentMaze ,vertices,targetTile);
 			}
-			if(crosspoints.size() >0)
+			if(vertices.length >1)
 			{
 				double min = Double.MAX_VALUE;
 				int bestObj = 0;
@@ -159,7 +164,7 @@ public class Routeplanner
 							next = getNextVertexTo(closestCrosspointsPlayer.get(bestTar), ownTile);
 						}
 					}
-					clear(crosspoints);
+					clear(vertices);
 				}
 				//System.out.println("Distance from [" +closestCrosspointsObject.get(bestObj) + "] to [" + closestCrosspointsPlayer.get(bestTar) + "]: " + totalDistance);
 				//System.out.println("Path: " + path);
@@ -171,10 +176,10 @@ public class Routeplanner
 
 	private static int getNextDirection(Maze maze, Vertex next, Tile objectTile) {
 		// As seen from mazes.txt:
-		// up = 1
-		// right = 2
-		// down = 3
-		// left = 4
+		// up = 1(X negatief, Z neutraal)
+		// right = 2 (Z positief, X neutraal)
+		// down = 3 (X positief, Z neutraal)
+		// left = 4 (Z negatief, X neutraal)
 		if(next != null)
 		{
 			int Xs = maze.convertToGridX(objectTile.getX());
@@ -273,9 +278,9 @@ public class Routeplanner
 
 		return false;
 	}
-	private static void clear(ArrayList<Vertex> crosspoints) 
+	private static void clear(Vertex[] vertices) 
 	{
-		for(Vertex v:crosspoints)
+		for(Vertex v:vertices)
 		{
 			v.previous = null;
 			v.minDistance = Double.POSITIVE_INFINITY;
@@ -494,7 +499,7 @@ public class Routeplanner
 
 		return distanceToCrosspointsObject;
 	}
-	private static boolean inTheSameMaze(Maze maze, Tile objectTile, Tile targetTile) {
+	private boolean inTheSameMaze(Maze maze, Tile objectTile, Tile targetTile) {
 		int Xs = maze.convertToGridX(objectTile.getX());
 		int Xt = maze.convertToGridX(targetTile.getX());
 		int Zs = maze.convertToGridZ(objectTile.getZ());
