@@ -6,15 +6,19 @@ import javax.media.opengl.GL;
 import com.sun.opengl.util.GLUT;
 
 
-public class Book extends GameObject implements VisibleObject {
+public class Projectile extends GameObject {
 
 	private double horAngle;
 	private double verAngle;
 	private double speed;
 	private double size;
+	
+	protected double dX;
+	protected double dY;
+	protected double dZ;
 	protected boolean destroy = false;
 	
-	public Book(double x, double y, double z, double horAngle, double verAngle){
+	public Projectile(double x, double y, double z, double horAngle, double verAngle){
 		super(x, y, z);	
 		this.horAngle = horAngle;
 		this.verAngle = verAngle;
@@ -25,10 +29,14 @@ public class Book extends GameObject implements VisibleObject {
 		
 		this.speed = 0.1;
 		this.size = 0.5;
+		
+		dX = Math.sin(Math.toRadians(horAngle));
+		dY = Math.cos(Math.toRadians(horAngle));
+		dZ = Math.sin(Math.toRadians(verAngle));
+		
 	}
 	
-	public void update(int deltaTime, Maze maze,
-			ArrayList<VisibleObject> visibleObjects, Player player)
+	public void update(int deltaTime, Maze maze)
 	{
 		
 		double x = locationX;
@@ -41,13 +49,13 @@ public class Book extends GameObject implements VisibleObject {
 		
 		}
 		
-			setLocationX(getLocationX() - speed * deltaTime * Math.sin(Math.toRadians(horAngle)));
-			setLocationZ(getLocationZ() - speed * deltaTime * Math.cos(Math.toRadians(horAngle)));
-			setLocationY(getLocationY() + speed * deltaTime * Math.sin(Math.toRadians(verAngle)));
+			setLocationX(getLocationX() - speed * deltaTime * dX);
+			setLocationZ(getLocationZ() - speed * deltaTime * dY);
+			setLocationY(getLocationY() + speed * deltaTime * dZ);
 
 	}
 	
-	@Override
+
 	public void display(GL gl) {
 		// TODO Auto-generated method stub
 		GLUT glut = new GLUT();
@@ -110,21 +118,10 @@ public class Book extends GameObject implements VisibleObject {
 	public void setVerAngle(double angle){
 		this.verAngle = angle;
 	}
-
-	@Override
-	public Tile getPosition() 
-	{
-		Tile res = new Tile(this.getLocationX(), this.getLocationZ());
-		return res;
-	}
-
-	@Override
 	public boolean getDestroy() 
 	{
 		return this.destroy;
-	}
-
-	@Override
+	}	
 	public void setDestroy(boolean set) 
 	{
 		this.destroy = set;

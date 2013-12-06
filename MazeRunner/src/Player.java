@@ -154,10 +154,7 @@ public class Player extends GameObject {
 				
 				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle)));
 				setLocationZ(getLocationZ() - getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle)));
-				
-//				if(GodMode){
-//					setLocationY(getLocationY() + getSpeed() * deltaTime * Math.sin(Math.toRadians(verAngle)));
-//				}
+
 				
 				// reset speed to default
 				speed = 0.01;
@@ -166,9 +163,7 @@ public class Player extends GameObject {
 				setLocationX(getLocationX() + getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle)));
 				setLocationZ(getLocationZ() + getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle)));
 				
-//				if(GodMode){
-//					setLocationY(getLocationY() - getSpeed() * deltaTime * Math.sin(Math.toRadians(verAngle)));
-//				}
+
 			}
 			if (control.left){
 				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle + 90)));
@@ -192,18 +187,26 @@ public class Player extends GameObject {
 			}
 			
 			if(control.hpdown){
-				if(hp > 0){
+				
 					hp = hp -1;
-				}
+				
 				control.hpdown = false;
 			}
 			if(control.hpup){
-				if(hp < 6){
+				
 					hp = hp + 1;
-				}
+			
 				control.hpup = false;
 			}
 		}
+	
+		
+		if(hp > 6){
+			hp = 6;
+		}else if(hp < 0){
+			hp = 0;
+		}
+		
 		Tile playerTile = new Tile(this.getLocationX(), this.getLocationZ());
 		return playerTile;
 	}

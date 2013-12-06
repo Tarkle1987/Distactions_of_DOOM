@@ -40,6 +40,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private int screenWidth = 1000, screenHeight = 1000;		// Screen size.
 	private ArrayList<VisibleObject> visibleObjects;		// A list of objects that will be displayed on screen.
+	private ArrayList<Projectile> projectiles;
+	private ArrayList<Lifeform> lifeforms;
 	private Player player;									// The player object.
 	private Camera camera;									// The camera object.
 	private UserInput input;								// The user input object that controls the player.
@@ -164,6 +166,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
+		projectiles = new ArrayList<Projectile>();
+		lifeforms = new ArrayList<Lifeform>();
 		// We define an ArrayList of Tiles to store all the current positions of the gameobjects
 		//objectPositions = new ArrayList<Tile>();
 
@@ -190,32 +194,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the players startpoint as a Tile.
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */   
-//	    Tile startPlayer = new Tile(20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2,
-//				1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2);
-//	    Tile cubeEen = new Tile( 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5, 1.5);
-//		Tile beerEen = new Tile(10, 4 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2 + 5);
-//		Tile beerTwee = new Tile(8,8);
-//		Tile beerDrie = new Tile(8,10);
-//		Tile beerVier = new Tile(10,20);
-//		Tile beerVijf = new Tile(16,16);
-//		  
-//		b1 = new Beer(beerEen, 1.0, 1);
-//		b2 = new Beer(beerTwee, 1, 2);
-//		b3 = new Beer(beerDrie, 1, 3);
-//		b4 = new Beer(beerVier, 1, 4);
-//		b5 = new Beer(beerVijf, 1, 5);
-//		visibleObjects.add(b1);
-//		visibleObjects.add(b2);
-//		visibleObjects.add(b3);
-//		visibleObjects.add(b4);
-//		visibleObjects.add(b5);
-//		MO = CustomMazeObject.readFromOBJ("Eerste test.obj");
-//		visibleObjects.add(MO);
-
-
 		float size = (float)maze.SQUARE_SIZE;
 	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-		visibleObjects.add(c1);
+		lifeforms.add(c1);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap(coordT[0], coordT[1]);
@@ -344,8 +325,8 @@ public void Trap(float x, float z) {
 		            "null"));
 
 			if(input.schiet){
-				Book book = new Book( player.locationX, player.locationY, player.locationZ,player.getHorAngle(),player.getVerAngle());
-				visibleObjects.add(book);
+				Projectile book = new Projectile( player.locationX, player.locationY, player.locationZ,player.getHorAngle(),player.getVerAngle());
+				projectiles.add(book);
 				
 				input.schiet = false;
 			}
@@ -432,14 +413,9 @@ public void Trap(float x, float z) {
 
 			visibleObjects.get(i).update(deltaTime, maze, visibleObjects ,player);
 			
-			if(visibleObjects.get(i) instanceof Book){
-				Book b = (Book)visibleObjects.get(i);
-				if(b.destroy){
-					visibleObjects.remove(i);
-				}
-			}
 			
-			else if(visibleObjects.get(i) instanceof Smarto){
+			
+			if(visibleObjects.get(i) instanceof Smarto){
 				Smarto so = (Smarto) visibleObjects.get(i);
 					if(so.destroy){
 						visibleObjects.remove(i);
@@ -456,6 +432,22 @@ public void Trap(float x, float z) {
 		}
 		
 		
+		for(int i = 0; i < projectiles.size(); i ++){
+			projectiles.get(i).update(deltaTime, maze);
+			
+			for(int j = 0; j < lifeforms.size(); j++){
+				lifeforms.get(j).isHit(projectiles.get(i));
+			}
+			
+			if(projectiles.get(i).getDestroy()){
+				projectiles.remove(i);
+			}
+		}
+		for(int i = 0; i < lifeforms.size(); i++){
+			lifeforms.get(i).update(deltaTime, maze, player);
+		}
+		
+		
 		if(!player.getGodMode()){
 			double x = player.getLocationX();
 			double z = player.getLocationZ();
@@ -466,8 +458,7 @@ public void Trap(float x, float z) {
 				player.update(-deltaTime);
 			}
 		}
-		Tile PlayerTile = new Tile(player.locationX, player.locationZ);
-		Tile companionTile = new Tile(c1.locationX, c1.locationZ);
+
 //	    Routeplanner.testRoute(maze, companionTile,PlayerTile);
 	}
 
@@ -550,6 +541,12 @@ public void Trap(float x, float z) {
 
         // Display all the visible objects of MazeRunner.
         for( Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext(); ) {
+        	it.next().display(gl);
+        }
+        for( Iterator<Projectile> it = projectiles.iterator(); it.hasNext();) {
+        	it.next().display(gl);
+        }
+        for( Iterator<Lifeform> it = lifeforms.iterator(); it.hasNext();) {
         	it.next().display(gl);
         }
         
