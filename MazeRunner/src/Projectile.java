@@ -39,6 +39,10 @@ public class Projectile extends GameObject {
 	public void update(int deltaTime, Maze maze)
 	{
 		
+		setLocationX(getLocationX() - speed * deltaTime * dX);
+		setLocationZ(getLocationZ() - speed * deltaTime * dY);
+		setLocationY(getLocationY() + speed * deltaTime * dZ);
+		
 		double x = locationX;
 		double z = locationZ;
 	
@@ -49,9 +53,6 @@ public class Projectile extends GameObject {
 		
 		}
 		
-			setLocationX(getLocationX() - speed * deltaTime * dX);
-			setLocationZ(getLocationZ() - speed * deltaTime * dY);
-			setLocationY(getLocationY() + speed * deltaTime * dZ);
 
 	}
 	

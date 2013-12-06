@@ -50,7 +50,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private boolean init = true;
 	private String fileName = "Eerste test.obj";
 
-	private CompanionCube c1;
 	private MazeObject Trap, Smart, Smarto, Smartw;
 	private Texture Smart1texture;
 	private Beer b1, b2, b3, b4, b5;
@@ -195,8 +194,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */   
 		float size = (float)maze.SQUARE_SIZE;
-	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-		lifeforms.add(c1);
+	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+	    lifeforms.add(c1);
+	    CompanionCube c2 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+		lifeforms.add(c2);
+		 CompanionCube c3 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+		lifeforms.add(c3);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap(coordT[0], coordT[1]);
@@ -426,9 +429,7 @@ public void Trap(float x, float z) {
 						if(sw.destroy){
 							visibleObjects.remove(i);
 						}
-					}
-			
-			
+					}			
 		}
 		
 		
@@ -436,7 +437,9 @@ public void Trap(float x, float z) {
 			projectiles.get(i).update(deltaTime, maze);
 			
 			for(int j = 0; j < lifeforms.size(); j++){
-				lifeforms.get(j).isHit(projectiles.get(i));
+				if(lifeforms.get(j).isHit(projectiles.get(i))){
+					projectiles.get(i).setDestroy(true);
+				}
 			}
 			
 			if(projectiles.get(i).getDestroy()){

@@ -20,7 +20,8 @@ public class CompanionCube extends GameObject implements Lifeform {
 	private double[] PlayerLocation = new double[2];
 	private boolean follow = false;
 	
-	private int sightrange = 50;
+	private int sightrange = 60;
+	private int hearingrange = 10;
 	private boolean sight = false;
 	
 	// Movement Variables
@@ -364,7 +365,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 		
 		double hoek = Math.asin(dX*sightX + dZ*sightZ);		
 		
-		if((dLength < sightrange && hoek > 0 && hoek < 90) || dLength < sightrange*0.2){
+		if((dLength < sightrange && hoek > 0 && hoek < 90) || dLength < hearingrange){
 			sight = true;
 			
 			double x = locationX;
