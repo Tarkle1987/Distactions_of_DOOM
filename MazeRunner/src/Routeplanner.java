@@ -103,7 +103,7 @@ public class Routeplanner
 		}
 	}
 
-	public void testRoute(Maze maze, Tile objectTile, Tile targetTile)
+	public int testRoute(Maze maze, Tile objectTile, Tile targetTile)
 	{
 		if(inTheSameMaze(maze, objectTile,targetTile))
 		{
@@ -166,12 +166,15 @@ public class Routeplanner
 					}
 					clear(vertices);
 				}
-				//System.out.println("Distance from [" +closestCrosspointsObject.get(bestObj) + "] to [" + closestCrosspointsPlayer.get(bestTar) + "]: " + totalDistance);
-				//System.out.println("Path: " + path);
+				System.out.println("Distance from [" +closestCrosspointsObject.get(bestObj) + "] to [" + closestCrosspointsPlayer.get(bestTar) + "]: " + totalDistance);
+				System.out.println("Path: " + path);
 				int nextdir = getNextDirection(maze, next, objectTile);
 				System.out.println(nextdir);
+				return nextdir;
 			}
+			
 		}
+		return 0;
 	}
 
 	private static int getNextDirection(Maze maze, Vertex next, Tile objectTile) {
@@ -424,7 +427,8 @@ public class Routeplanner
 				{
 					if(vertices[n].getX() == m && vertices[n].getZ() == Z)
 					{
-						double DifX = (double) X - m;
+						double DifX = vertices[n].getX() - maze.convertToGridX(objectTile.getX());
+
 						if(DifX < 0.0)
 							DifX = DifX*-1;
 						distanceToCrosspointsObject.add(DifX);
@@ -444,7 +448,7 @@ public class Routeplanner
 				{
 					if(vertices[n].getX() == m && vertices[n].getZ() == Z)
 					{
-						double DifX = (double) m - X;
+						double DifX = vertices[n].getX() - maze.convertToGridX(objectTile.getX());
 						if(DifX < 0.0)
 							DifX = DifX*-1;
 						distanceToCrosspointsObject.add(DifX);
@@ -464,7 +468,7 @@ public class Routeplanner
 				{
 					if(vertices[n].getX() == X && vertices[n].getZ() == m)
 					{
-						double DifZ = (double) Z - m;
+						double DifZ = vertices[n].getZ() - maze.convertToGridZ(objectTile.getZ());
 						if(DifZ < 0.0)
 							DifZ = DifZ*-1;
 						distanceToCrosspointsObject.add(DifZ);
@@ -484,7 +488,7 @@ public class Routeplanner
 				{
 					if(vertices[n].getX() == X && vertices[n].getZ() == m)
 					{
-						double DifZ = (double) m - Z;
+						double DifZ = vertices[n].getZ() - maze.convertToGridZ(objectTile.getZ());
 						if(DifZ < 0.0)
 							DifZ = DifZ*-1;
 						distanceToCrosspointsObject.add(DifZ);
