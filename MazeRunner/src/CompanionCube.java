@@ -6,33 +6,42 @@ import javax.media.opengl.GL;
 import com.sun.opengl.util.GLUT;
 
 
-public class CompanionCube extends GameObject implements VisibleObject {
+public class CompanionCube extends GameObject implements Lifeform {
 
+	// Cube properties
 	public double size;
 	private double speed;
-
 	private double angle;
 	protected double newangle;
 	private double anglespeed;
 
-	private int sightrange = 0;
-
 	
-	private double dX = 0;
-	private double dZ = 0;
+	// Follow player attributes
+	private double[] PlayerLocation = new double[2];
+	private int follow = 0;
+	static final int followtime = 15;
+	
+	private int sightrange = 60;
+	private int hearingrange = 10;
+	private boolean sight = false;
+	
+	// Movement Variables
+	private boolean stun = false;
+	private int stuntimer = 0;
+	
 	private double directionX = 0;
-	private double directionZ = 0;
+	private double directionZ = 1;
 	private double sightX = 0;
-	private double sightZ = 0;
+	private double sightZ = 1;
 	private int signX = 1;
 	private int signZ = 1;
-	int momentum = 10 *16;
+	int momentum = 0;
 
 	public CompanionCube(double x, double y, double z,  double size){
 
 		super(x,y + size/2,z);
 		this.size = size;
-		speed = 0.01;
+		speed = 0.009;
 		angle = 0;
 		newangle = angle;
 		anglespeed = 0.1;
@@ -40,7 +49,6 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 
 	public void display(GL gl) {
-		// TODO Auto-generated method stub
 		GLUT glut = new GLUT();
 
 		float CubeColor[] = { 1f, 0.627f, 0f, 1f };
@@ -57,7 +65,8 @@ public class CompanionCube extends GameObject implements VisibleObject {
 	}
 
 	public void CubeMove(int deltaTime, Maze maze, double X, double Z){
-
+		
+		
 		// De kubus bewegen als de speler ertegenaan loopt ( alleen in X of in Z richting )
 		//		switch (CubeTouchDetection(X,Z)){
 		//		case 1: while(X > this.locationX - size/2 -1){this.locationX = this.locationX + speed*deltaTime;}
@@ -70,20 +79,60 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		//			break;
 		//		}
 
-
+		
 
 		// kubus loopt richting player
 		double dX = X - locationX;
 		double dZ = Z - locationZ;
 
 		double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+		
+		sight = CheckSight(X,Z, maze);
+		
+		if(sight){
+			momentum = 0;
+			follow = followtime*1000;
+			
+			PlayerLocation[0] = X;
+			PlayerLocation[1] = Z;
+			
+			if(maze.isWall(PlayerLocation[0], PlayerLocation[1])){
+				follow = 0;
+			}
+			
+			if(dLength > size){
+				dX = dX/dLength;
+				dZ = dZ/dLength;}
+			else{
+				dX = 0;
+				dZ = 0;
+			}
+	
+			System.out.println("Follow player");
 
-		if(dLength < sightrange && dLength > 2){
-
-			dX = dX/dLength;
-			dZ = dZ/dLength;
-
+		}else if(follow > 0){
+			momentum = 0;
+			follow = follow - deltaTime;
+			System.out.println(follow);
+			
+			System.out.println("Last Known Location");
+			
+			dX = PlayerLocation[0] - locationX;
+			dZ = PlayerLocation[1] - locationZ;
+			
+			dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+			
+			if(dLength > size){
+				dX = dX / dLength;
+				dZ = dZ / dLength;
+			}else{
+				dX = 0;
+				dZ = 0;
+				
+				follow = 0;
+			}
 		}else{
+			System.out.println("Free movement");
 			momentum = momentum - deltaTime;
 
 			if(momentum <= 0){
@@ -101,7 +150,10 @@ public class CompanionCube extends GameObject implements VisibleObject {
 			}
 
 			
-			CheckSurround(maze);
+			double[] dW = CheckSurround(maze, dX, dZ);
+			
+			dX = dW[0];
+			dZ = dW[1];
 			
 	
 		}
@@ -241,12 +293,18 @@ public class CompanionCube extends GameObject implements VisibleObject {
 
 
 	@Override
-	public void update(int deltaTime, Maze maze, ArrayList<VisibleObject> visibleObjects ,Player player) {
+	public void update(int deltaTime, Maze maze, Player player) {
 		double X = player.locationX;
 		double Z = player.locationZ;
+		
+		stuntimer = stuntimer - deltaTime;
+		
+		if(stuntimer <= 0){
+			stun = false;
+		}
 
 
-
+		if(!stun){
 		// Bewegen van kubus naar player / door player
 		CubeMove(deltaTime, maze, X,Z);
 
@@ -255,11 +313,16 @@ public class CompanionCube extends GameObject implements VisibleObject {
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
+		}else {
+			System.out.println("Stunned");
+		}
 
 	}
 	
-	public void CheckSurround(Maze maze){
+	public double[] CheckSurround(Maze maze, double X, double Z){
 		int[] Surround = new int[4];
+		double dX = X;
+		double dZ = Z;
 		
 		int i = maze.convertToGridX(this.locationX);
 		int j = maze.convertToGridZ(this.locationZ);
@@ -285,30 +348,77 @@ public class CompanionCube extends GameObject implements VisibleObject {
 				dX = dX * -1;
 			}
 		}
+			
+		double[] dW = {dX , dZ };
+		
+		return dW;
+
+	}
+	
+	private boolean CheckSight(double X, double Z, Maze maze){
+		boolean sight = false;
+		
+		double dX = X - locationX;
+		double dZ = Z - locationZ;
+
+		double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+		
+		dX  = dX / dLength;
+		dZ = dZ / dLength;
+		
+		double hoek = Math.toDegrees(Math.asin(dX*sightX + dZ*sightZ));		
+		
+		if((dLength < sightrange && hoek > 10) || dLength < hearingrange){
+			sight = true;
+			
+			double x = locationX;
+			double z = locationZ;
+			
+			double dx = X - x;
+			double dz = Z - z;
+			
+			double dL = Math.sqrt(Math.pow(dx,2)+Math.pow(dz,2));
+			
+			
+			while(dL > size){
+				x = x + dX;
+				z = z + dZ;
 				
-
-	}
-
-
-
-	@Override
-	public Tile getPosition() 
-	{
-		return new Tile(this.getLocationX(), this.getLocationZ());
-	}
-
-
-	@Override
-	public boolean getDestroy() {
-		// TODO Auto-generated method stub
-		return false;
+				if(maze.isWall(x, z)){
+					sight = false;
+				}
+				
+				dx = X - x;
+				dz = Z - z;
+				
+				dL = Math.sqrt(Math.pow(dx,2)+Math.pow(dz,2));
+			}
+			
+		}
+		return sight;
 	}
 
 
 	@Override
-	public void setDestroy(boolean set) {
-		// TODO Auto-generated method stub
-
+	public boolean isHit(Projectile p) {
+		boolean hit = false;
+		
+		double x = p.locationX;
+		double y = p.locationY;
+		double z = p.locationZ;
+		
+		if((x > locationX - size) && (x < locationX + size) 
+				&& (y > locationY - size) && (y < locationY + size) 
+				&& (z > locationZ - size) && (z < locationZ + size)){
+			hit = true;
+		}
+		
+		if(hit){
+			stun = true;
+			stuntimer = 1000;
+		}
+		
+		return hit;
 	}
 
 }

@@ -290,6 +290,45 @@ public class Maze implements VisibleObject {
 		int gZ = convertToGridZ( z );
 		return isBegin( gX, gZ );
 	}
+	
+	public static int[] CoordTrap(int[][] Maze){
+		int[] res = new int[4];
+		int count = 0;
+		for (int i = 0; i<Maze.length; i++){
+			for (int j = 0; j<Maze.length; j++){
+				if (Maze[j][i] == 2){
+					res[0+count] = j;
+					res[1+count] = i;
+					count = count+2;
+				}
+			}
+		}
+		return res;
+	}
+	
+	public static int[] CoordSmart(int[][] Maze){
+		int aantal = 0;
+		for (int i = 0; i<Maze.length; i++){
+			for (int j = 0; j<Maze.length; j++){
+				if (Maze[j][i] == 3){
+					aantal = aantal+1;
+				}
+			}
+		}
+		int[] res = new int[2*aantal+1];
+		res[0]= aantal;
+		int count = 0;
+		for (int i = 0; i<Maze.length; i++){
+			for (int j = 0; j<Maze.length; j++){
+				if (Maze[j][i] == 3){
+					res[1+count] = j;
+					res[2+count] = i;
+					count = count+2;
+				}
+			}
+		}
+		return res;
+	}
 	 
 	/**
 	 * Converts the double x-coordinate to its correspondent integer coordinate.
@@ -470,7 +509,7 @@ public class Maze implements VisibleObject {
 					}
 				}
 				if (isEind(i,j)){
-					System.out.println(i + " "+ j);
+		
 					bRechtsTexture.enable();
 					bRechtsTexture.bind();
 					gl.glBegin(GL.GL_QUADS);
