@@ -102,10 +102,24 @@ public abstract class MazeObject implements VisibleObject{
 	
 	public void addColour(String kleur)
 	{
-		if (kleur.equals("oranje")){
+		if (kleur.equals("rood")){
 			wallColour[0] = 1f;
 			wallColour[1] = 0f;
 			wallColour[2] = 0f;
+			wallColour[3] = 0f;
+		}
+		
+		if (kleur.equals("groen")){
+			wallColour[0] = 0f;
+			wallColour[1] = 1f;
+			wallColour[2] = 0f;
+			wallColour[3] = 0f;
+		}
+		
+		if (kleur.equals("blauw")){
+			wallColour[0] = 0f;
+			wallColour[1] = 0f;
+			wallColour[2] = 1f;
 			wallColour[3] = 0f;
 		}
 		

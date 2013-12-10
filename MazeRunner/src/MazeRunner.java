@@ -49,7 +49,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private String fileName = "Eerste test.obj";
 
 	private CompanionCube c1;
-	private MazeObject Trap, Smart, Smarto, Smartw;
+	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
 	private Texture Smart1texture;
 	private Beer b1, b2, b3, b4, b5;
 
@@ -215,17 +215,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 		float size = (float)maze.SQUARE_SIZE;
 //	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 //		visibleObjects.add(c1);
-		Trap = CustomMazeObject.readFromOBJ("Trap2.obj", 35);
-		Trap.setCor((float)1.5*size, (float)19*size, 0);
-		Trap.rotateVerticesZ(-90, 1, 1);
-		visibleObjects.add(Trap);
+//		Trap = CustomMazeObject.readFromOBJ("trapobj.obj", (float)0.0035);
+//		Trap.setCor((float)1.5*size, (float)19*size, 0);
+//		Trap.rotateVerticesZ(-90, 1, 1);
+//		visibleObjects.add(Trap);
+		Trap((float)1.5, (float)19);
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
 		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smarto.addColour("wit");
 		visibleObjects.add(Smarto);
 		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
 		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smartw.addColour("oranje");
+		Smartw.addColour("rood");
 		visibleObjects.add(Smartw);
 
 		//this.setUndecorated(true);
@@ -254,6 +255,32 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * <p> 
 	 * It is <b>very important</b> to realize that there should be no drawing at all in this method.
 	 */
+	public void Trap(float x, float z) {
+		
+		float size = (float)maze.SQUARE_SIZE;
+		Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj", (float)0.0175);
+		Kaft1.setCor((float)x*size, (float)z*size, 0);
+		Kaft1.rotateVerticesZ(-90, 1, 1);
+		Kaft1.addColour("rood");
+		visibleObjects.add(Kaft1);
+		Kaft2 = CustomMazeObject.readFromOBJ("Kaft2.obj", (float)0.0175);
+		Kaft2.setCor((float)x*size, (float)z*size, 0);
+		Kaft2.rotateVerticesZ(-90, 1, 1);
+		Kaft2.addColour("groen");
+		visibleObjects.add(Kaft2);
+		Kaft3 = CustomMazeObject.readFromOBJ("Kaft3.obj", (float)0.0175);
+		Kaft3.setCor((float)x*size, (float)z*size, 0);
+		Kaft3.rotateVerticesZ(-90, 1, 1);
+		Kaft3.addColour("blauw");
+		visibleObjects.add(Kaft3);
+		Papier = CustomMazeObject.readFromOBJ("Papier.obj", (float)0.0175);
+		Papier.setCor((float)x*size, (float)z*size, 0);
+		Papier.rotateVerticesZ(-90, 1, 1);
+		Papier.addColour("wit");
+		visibleObjects.add(Papier);
+	
+	}
+	
 	public void init(GLAutoDrawable drawable) {
 		drawable.setGL( new DebugGL(drawable.getGL() )); // We set the OpenGL pipeline to Debugging mode.
         GL gl = drawable.getGL();
