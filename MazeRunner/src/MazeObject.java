@@ -22,10 +22,11 @@ public abstract class MazeObject implements VisibleObject{
 	protected float x,y,z,nx,ny,nz;
 	
 	private boolean test = true;
+	private int tel = 0;
 	
 	protected Texture texture;
 	protected int[][] texturePoints = { {1, 1}, {1, 0}, {0, 0} , {0, 1}}; 
-	private float wallColour[] = { 0f, 0.0f, 0.0f, 0.0f };
+	private float wallColour[] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	
 	float restitution;
 
@@ -127,7 +128,7 @@ public abstract class MazeObject implements VisibleObject{
 			wallColour[0] = 1f;
 			wallColour[1] = 1f;
 			wallColour[2] = 1f;
-			wallColour[3] = 0f;
+			wallColour[3] = 1f;
 		}
 	}
 	/**
@@ -142,6 +143,7 @@ public abstract class MazeObject implements VisibleObject{
 		{
 
 			int[] face = faces.get(j);
+						
 			if (texture != null)
 			{
 				texture.enable();
@@ -156,13 +158,13 @@ public abstract class MazeObject implements VisibleObject{
 			
 			gl.glNormal3d(norm[0], norm[1], norm[2]);
 			
-			if (test){
-			for(int i = 0; i < 2; i++)
-			{
-				System.out.print(norm[i]);
-			}
-			test = false;
-			}
+//			if (test){
+//			for(int i = 0; i < 2; i++)
+//			{
+//				System.out.print(norm[i]);
+//			}
+//			test = false;
+//			}
 			gl.glBegin(GL.GL_POLYGON);
 			
 			for(int i = 0; i < face.length; i++)
@@ -238,7 +240,7 @@ public abstract class MazeObject implements VisibleObject{
 			float x = vert[0];
 			float y = vert[1];
 			float z = vert[2];
-			System.out.println(vertices.get(1));
+//			System.out.println(vertices.get(1));
 			double cos = Math.cos(Math.toRadians(angle));
 			double sin = Math.sin(Math.toRadians(angle));
 			vert[0] = ((float)(x*cos - z * sin - xRotate * cos + yRotate * sin + xRotate));

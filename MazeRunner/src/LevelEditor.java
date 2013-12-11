@@ -100,8 +100,12 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			}
 		}
 
-		drawVertical();
-		drawHorizontal();
+		drawVertical1();
+		drawHorizontal1();
+		drawVertical2();
+		drawHorizontal2();
+		drawVertical3();
+		drawHorizontal3();
 		System.out.println(unit);
 		for (int i = 0; i<Mazeconf.length;i++){
 			Mazeconf[0][i]=1;
@@ -163,7 +167,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 //		setVisible(true);
 	}
 
-	private void drawVertical(){
+	private void drawVertical1(){
 		for (int k = 2; k<Mazeconf.length-2;k++){
 			Mazeconf[k][2]=1;
 		}
@@ -197,7 +201,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		}
 	}
 
-	private void drawHorizontal(){
+	private void drawHorizontal1(){
 		for (int j = 3;j<Mazeconf.length-2;j++){
 			Mazeconf[19][j]=1;
 		}
@@ -241,6 +245,168 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		Mazeconf[4][10]=1;
 		Mazeconf[12][19]=1;
 		Mazeconf[4][19]=1;
+
+	}
+
+	private void drawVertical2(){
+		for (int k = 2; k<Mazeconf2.length-2;k++){
+			Mazeconf2[k][2]=1;
+		}
+		for (int k = 0; k<Mazeconf2.length-6;k++){
+			Mazeconf2[k][4]=1;
+		}
+		for (int k = 0; k<Mazeconf2.length-6;k++){
+			Mazeconf2[k][6]=1;
+			Mazeconf2[8][6]=0;
+		}
+		for (int k = 2; k<Mazeconf2.length-16;k++){
+			Mazeconf2[k][8]=1;
+		}
+		for (int k = 0; k<Mazeconf2.length-14;k++){
+			Mazeconf2[k][12]=1;
+		}
+		for (int k = 2; k<Mazeconf2.length-12;k++){
+			Mazeconf2[k][14]=1;
+		}
+		for (int k = 0; k<Mazeconf2.length-13;k++){
+			Mazeconf2[k][16]=1;
+		}
+		for (int k = 10; k<Mazeconf2.length-8;k++){
+			Mazeconf2[k][17]=1;
+		}
+		for (int k = 4; k<Mazeconf2.length-15;k++){
+			Mazeconf2[k][18]=1;
+		}
+		for (int k = 6; k<Mazeconf2.length-13;k++){
+			Mazeconf2[k][19]=1;
+		}
+	}
+
+	private void drawHorizontal2(){
+		for (int j = 3;j<Mazeconf2.length-2;j++){
+			Mazeconf2[19][j]=1;
+		}
+		for (int j = 4;j<Mazeconf2.length;j++){
+			Mazeconf2[17][j]=1;
+		}
+		for (int j = 6;j<Mazeconf2.length-2;j++){
+			Mazeconf2[15][j]=1;
+		}
+		for (int j = 8;j<Mazeconf2.length-2;j++){
+			Mazeconf2[13][j]=1;
+		}
+		for (int j = 8;j<Mazeconf2.length-4;j++){
+			Mazeconf2[11][j]=1;
+			Mazeconf2[11][13]=0;
+		}
+		for (int j = 18;j<Mazeconf2.length;j++){
+			Mazeconf2[10][j]=1;
+		}
+		for (int j = 8;j<Mazeconf2.length-7;j++){
+			Mazeconf2[9][j]=1;
+		}
+		for (int j = 17;j<Mazeconf2.length-2;j++){
+			Mazeconf2[8][j]=1;
+		}
+		for (int j = 8;j<Mazeconf2.length-9;j++){
+			Mazeconf2[7][j]=1;
+		}
+		for (int j = 8;j<Mazeconf2.length-11;j++){
+			Mazeconf2[5][j]=1;
+		}
+		for (int j = 8;j<Mazeconf2.length-9;j++){
+			Mazeconf2[2][j]=1;
+		}
+		for (int j = 18;j<Mazeconf2.length;j++){
+			Mazeconf2[2][j]=1;
+		}
+
+
+		Mazeconf2[12][8]=1;
+		Mazeconf2[4][10]=1;
+		Mazeconf2[12][19]=1;
+		Mazeconf2[4][19]=1;
+
+	}
+
+	private void drawVertical3(){
+		for (int k = 2; k<Mazeconf3.length-2;k++){
+			Mazeconf3[k][2]=1;
+		}
+		for (int k = 0; k<Mazeconf3.length-6;k++){
+			Mazeconf3[k][4]=1;
+		}
+		for (int k = 0; k<Mazeconf3.length-6;k++){
+			Mazeconf3[k][6]=1;
+			Mazeconf3[8][6]=0;
+		}
+		for (int k = 2; k<Mazeconf3.length-16;k++){
+			Mazeconf3[k][8]=1;
+		}
+		for (int k = 0; k<Mazeconf3.length-14;k++){
+			Mazeconf3[k][12]=1;
+		}
+		for (int k = 2; k<Mazeconf3.length-12;k++){
+			Mazeconf3[k][14]=1;
+		}
+		for (int k = 0; k<Mazeconf3.length-13;k++){
+			Mazeconf3[k][16]=1;
+		}
+		for (int k = 10; k<Mazeconf3.length-8;k++){
+			Mazeconf3[k][17]=1;
+		}
+		for (int k = 4; k<Mazeconf3.length-15;k++){
+			Mazeconf3[k][18]=1;
+		}
+		for (int k = 6; k<Mazeconf3.length-13;k++){
+			Mazeconf3[k][19]=1;
+		}
+	}
+
+	private void drawHorizontal3(){
+		for (int j = 3;j<Mazeconf3.length-2;j++){
+			Mazeconf3[19][j]=1;
+		}
+		for (int j = 4;j<Mazeconf3.length;j++){
+			Mazeconf3[17][j]=1;
+		}
+		for (int j = 6;j<Mazeconf3.length-2;j++){
+			Mazeconf3[15][j]=1;
+		}
+		for (int j = 8;j<Mazeconf3.length-2;j++){
+			Mazeconf3[13][j]=1;
+		}
+		for (int j = 8;j<Mazeconf3.length-4;j++){
+			Mazeconf3[11][j]=1;
+			Mazeconf3[11][13]=0;
+		}
+		for (int j = 18;j<Mazeconf3.length;j++){
+			Mazeconf3[10][j]=1;
+		}
+		for (int j = 8;j<Mazeconf3.length-7;j++){
+			Mazeconf3[9][j]=1;
+		}
+		for (int j = 17;j<Mazeconf3.length-2;j++){
+			Mazeconf3[8][j]=1;
+		}
+		for (int j = 8;j<Mazeconf3.length-9;j++){
+			Mazeconf3[7][j]=1;
+		}
+		for (int j = 8;j<Mazeconf3.length-11;j++){
+			Mazeconf3[5][j]=1;
+		}
+		for (int j = 8;j<Mazeconf3.length-9;j++){
+			Mazeconf3[2][j]=1;
+		}
+		for (int j = 18;j<Mazeconf3.length;j++){
+			Mazeconf3[2][j]=1;
+		}
+
+
+		Mazeconf3[12][8]=1;
+		Mazeconf3[4][10]=1;
+		Mazeconf3[12][19]=1;
+		Mazeconf3[4][19]=1;
 
 	}
 
