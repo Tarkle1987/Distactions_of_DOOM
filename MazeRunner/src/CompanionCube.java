@@ -132,16 +132,8 @@ public class CompanionCube extends GameObject implements Lifeform {
 				dZ = 0;
 				playerhit = true;
 			}
-<<<<<<< HEAD
-	
 //			System.out.println("Follow player");
-		}else if(follow > 0){
-			momentum = 0;
-			follow = follow - deltaTime;
-			System.out.println(follow);
-			
 //			System.out.println("Last Known Location");
-=======
 
 	
 //			System.out.println("Follow player");
@@ -150,8 +142,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 		}else if(follow > 0){
 			momentum = 0;
 			follow = follow - deltaTime;
-
->>>>>>> 160ab793b2ddce3a46e09159386f9e022760ba19
 			dX = PlayerLocation[0] - locationX;
 			dZ = PlayerLocation[1] - locationZ;
 
@@ -169,9 +159,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 
 				follow = 0;
 			}
-<<<<<<< HEAD
-		}else{
-=======
 		}else if(routeplanner)
 		{
 			Routeplanner nieuw = new Routeplanner();
@@ -207,8 +194,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 		if(freemovement)
 		{
 			//System.out.println("Free movement");
-
->>>>>>> 160ab793b2ddce3a46e09159386f9e022760ba19
 			momentum = momentum - deltaTime;
 
 			if(momentum <= 0){
