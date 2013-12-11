@@ -159,7 +159,7 @@ public abstract class MazeObject implements VisibleObject{
 			if (test){
 			for(int i = 0; i < 2; i++)
 			{
-				System.out.print(norm[i]);
+		
 			}
 			test = false;
 			}
@@ -238,7 +238,7 @@ public abstract class MazeObject implements VisibleObject{
 			float x = vert[0];
 			float y = vert[1];
 			float z = vert[2];
-			System.out.println(vertices.get(1));
+		
 			double cos = Math.cos(Math.toRadians(angle));
 			double sin = Math.sin(Math.toRadians(angle));
 			vert[0] = ((float)(x*cos - z * sin - xRotate * cos + yRotate * sin + xRotate));

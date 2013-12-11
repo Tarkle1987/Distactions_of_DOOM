@@ -48,16 +48,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Maze maze; 										// The maze.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	private boolean init = true;
-	private String fileName = "Eerste test.obj";
 
-<<<<<<< HEAD
-	private CompanionCube c1;
-	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
-=======
-	private MazeObject Trap, Smart, Smarto, Smartw;
->>>>>>> 4ecca5b5f08bd3e08f22347cfc9edf3fb4e38e39
-	private Texture Smart1texture;
-	private Beer b1, b2, b3, b4, b5;
+	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smarto, Smartw;
+
 
 	
 	// Ingame seconden tellen
@@ -199,16 +192,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */   
 		float size = (float)maze.SQUARE_SIZE;
-<<<<<<< HEAD
-	    CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
-=======
-<<<<<<< HEAD
-//	    c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-//		visibleObjects.add(c1);
-//		Trap = CustomMazeObject.readFromOBJ("trapobj.obj", (float)0.0035);
-//		Trap.setCor((float)1.5*size, (float)19*size, 0);
-//		Trap.rotateVerticesZ(-90, 1, 1);
-//		visibleObjects.add(Trap);
+
+		Trap = CustomMazeObject.readFromOBJ("trapobj.obj", (float)0.0035);
+		Trap.setCor((float)1.5*size, (float)19*size, 0);
+		Trap.rotateVerticesZ(-90, 1, 1);
+		visibleObjects.add(Trap);
 		Trap((float)1.5, (float)19);
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
 		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
@@ -218,9 +206,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smartw.addColour("rood");
 		visibleObjects.add(Smartw);
-=======
-	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
->>>>>>> 2fe5a045141c6bfc159c639e5a0cf05eba87f8c3
+
+		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);	
+
 	    lifeforms.add(c1);
 	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
 		lifeforms.add(c2);
@@ -238,7 +226,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			visibleObjects.add(Smw);
 		}
 		
->>>>>>> 4ecca5b5f08bd3e08f22347cfc9edf3fb4e38e39
+
 
 		//this.setUndecorated(true);
 		player.setControl(input);
@@ -250,31 +238,7 @@ public class MazeRunner extends Frame implements GLEventListener {
      
 	}
 	
-public void Trap(float x, float z) {
-		
-		float size = (float)maze.SQUARE_SIZE;
-		MazeObject Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj", 35);
-		Kaft1.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
-		Kaft1.rotateVerticesZ(-90, 1, 1);
-		Kaft1.addColour("oranje");
-		visibleObjects.add(Kaft1);
-		MazeObject Kaft2 = CustomMazeObject.readFromOBJ("Kaft2.obj", 35);
-		Kaft2.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
-		Kaft2.rotateVerticesZ(-90, 1, 1);
-		Kaft2.addColour("oranje");
-		visibleObjects.add(Kaft2);
-		MazeObject Kaft3 = CustomMazeObject.readFromOBJ("Kaft3.obj", 35);
-		Kaft3.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
-		Kaft3.rotateVerticesZ(-90, 1, 1);
-		Kaft3.addColour("oranje");
-		visibleObjects.add(Kaft3);
-		MazeObject Papier = CustomMazeObject.readFromOBJ("Papier.obj", 35);
-		Papier.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
-		Papier.rotateVerticesZ(-90, 1, 1);
-		Papier.addColour("wit");
-		visibleObjects.add(Papier);
-	
-	}
+
 
 /*
  * **********************************************
