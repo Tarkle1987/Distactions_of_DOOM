@@ -157,16 +157,6 @@ public abstract class MazeObject implements VisibleObject{
 			normal.get(norm);
 			
 			gl.glNormal3d(norm[0], norm[1], norm[2]);
-			
-<<<<<<< HEAD
-//			if (test){
-//			for(int i = 0; i < 2; i++)
-//			{
-//				System.out.print(norm[i]);
-//			}
-//			test = false;
-//			}
-=======
 			if (test){
 			for(int i = 0; i < 2; i++)
 			{
@@ -174,7 +164,6 @@ public abstract class MazeObject implements VisibleObject{
 			}
 			test = false;
 			}
->>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 			gl.glBegin(GL.GL_POLYGON);
 			
 			for(int i = 0; i < face.length; i++)
@@ -250,11 +239,6 @@ public abstract class MazeObject implements VisibleObject{
 			float x = vert[0];
 			float y = vert[1];
 			float z = vert[2];
-<<<<<<< HEAD
-//			System.out.println(vertices.get(1));
-=======
-		
->>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 			double cos = Math.cos(Math.toRadians(angle));
 			double sin = Math.sin(Math.toRadians(angle));
 			vert[0] = ((float)(x*cos - z * sin - xRotate * cos + yRotate * sin + xRotate));

@@ -53,19 +53,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	private boolean init = true;
 
-<<<<<<< HEAD
 	private boolean textrue = true;
 	private CompanionCube c1;
 	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
 	private Texture Smart1texture;
 	private Texture Oranje;
 	private Beer b1, b2, b3, b4, b5;
-=======
-	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smarto, Smartw;
 
->>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
-
-	
 	// Ingame seconden tellen
 	private int miliseconds = 0;
 	
@@ -204,11 +198,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	  */  
 	      
 		float size = (float)maze.SQUARE_SIZE;
-<<<<<<< HEAD
 		Trap((float)1.5, (float)19);
-=======
-
->>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
 		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smarto.addColour("wit");
@@ -217,13 +207,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smartw.addColour("wit");
 		visibleObjects.add(Smartw);
-<<<<<<< HEAD
-	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-=======
-
-		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);	
-
->>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
+//	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
 	    lifeforms.add(c1);
 	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
 		lifeforms.add(c2);
@@ -240,12 +225,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 			Smartw Smw = new Smartw((float)coordS[1+i*2],(float)coordS[2+i*2]);
 			visibleObjects.add(Smw);
 		}
-<<<<<<< HEAD
-=======
-		
-
-
->>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 		//this.setUndecorated(true);
 		player.setControl(input);
 		
@@ -255,12 +234,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 
      
 	}
-<<<<<<< HEAD
-=======
-	
-
->>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
-
 /*
  * **********************************************
  * *		OpenGL event handlers				*
