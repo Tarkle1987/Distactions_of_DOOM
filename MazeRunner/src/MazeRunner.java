@@ -193,11 +193,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	  */   
 		float size = (float)maze.SQUARE_SIZE;
 
-		Trap = CustomMazeObject.readFromOBJ("trapobj.obj", (float)0.0035);
-		Trap.setCor((float)1.5*size, (float)19*size, 0);
-		Trap.rotateVerticesZ(-90, 1, 1);
-		visibleObjects.add(Trap);
-		Trap((float)1.5, (float)19);
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
 		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smarto.addColour("wit");
