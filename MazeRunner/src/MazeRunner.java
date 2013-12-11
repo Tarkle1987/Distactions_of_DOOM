@@ -52,14 +52,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Maze maze; 										// The maze.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	private boolean init = true;
-	private String fileName = "Eerste test.obj";
 
+<<<<<<< HEAD
 	private boolean textrue = true;
 	private CompanionCube c1;
 	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
 	private Texture Smart1texture;
 	private Texture Oranje;
 	private Beer b1, b2, b3, b4, b5;
+=======
+	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smarto, Smartw;
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 
 	
 	// Ingame seconden tellen
@@ -200,7 +204,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	  */  
 	      
 		float size = (float)maze.SQUARE_SIZE;
+<<<<<<< HEAD
 		Trap((float)1.5, (float)19);
+=======
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
 		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smarto.addColour("wit");
@@ -209,12 +217,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smartw.addColour("wit");
 		visibleObjects.add(Smartw);
+<<<<<<< HEAD
 	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+=======
+
+		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);	
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 	    lifeforms.add(c1);
-//	    CompanionCube c2 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-//		lifeforms.add(c2);
-//		 CompanionCube c3 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-//		lifeforms.add(c3);
+	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
+		lifeforms.add(c2);
+		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
+		lifeforms.add(c3);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 //		Trap(coordT[0], coordT[1]);
@@ -226,6 +240,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 			Smartw Smw = new Smartw((float)coordS[1+i*2],(float)coordS[2+i*2]);
 			visibleObjects.add(Smw);
 		}
+<<<<<<< HEAD
+=======
+		
+
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 		//this.setUndecorated(true);
 		player.setControl(input);
 		
@@ -235,6 +255,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 
      
 	}
+<<<<<<< HEAD
+=======
+	
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 
 /*
  * **********************************************
@@ -297,7 +322,7 @@ public class MazeRunner extends Frame implements GLEventListener {
         gl.glEnable( GL.GL_DEPTH_TEST );
         
         // Set and enable the lighting.
-        float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; 			// High up in the sky!
+        float lightPosition[] = { 0.0f, 0.0f/*50.0f*/, 0.0f, 1.0f }; 			// High up in the sky!
         float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
         gl.glLightfv( GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0 );	// Note that we're setting Light0.
         gl.glLightfv( GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
@@ -474,6 +499,24 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 		for(int i = 0; i < lifeforms.size(); i++){
 			lifeforms.get(i).update(deltaTime, maze, player);
+			
+			boolean collide = false;
+			
+			for(int j = 0; j < lifeforms.size(); j++){
+				if( i != j){
+					if(lifeforms.get(i).Collide(lifeforms.get(j))){
+						collide = true;
+					}
+				}
+			}
+			
+			if(collide){
+				lifeforms.get(i).stepBack(deltaTime);
+			}
+			
+			if(lifeforms.get(i).getPlayerHit()){
+				player.Hit();
+			}
 		}
 		
 		
