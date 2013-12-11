@@ -490,6 +490,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 			if(lifeforms.get(i).getPlayerHit()){
 				player.Hit();
 			}
+			
+			if(lifeforms.get(i).getSight()){
+				for(int k = 0; k < lifeforms.size(); k++){
+					if(i != k){
+						lifeforms.get(k).SetPlayerLocation(lifeforms.get(i).getPlayerLocation());
+					}
+				}
+			}
 		}
 		
 		
