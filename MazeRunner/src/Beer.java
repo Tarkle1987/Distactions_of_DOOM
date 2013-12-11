@@ -254,20 +254,13 @@ public class Beer extends GameObject implements VisibleObject{
 		objectOccupation.add(playerTile);
 		for(int i = 0; i<visibleObjects.size(); i++)
 		{
-			if(!(visibleObjects.get(i) instanceof Maze)&& !(visibleObjects.get(i) instanceof Book)
+			if(!(visibleObjects.get(i) instanceof Maze)
 					&& !visibleObjects.get(i).getPosition().equals(this.getPosition()) )
 			{
 				objectOccupation.add((visibleObjects.get(i)).getPosition());
 			}
 		}
-		for(int i =0; i<visibleObjects.size(); i++)
-		{
-			if(visibleObjects.get(i) instanceof Book)
-			{
-				BookPositions.add(visibleObjects.get(i).getPosition());
-				BookIndices.add(i);
-			}
-		}
+
 		for(int k =0; k<BookPositions.size(); k++)
 		{
 			if(BookPositions.get(k).distance(this.getPosition()) < 1.5 && this.waitingTime<=0)

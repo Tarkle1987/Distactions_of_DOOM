@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
+
 /** 
  * MazeRunner is the base class of the game, functioning as the view controller and game logic manager.
  * <p>
@@ -49,10 +53,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	private boolean init = true;
 
-	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smarto, Smartw;
+	private boolean textrue = true;
+	private CompanionCube c1;
+	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
+	private Texture Smart1texture;
+	private Texture Oranje;
+	private Beer b1, b2, b3, b4, b5;
 
-
-	
 	// Ingame seconden tellen
 	private int miliseconds = 0;
 	
@@ -158,7 +165,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * automagically. 
 	 */
 	
-	
 	private void initObjects()	{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
@@ -174,7 +180,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		// Initialize the player.
 		input = new UserInput(canvas);
-
 		
 		
 		player = new Player( 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
@@ -190,20 +195,20 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * Start positions for the game objects. Be aware: for the player the start position must two times be set..
 	     * TODO: Give the players startpoint as a Tile.
 	     * TODO: Give the cube's startpoint as a Tile.
-	  */   
+	  */  
+	      
 		float size = (float)maze.SQUARE_SIZE;
-
+		Trap((float)1.5, (float)19);
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
 		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
 		Smarto.addColour("wit");
 		visibleObjects.add(Smarto);
 		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
 		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smartw.addColour("rood");
+		Smartw.addColour("wit");
 		visibleObjects.add(Smartw);
-
-		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);	
-
+//	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
 	    lifeforms.add(c1);
 	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
 		lifeforms.add(c2);
@@ -211,8 +216,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		lifeforms.add(c3);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
-		Trap(coordT[0], coordT[1]);
-		Trap(coordT[2], coordT[3]);
+//		Trap(coordT[0], coordT[1]);
+//		Trap(coordT[2], coordT[3]);
 		int[] coordS = Maze.CoordSmart(Maze.maze);
 		for (int i = 0; i<coordS[0];i++){
 			Smarto Smo = new Smarto((float)coordS[1+i*2],(float)coordS[2+i*2]);
@@ -220,9 +225,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 			Smartw Smw = new Smartw((float)coordS[1+i*2],(float)coordS[2+i*2]);
 			visibleObjects.add(Smw);
 		}
-		
-
-
 		//this.setUndecorated(true);
 		player.setControl(input);
 		
@@ -232,9 +234,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 
      
 	}
-	
-
-
 /*
  * **********************************************
  * *		OpenGL event handlers				*
@@ -279,7 +278,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		drawable.setGL( new DebugGL(drawable.getGL() )); // We set the OpenGL pipeline to Debugging mode.
         GL gl = drawable.getGL();
         GLU glu = new GLU();
-      
         
         gl.glClearColor(0, 0, 0, 0);								// Set the background color.
         
@@ -311,10 +309,24 @@ public class MazeRunner extends Frame implements GLEventListener {
         // Loading textures
         displayLoadscreen(drawable);
 
-        maze.textures();
+        if (textrue)
+        {
+        	maze.textures();
+        	textureAdd(gl);
+        	textrue = false;
+        }
 
 	}
 	
+	private void textureAdd(GL gl){
+
+		Smarto.addTexture(maze.Oranje);
+		Smartw.addTexture(maze.Smarttex);
+		Kaft1.addTexture(maze.Blauw);
+		Kaft2.addTexture(maze.Groen);
+		Kaft3.addTexture(maze.Rood);
+		Papier.addTexture(maze.Wit);
+	}
 	private void displayLoadscreen(GLAutoDrawable drawable) {
 		// TODO Auto-generated method stub
 		

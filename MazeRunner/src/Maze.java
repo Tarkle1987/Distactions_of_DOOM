@@ -44,7 +44,8 @@ public class Maze implements VisibleObject {
 	public final double SINGLE_SIZE = 22;
 	public final double MAZE_SIZE = 2*SINGLE_SIZE;
 	public final double SQUARE_SIZE = 5;
-	private Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
+	protected Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
+	public Texture Oranje, Rood, Blauw, Groen, Wit, Smarttex;
 	private boolean initie = true;
 	private int textswitch;
 	protected static int[][] maze = new int[44][44];
@@ -225,6 +226,7 @@ public class Maze implements VisibleObject {
 			e.printStackTrace();
 			System.exit(0);
 		}
+		
 		try{
 			InputStream stream = getClass().getResourceAsStream("Kamerlinks.jpg");
 			TextureData data = TextureIO.newTextureData(stream, false, "Kamerlinks.jpg"); 
@@ -233,6 +235,55 @@ public class Maze implements VisibleObject {
 			e.printStackTrace();
 			System.exit(0);
 		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Oranje.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Oranje.jpg"); 
+			this.Oranje = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.out.println("fout");
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Rood.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Rood.jpg"); 
+			this.Rood = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
+		try{
+			InputStream stream = getClass().getResourceAsStream("Groen.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Groen.jpg"); 
+			this.Groen = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
+		try{
+			InputStream stream = getClass().getResourceAsStream("Blauw.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Blauw.jpg"); 
+			this.Blauw = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
+		try{
+			InputStream stream = getClass().getResourceAsStream("Wit.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Wit.jpg"); 
+			this.Wit = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
+		try{
+			InputStream stream = getClass().getResourceAsStream("Smarttex.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Smarttex.jpg"); 
+			this.Smarttex = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}	
 		
 	}
 	
