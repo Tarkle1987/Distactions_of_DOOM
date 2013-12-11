@@ -138,7 +138,7 @@ public class Routeplanner
 				closestCrosspointsPlayer = closestCrosspoint(maze,currentMaze ,vertices,targetTile);
 				DistancesPlayer = distanceToCrosspoints(maze,currentMaze ,vertices,targetTile);
 			}
-			if(vertices.length >1)
+			if(vertices.length >0 && closestCrosspointsObject.size() > 0 && closestCrosspointsPlayer.size() > 0)
 			{
 				double min = Double.MAX_VALUE;
 				int bestObj = 0;
@@ -166,22 +166,22 @@ public class Routeplanner
 					}
 					clear(vertices);
 				}
-				System.out.println("Distance from [" +closestCrosspointsObject.get(bestObj) + "] to [" + closestCrosspointsPlayer.get(bestTar) + "]: " + totalDistance);
-				System.out.println("Path: " + path);
+				//System.out.println("Distance from [" +closestCrosspointsObject.get(bestObj) + "] to [" + closestCrosspointsPlayer.get(bestTar) + "]: " + totalDistance);
+				//System.out.println("Path: " + path);
 				int nextdir = getNextDirection(maze, next, objectTile);
-				System.out.println(nextdir);
+				//System.out.println(nextdir);
 				return nextdir;
 			}
-			
+
 		}
 		return 0;
 	}
 
 	private static int getNextDirection(Maze maze, Vertex next, Tile objectTile) {
 		// As seen from mazes.txt:
-		// up = 1(X negatief, Z neutraal)
+		// down = 1(X negatief, Z neutraal)
 		// right = 2 (Z positief, X neutraal)
-		// down = 3 (X positief, Z neutraal)
+		// up = 3 (X positief, Z neutraal)
 		// left = 4 (Z negatief, X neutraal)
 		if(next != null)
 		{
@@ -260,7 +260,7 @@ public class Routeplanner
 		int Xs = maze.convertToGridX(objectTile.getX());
 		int Zs = maze.convertToGridZ(objectTile.getZ());
 
-		for(int k =0; k < vertices.length -1; k++)
+		for(int k =0; k < vertices.length; k++)
 		{
 			if(vertices[k].getX() == Xs && vertices[k].getZ() == Zs)
 				return k;
@@ -271,14 +271,22 @@ public class Routeplanner
 	private static boolean atCrosspoint(Maze maze, Vertex[] vertices,Tile objectTile)
 	{
 		int Xs = maze.convertToGridX(objectTile.getX());
+		int Xf = maze.convertToGridX(objectTile.getX() + 1);
+		int Xb = maze.convertToGridX(objectTile.getX() - 1);
 		int Zs = maze.convertToGridZ(objectTile.getZ());
+		int Zf = maze.convertToGridZ(objectTile.getZ() + 1);
+		int Zb = maze.convertToGridZ(objectTile.getZ() - 1);
 
-		for(Vertex v : vertices)
+		if(Xs == Xf && Xs == Xb && Zs == Zf && Zs == Zb)
 		{
-			if(v.getX() == Xs && v.getZ() == Zs)
-				return true;
+			for(Vertex v : vertices)
+			{
+				if(v.getX() == Xs && v.getZ() == Zs)
+				{
+					return true;
+				}
+			}
 		}
-
 		return false;
 	}
 	private static void clear(Vertex[] vertices) 
@@ -320,47 +328,30 @@ public class Routeplanner
 		}
 
 
-		left: for(int m = X; m > 0; m--)
+		up: for(int m = X; m >= 0; m--)
 		{
 			if(currentMaze[m][Z] != 1)
 			{
-				for(int n =0; n < vertices.length -1; n++)
+				for(int n =0; n < vertices.length; n++)
 				{
 					if(vertices[n].getX() == m && vertices[n].getZ() == Z)
 					{
 						closestCrosspointsObject.add(vertices[n]);
-						break left;
+						break up;
 					}
 				}
 
 			}
 			else
-				break left;
+				break up;
 		}
-		right: for(int m = X; m < 22; m++)
+		down: for(int m = X; m < 22; m++)
 		{
 			if(currentMaze[m][Z] != 1)
 			{
-				for(int n =0; n < vertices.length -1; n++)
+				for(int n =0; n < vertices.length; n++)
 				{
 					if(vertices[n].getX() == m && vertices[n].getZ() == Z)
-					{
-						closestCrosspointsObject.add(vertices[n]);
-						break right;
-					}
-				}
-
-			}
-			else
-				break right;
-		}
-		down :for(int m = Z; m > 0; m--)
-		{
-			if(currentMaze[X][m] != 1)
-			{
-				for(int n =0; n < vertices.length -1; n++)
-				{
-					if(vertices[n].getX() == X && vertices[n].getZ() == m)
 					{
 						closestCrosspointsObject.add(vertices[n]);
 						break down;
@@ -371,22 +362,39 @@ public class Routeplanner
 			else
 				break down;
 		}
-		up :for(int m = Z; m <21; m++)
+		left :for(int m = Z; m >= 0; m--)
 		{
 			if(currentMaze[X][m] != 1)
 			{
-				for(int n =0; n < vertices.length -1; n++)
+				for(int n =0; n < vertices.length; n++)
 				{
 					if(vertices[n].getX() == X && vertices[n].getZ() == m)
 					{
 						closestCrosspointsObject.add(vertices[n]);
-						break up;
+						break left;
 					}
 				}
 
 			}
 			else
-				break up;
+				break left;
+		}
+		right :for(int m = Z; m <22; m++)
+		{
+			if(currentMaze[X][m] != 1)
+			{
+				for(int n =0; n < vertices.length; n++)
+				{
+					if(vertices[n].getX() == X && vertices[n].getZ() == m)
+					{
+						closestCrosspointsObject.add(vertices[n]);
+						break right;
+					}
+				}
+
+			}
+			else
+				break right;
 		}
 
 		return closestCrosspointsObject;
@@ -419,11 +427,11 @@ public class Routeplanner
 			distanceToCrosspointsObject.add(max);
 			return distanceToCrosspointsObject;
 		}
-		left: for(int m = X; m > 0; m--)
+		up: for(int m = X; m > 0; m--)
 		{
 			if(currentMaze[m][Z] != 1)
 			{
-				for(int n =0; n < vertices.length -1; n++)
+				for(int n =0; n < vertices.length; n++)
 				{
 					if(vertices[n].getX() == m && vertices[n].getZ() == Z)
 					{
@@ -432,19 +440,19 @@ public class Routeplanner
 						if(DifX < 0.0)
 							DifX = DifX*-1;
 						distanceToCrosspointsObject.add(DifX);
-						break left;
+						break up;
 					}
 				}
 
 			}
 			else
-				break left;
+				break up;
 		}
-		right: for(int m = X; m < 22; m++)
+		down: for(int m = X; m < 22; m++)
 		{
 			if(currentMaze[m][Z] != 1)
 			{
-				for(int n =0; n < vertices.length -1; n++)
+				for(int n =0; n < vertices.length; n++)
 				{
 					if(vertices[n].getX() == m && vertices[n].getZ() == Z)
 					{
@@ -452,26 +460,6 @@ public class Routeplanner
 						if(DifX < 0.0)
 							DifX = DifX*-1;
 						distanceToCrosspointsObject.add(DifX);
-						break right;
-					}
-				}
-
-			}
-			else
-				break right;
-		}
-		down :for(int m = Z; m > 0; m--)
-		{
-			if(currentMaze[X][m] != 1)
-			{
-				for(int n =0; n < vertices.length -1; n++)
-				{
-					if(vertices[n].getX() == X && vertices[n].getZ() == m)
-					{
-						double DifZ = vertices[n].getZ() - maze.convertToGridZ(objectTile.getZ());
-						if(DifZ < 0.0)
-							DifZ = DifZ*-1;
-						distanceToCrosspointsObject.add(DifZ);
 						break down;
 					}
 				}
@@ -480,11 +468,11 @@ public class Routeplanner
 			else
 				break down;
 		}
-		up :for(int m = Z; m <21; m++)
+		left :for(int m = Z; m > 0; m--)
 		{
 			if(currentMaze[X][m] != 1)
 			{
-				for(int n =0; n < vertices.length -1; n++)
+				for(int n =0; n < vertices.length; n++)
 				{
 					if(vertices[n].getX() == X && vertices[n].getZ() == m)
 					{
@@ -492,13 +480,33 @@ public class Routeplanner
 						if(DifZ < 0.0)
 							DifZ = DifZ*-1;
 						distanceToCrosspointsObject.add(DifZ);
-						break up;
+						break left;
 					}
 				}
 
 			}
 			else
-				break up;
+				break left;
+		}
+		right :for(int m = Z; m <22; m++)
+		{
+			if(currentMaze[X][m] != 1)
+			{
+				for(int n =0; n < vertices.length; n++)
+				{
+					if(vertices[n].getX() == X && vertices[n].getZ() == m)
+					{
+						double DifZ = vertices[n].getZ() - maze.convertToGridZ(objectTile.getZ());
+						if(DifZ < 0.0)
+							DifZ = DifZ*-1;
+						distanceToCrosspointsObject.add(DifZ);
+						break right;
+					}
+				}
+
+			}
+			else
+				break right;
 		}
 
 		return distanceToCrosspointsObject;
