@@ -21,7 +21,11 @@ public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
 	private double sprintspeed = 0.015;
+
 	protected int hp;
+	private int hittimer = 0;
+	static final int hittimeInterval = 1;
+	
 	
 	private Control control = null;
 	
@@ -206,6 +210,8 @@ public class Player extends GameObject {
 		}else if(hp < 0){
 			hp = 0;
 		}
+
+		hittimer = hittimer - deltaTime;
 		
 		Tile playerTile = new Tile(this.getLocationX(), this.getLocationZ());
 		return playerTile;
@@ -216,5 +222,17 @@ public class Player extends GameObject {
 	}
 	public boolean getGodMode(){
 		return GodMode;
+	}
+	
+	public void Hit(){
+
+		if(hittimer <= 0){
+			if(hp > 0){
+				hp = hp - 1;
+				hittimer = hittimeInterval*1000;
+			}
+		}
+		
+		
 	}
 }

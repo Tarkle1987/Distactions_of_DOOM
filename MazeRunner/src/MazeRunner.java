@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
+
 /** 
  * MazeRunner is the base class of the game, functioning as the view controller and game logic manager.
  * <p>
@@ -48,11 +52,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Maze maze; 										// The maze.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
 	private boolean init = true;
-	private String fileName = "Eerste test.obj";
 
-	private MazeObject Trap, Smart, Smarto, Smartw;
+<<<<<<< HEAD
+	private boolean textrue = true;
+	private CompanionCube c1;
+	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
 	private Texture Smart1texture;
+	private Texture Oranje;
 	private Beer b1, b2, b3, b4, b5;
+=======
+	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smarto, Smartw;
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 
 	
 	// Ingame seconden tellen
@@ -160,7 +171,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * automagically. 
 	 */
 	
-	
 	private void initObjects()	{
 		// We define an ArrayList of VisibleObjects to store all the objects that need to be
 		// displayed by MazeRunner.
@@ -176,7 +186,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		// Initialize the player.
 		input = new UserInput(canvas);
-
 		
 		
 		player = new Player( 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
@@ -192,18 +201,38 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * Start positions for the game objects. Be aware: for the player the start position must two times be set..
 	     * TODO: Give the players startpoint as a Tile.
 	     * TODO: Give the cube's startpoint as a Tile.
-	  */   
+	  */  
+	      
 		float size = (float)maze.SQUARE_SIZE;
+<<<<<<< HEAD
+		Trap((float)1.5, (float)19);
+=======
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
+		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
+		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
+		Smarto.addColour("wit");
+		visibleObjects.add(Smarto);
+		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
+		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
+		Smartw.addColour("wit");
+		visibleObjects.add(Smartw);
+<<<<<<< HEAD
 	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+=======
+
+		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);	
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 	    lifeforms.add(c1);
-	    CompanionCube c2 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
 		lifeforms.add(c2);
-		 CompanionCube c3 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
 		lifeforms.add(c3);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
-		Trap(coordT[0], coordT[1]);
-		Trap(coordT[2], coordT[3]);
+//		Trap(coordT[0], coordT[1]);
+//		Trap(coordT[2], coordT[3]);
 		int[] coordS = Maze.CoordSmart(Maze.maze);
 		for (int i = 0; i<coordS[0];i++){
 			Smarto Smo = new Smarto((float)coordS[1+i*2],(float)coordS[2+i*2]);
@@ -211,8 +240,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 			Smartw Smw = new Smartw((float)coordS[1+i*2],(float)coordS[2+i*2]);
 			visibleObjects.add(Smw);
 		}
+<<<<<<< HEAD
+=======
 		
 
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 		//this.setUndecorated(true);
 		player.setControl(input);
 		
@@ -222,32 +255,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 
      
 	}
+<<<<<<< HEAD
+=======
 	
-public void Trap(float x, float z) {
-		
-		float size = (float)maze.SQUARE_SIZE;
-		MazeObject Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj", 35);
-		Kaft1.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
-		Kaft1.rotateVerticesZ(-90, 1, 1);
-		Kaft1.addColour("oranje");
-		visibleObjects.add(Kaft1);
-		MazeObject Kaft2 = CustomMazeObject.readFromOBJ("Kaft2.obj", 35);
-		Kaft2.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
-		Kaft2.rotateVerticesZ(-90, 1, 1);
-		Kaft2.addColour("oranje");
-		visibleObjects.add(Kaft2);
-		MazeObject Kaft3 = CustomMazeObject.readFromOBJ("Kaft3.obj", 35);
-		Kaft3.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
-		Kaft3.rotateVerticesZ(-90, 1, 1);
-		Kaft3.addColour("oranje");
-		visibleObjects.add(Kaft3);
-		MazeObject Papier = CustomMazeObject.readFromOBJ("Papier.obj", 35);
-		Papier.setCor((float)(x+0.5)*size, (float)(z+0.5)*size, 0);
-		Papier.rotateVerticesZ(-90, 1, 1);
-		Papier.addColour("wit");
-		visibleObjects.add(Papier);
-	
-	}
+
+>>>>>>> 0f0e1678a37d3f46fd3788ec697aba35ed4932e1
 
 /*
  * **********************************************
@@ -263,11 +275,36 @@ public void Trap(float x, float z) {
 	 * <p> 
 	 * It is <b>very important</b> to realize that there should be no drawing at all in this method.
 	 */
+	public void Trap(float x, float z) {
+		
+		float size = (float)maze.SQUARE_SIZE;
+		Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj", (float)0.0175);
+		Kaft1.setCor((float)x*size, (float)z*size, 0);
+		Kaft1.rotateVerticesZ(-90, 1, 1);
+		Kaft1.addColour("rood");
+		visibleObjects.add(Kaft1);
+		Kaft2 = CustomMazeObject.readFromOBJ("Kaft2.obj", (float)0.0175);
+		Kaft2.setCor((float)x*size, (float)z*size, 0);
+		Kaft2.rotateVerticesZ(-90, 1, 1);
+		Kaft2.addColour("groen");
+		visibleObjects.add(Kaft2);
+		Kaft3 = CustomMazeObject.readFromOBJ("Kaft3.obj", (float)0.0175);
+		Kaft3.setCor((float)x*size, (float)z*size, 0);
+		Kaft3.rotateVerticesZ(-90, 1, 1);
+		Kaft3.addColour("blauw");
+		visibleObjects.add(Kaft3);
+		Papier = CustomMazeObject.readFromOBJ("Papier.obj", (float)0.0175);
+		Papier.setCor((float)x*size, (float)z*size, 0);
+		Papier.rotateVerticesZ(-90, 1, 1);
+		Papier.addColour("wit");
+		visibleObjects.add(Papier);
+	
+	}
+	
 	public void init(GLAutoDrawable drawable) {
 		drawable.setGL( new DebugGL(drawable.getGL() )); // We set the OpenGL pipeline to Debugging mode.
         GL gl = drawable.getGL();
         GLU glu = new GLU();
-      
         
         gl.glClearColor(0, 0, 0, 0);								// Set the background color.
         
@@ -285,7 +322,7 @@ public void Trap(float x, float z) {
         gl.glEnable( GL.GL_DEPTH_TEST );
         
         // Set and enable the lighting.
-        float lightPosition[] = { 0.0f, 50.0f, 0.0f, 1.0f }; 			// High up in the sky!
+        float lightPosition[] = { 0.0f, 0.0f/*50.0f*/, 0.0f, 1.0f }; 			// High up in the sky!
         float lightColour[] = { 1.0f, 1.0f, 1.0f, 0.0f };				// White light!
         gl.glLightfv( GL.GL_LIGHT0, GL.GL_POSITION, lightPosition, 0 );	// Note that we're setting Light0.
         gl.glLightfv( GL.GL_LIGHT0, GL.GL_AMBIENT, lightColour, 0);
@@ -299,10 +336,24 @@ public void Trap(float x, float z) {
         // Loading textures
         displayLoadscreen(drawable);
 
-        maze.textures();
+        if (textrue)
+        {
+        	maze.textures();
+        	textureAdd(gl);
+        	textrue = false;
+        }
 
 	}
 	
+	private void textureAdd(GL gl){
+
+		Smarto.addTexture(maze.Oranje);
+		Smartw.addTexture(maze.Smarttex);
+		Kaft1.addTexture(maze.Blauw);
+		Kaft2.addTexture(maze.Groen);
+		Kaft3.addTexture(maze.Rood);
+		Papier.addTexture(maze.Wit);
+	}
 	private void displayLoadscreen(GLAutoDrawable drawable) {
 		// TODO Auto-generated method stub
 		
@@ -448,6 +499,24 @@ public void Trap(float x, float z) {
 		}
 		for(int i = 0; i < lifeforms.size(); i++){
 			lifeforms.get(i).update(deltaTime, maze, player);
+			
+			boolean collide = false;
+			
+			for(int j = 0; j < lifeforms.size(); j++){
+				if( i != j){
+					if(lifeforms.get(i).Collide(lifeforms.get(j))){
+						collide = true;
+					}
+				}
+			}
+			
+			if(collide){
+				lifeforms.get(i).stepBack(deltaTime);
+			}
+			
+			if(lifeforms.get(i).getPlayerHit()){
+				player.Hit();
+			}
 		}
 		
 		
