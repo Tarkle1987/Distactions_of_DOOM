@@ -51,7 +51,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private UserInput input;								// The user input object that controls the player.
 	private Maze maze; 										// The maze.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
+	
+	// startup hulp booleans
+	private boolean start = true;
 	private boolean init = true;
+	private boolean loading = true;
 
 	private boolean textrue = true;
 	private CompanionCube c1;
@@ -216,8 +220,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		lifeforms.add(c3);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
-//		Trap(coordT[0], coordT[1]);
-//		Trap(coordT[2], coordT[3]);
+		Trap(coordT[0], coordT[1]);
+		Trap(coordT[2], coordT[3]);
 		int[] coordS = Maze.CoordSmart(Maze.maze);
 		for (int i = 0; i<coordS[0];i++){
 			Smarto Smo = new Smarto((float)coordS[1+i*2],(float)coordS[2+i*2]);
@@ -276,7 +280,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	
 	public void init(GLAutoDrawable drawable) {
 		drawable.setGL( new DebugGL(drawable.getGL() )); // We set the OpenGL pipeline to Debugging mode.
-        GL gl = drawable.getGL();
+
+		GL gl = drawable.getGL();
         GLU glu = new GLU();
         
         gl.glClearColor(0, 0, 0, 0);								// Set the background color.
@@ -307,10 +312,12 @@ public class MazeRunner extends Frame implements GLEventListener {
         
         
         // Loading textures
-        displayLoadscreen(drawable);
+        System.out.println("Loading textures");
+ 
 
         if (textrue)
         {
+        	
         	maze.textures();
         	textureAdd(gl);
         	textrue = false;
@@ -345,7 +352,15 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.thisX = this.getX();
 		input.thisY = this.getY();
 		
-		if(!input.getPauze()){
+		// StartScherm
+		if(start){
+			this.setCursor(Cursor.getDefaultCursor());
+			input.pauze = true;
+			StartScherm(drawable);
+		}
+		
+		
+		if((!input.getPauze() && !start)){
 	
 			this.setCursor(this.getToolkit().createCustomCursor(
 		            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
@@ -363,7 +378,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				
 		}
 		// Pauzing te game progress
-		if(input.getPauze()){
+		if(input.getPauze() && !start){
 			
 			this.setCursor(Cursor.getDefaultCursor());
 			
@@ -373,7 +388,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 			input.waspauzed = true;
 			
 		}
+		
+	
 	}
+
 
 	
 
@@ -548,6 +566,42 @@ public class MazeRunner extends Frame implements GLEventListener {
 		gl.glVertex2f(x + width,y + height);
 		gl.glEnd();
 	}
+	
+	private void StartScherm(GLAutoDrawable drawable){
+		GL gl = drawable.getGL();
+		
+		switchTo2D(drawable);
+		
+		// Draw PauzeMenu
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		
+	    gl.glColor3f(1f, 0f, 0f);
+		
+		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, screenHeight/1.5f, screenWidth/1.5f);
+		
+		gl.glColor3f(0.35f, 0.35f, 0.35f);
+		
+		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight/1.5f, (float)0.95*screenWidth/1.5f);
+
+		if(true/*!loading*/){
+			Button button = new Button(gl, screenWidth, screenHeight, 5, "Continue");
+			button.NegIfIn(input.CurrentX, input.CurrentY);
+			button.PresIfIn(input.PressedX, input.PressedY);
+		
+			if(button.CursorInButton(input.ReleaseX, input.ReleaseY) && button.CursorInButton(input.WasPressedX, input.WasPressedY)){
+				start = false;
+				input.pauze = false;
+				init = true;
+			}
+		}
+		
+		
+		switchTo3D(drawable);  
+		
+		input.waspauzed = true;
+		input.mouseReleasedUsed();
+	}
+
 	private void Ingame(GLAutoDrawable drawable) {
 		GL gl = drawable.getGL();
 		GLU glu = new GLU();
@@ -555,19 +609,19 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Calculating time since last frame.
 		Calendar now = Calendar.getInstance();		
 		long currentTime = now.getTimeInMillis();
-		if(input.getWaspauzed() == true){
-			
-			previousTime = currentTime;
-			input.waspauzed = false;
-		}
+	
 		int deltaTime = (int)(currentTime - previousTime);
 	
 		if(deltaTime > 1000){
 			deltaTime = 16;
 		}
 		
-
 		previousTime = currentTime;
+		
+		if(input.getWaspauzed() == true){
+			deltaTime = 0;
+			input.waspauzed = false;
+		}
 		
 		// Seconden tellen
 		miliseconds = miliseconds + deltaTime;
@@ -577,18 +631,23 @@ public class MazeRunner extends Frame implements GLEventListener {
 			miliseconds = miliseconds - 1000;
 		}
 
+		
+		
+	    if(init){
+	    	   System.out.println("setting player normal");
+	    	   
+	    	    input.xd = input.screenWidth/2;
+	    	    input.yd = input.screenHeight/2;
+				player.setHorAngle(90);
+				player.setVerAngle(0);
+	        }
         
 		// Update any movement since last frame.
-		updateMovement(deltaTime);
-		
+	    updateMovement(deltaTime);
+			
 		updateCamera();
-		
-		
-		
-		 if(init){
-	        	player.setHorAngle(90);
-	        	player.setVerAngle(0);
-	        }
+	
+	
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT );
 		gl.glLoadIdentity();
@@ -612,11 +671,13 @@ public class MazeRunner extends Frame implements GLEventListener {
         // Flush the OpenGL buffer.
         gl.glFlush();
         
-         
-        init = false;
 		
-        
-	
+     
+        if(!loading)
+        	init = false;
+        else
+        	loading = false;
+		
 	}
 	private void Pauzemenu(GLAutoDrawable drawable){
 		GL gl = drawable.getGL();

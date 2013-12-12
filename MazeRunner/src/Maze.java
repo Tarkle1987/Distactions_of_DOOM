@@ -404,10 +404,10 @@ public class Maze implements VisibleObject {
 	public void display(GL gl) {
 		
 		GLUT glut = new GLUT();
-		if(initie){
-			textures();
-			initie = false;
-		}
+//		if(initie){
+//			textures();
+//			initie = false;
+//		}
         // Setting the wall colour and material.
         // draw the grid with the current material
       

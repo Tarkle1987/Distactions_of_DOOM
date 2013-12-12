@@ -109,9 +109,7 @@ public class UserInput extends Control
 		if(pauze){
 			this.PressedX = event.getX();
 			this.PressedY = event.getY();
-		}
-		
-		if(!geschoten){
+		}else if(!geschoten){
 			schiet = true;
 			
 		}

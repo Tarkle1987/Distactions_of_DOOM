@@ -91,7 +91,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 
 	public void CubeMove(int deltaTime, Maze maze, double X, double Z){
 
-		System.out.println(routeplanner);
+
 		// De kubus bewegen als de speler ertegenaan loopt ( alleen in X of in Z richting )
 		//		switch (CubeTouchDetection(X,Z)){
 		//		case 1: while(X > this.locationX - size/2 -1){this.locationX = this.locationX + speed*deltaTime;}
@@ -159,7 +159,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 		}else if(routeplanner > 0) {
 			Routeplanner nieuw = new Routeplanner();
 			int direction = nieuw.getRoute(maze, new Tile(this.locationX, this.locationZ), new Tile(X,Z));
-			System.out.println("direction: " + direction);
+	
 			
 			if(direction == 1){
 				dX = -1;
@@ -472,7 +472,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 		double z = p.locationZ;
 
 		if((x > locationX - 0.75*size) && (x < locationX + 0.75*size) 
-				&& (y > locationY - 0.5*size) && (y < locationY + 1.75*size) 
+				&& (y < locationY + 1.75*size) 
 				&& (z > locationZ - 0.75*size) && (z < locationZ + 0.75*size)){
 			hit = true;
 		}
