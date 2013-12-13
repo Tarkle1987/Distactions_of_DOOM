@@ -316,11 +316,11 @@ public class Routeplanner
 	private static boolean atCrosspoint(Maze maze, Vertex[] vertices,Tile objectTile)
 	{
 		int Xs = maze.convertToGridX(objectTile.getX());
-		int Xf = maze.convertToGridX(objectTile.getX() + 1);
-		int Xb = maze.convertToGridX(objectTile.getX() - 1);
+		int Xf = maze.convertToGridX(objectTile.getX() + 1.1);
+		int Xb = maze.convertToGridX(objectTile.getX() - 1.1);
 		int Zs = maze.convertToGridZ(objectTile.getZ());
-		int Zf = maze.convertToGridZ(objectTile.getZ() + 1);
-		int Zb = maze.convertToGridZ(objectTile.getZ() - 1);
+		int Zf = maze.convertToGridZ(objectTile.getZ() + 1.1);
+		int Zb = maze.convertToGridZ(objectTile.getZ() - 1.1);
 
 		if(Xs == Xf && Xs == Xb && Zs == Zf && Zs == Zb)
 		{

@@ -448,7 +448,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	private void updateMovement(int deltaTime)
 	{
-		player.update(deltaTime);
+		player.update(deltaTime, maze);
 		/*
 		 * Update position of the objects to next Steps. ObjectPositions is given to the objects, so that they can look for
 		 * other objects, and avoid them. The one that is first called, 'wins'.
@@ -517,23 +517,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				}
 			}
 		}
-		
-		
-		if(!player.getGodMode()){
-			double x = player.getLocationX();
-			double z = player.getLocationZ();
-		
-			if (maze.isWall(x+.5,z)||maze.isWall(x-.5,z)||maze.isWall(x,z+.5)||maze.isWall(x,z-.5)||
-			maze.isWall(x+.5,z+.5)||maze.isWall(x+.5, z-.5)||maze.isWall(x-.5,z+.5)||maze.isWall(x-.5,z-.5))
-			{
-				player.update(-deltaTime);
-			}
-		}
 
-//		Tile PlayerTile = new Tile(player.locationX, player.locationZ);
-//		Tile companionTile = new Tile(c1.locationX, c1.locationZ);
-//		Routeplanner nieuw = new Routeplanner();
-//		nieuw.testRoute(maze, companionTile, PlayerTile);
 
 	}
 
