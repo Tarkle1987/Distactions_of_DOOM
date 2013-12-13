@@ -2,6 +2,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import com.sun.opengl.util.texture.Texture;
+
 
 public class Smarto implements VisibleObject{
 
@@ -9,13 +11,14 @@ public class Smarto implements VisibleObject{
 	protected boolean destroy = false;
 	private float size = 5;
 	private double locationX,locationZ;
+	protected Texture texture;
 	
 	public Smarto(float x, float z) {
 		locationX = (double) x;
 		locationZ = (double) z;
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
 		Smarto.setCor((float)(x+0.5)*size, (float)(z+0.5)*size,(float)0.2*size);
-		Smarto.addColour("wit");	
+//		Smarto.addColour("wit");	
 	}
 	
 	
@@ -30,7 +33,12 @@ public class Smarto implements VisibleObject{
 	public double getLocationZ(){
 		return locationZ;
 	}
-
+	
+	public void addTexture(Texture t)
+	{
+		texture = t;
+		Smarto.addTexture(texture);
+	}
 
 	@Override
 	public void display(GL gl) {

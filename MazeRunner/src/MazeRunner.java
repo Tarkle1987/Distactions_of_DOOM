@@ -60,8 +60,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private boolean textrue = true;
 	private CompanionCube c1;
 	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
-	private Texture Smart1texture;
-	private Texture Oranje;
+	private Smarto Smo;
+	private Smartw Smw;
 	private Beer b1, b2, b3, b4, b5;
 
 	// Ingame seconden tellen
@@ -201,6 +201,16 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */  
 	      
+<<<<<<< HEAD
+//		float size = (float)maze.SQUARE_SIZE;
+//		Trap((float)1.5, (float)19);
+		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
+	    lifeforms.add(c1);
+	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
+		lifeforms.add(c2);
+		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
+		lifeforms.add(c3);
+=======
 		float size = (float)maze.SQUARE_SIZE;
 		Trap((float)1.5, (float)19);
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
@@ -220,6 +230,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		lifeforms.add(c3);
 		
 		CompanionCube(10,1.5);
+>>>>>>> 043e9ec825e68d48a060661fdc97b39e6ba04706
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap(coordT[0], coordT[1]);
@@ -273,7 +284,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Kaft3.addColour("blauw");
 		visibleObjects.add(Kaft3);
 		Papier = CustomMazeObject.readFromOBJ("Papier.obj", (float)0.0175);
-		Papier.setCor((float)x*size, (float)z*size, 0);
+		Papier.setCor((float)((x + 1)*size), (float)((z + 0.75)*size), 0);
 		Papier.rotateVerticesZ(-90, 1, 1);
 		Papier.addColour("wit");
 		visibleObjects.add(Papier);
@@ -353,8 +364,20 @@ public class MazeRunner extends Frame implements GLEventListener {
 	
 	private void textureAdd(GL gl){
 
-		Smarto.addTexture(maze.Oranje);
-		Smartw.addTexture(maze.Smarttex);
+		
+		for (int i = 0; i < visibleObjects.size(); i++)
+		{
+			if (visibleObjects.get(i) instanceof Smarto)
+			{
+				Smo = (Smarto) visibleObjects.get(i);
+				Smo.addTexture(maze.Smarttex);
+			}
+			if (visibleObjects.get(i) instanceof Smartw)
+			{;
+				Smw = (Smartw) visibleObjects.get(i);
+				Smw.addTexture(maze.Oranje);
+			}
+		}
 		Kaft1.addTexture(maze.Blauw);
 		Kaft2.addTexture(maze.Groen);
 		Kaft3.addTexture(maze.Rood);
