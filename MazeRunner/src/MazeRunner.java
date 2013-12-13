@@ -201,16 +201,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */  
 	      
-<<<<<<< HEAD
-//		float size = (float)maze.SQUARE_SIZE;
-//		Trap((float)1.5, (float)19);
-		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
-	    lifeforms.add(c1);
-	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
-		lifeforms.add(c2);
-		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
-		lifeforms.add(c3);
-=======
 		float size = (float)maze.SQUARE_SIZE;
 		Trap((float)1.5, (float)19);
 		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
@@ -230,7 +220,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		lifeforms.add(c3);
 		
 		CompanionCube(10,1.5);
->>>>>>> 043e9ec825e68d48a060661fdc97b39e6ba04706
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap(coordT[0], coordT[1]);
