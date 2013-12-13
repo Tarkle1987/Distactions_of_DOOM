@@ -201,16 +201,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */  
 	      
-		float size = (float)maze.SQUARE_SIZE;
-		Trap((float)1.5, (float)19);
-		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
-		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smarto.addColour("wit");
-		visibleObjects.add(Smarto);
-		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
-		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smartw.addColour("wit");
-		visibleObjects.add(Smartw);
+
+
 //	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 //		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
 //	    lifeforms.add(c1);
@@ -226,10 +218,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Trap(coordT[2], coordT[3]);
 		int[] coordS = Maze.CoordSmart(Maze.maze);
 		for (int i = 0; i<coordS[0];i++){
-			Smarto Smo = new Smarto((float)coordS[1+i*2],(float)coordS[2+i*2]);
-			visibleObjects.add(Smo);
-			Smartw Smw = new Smartw((float)coordS[1+i*2],(float)coordS[2+i*2]);
-			visibleObjects.add(Smw);
+			Smart Sm = new Smart((float)coordS[1+i*2],(float)coordS[2+i*2]);
+			visibleObjects.add(Sm);
+		
 		}
 		//this.setUndecorated(true);
 		player.setControl(input);
@@ -353,8 +344,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	
 	private void textureAdd(GL gl){
 
-		Smarto.addTexture(maze.Oranje);
-		Smartw.addTexture(maze.Smarttex);
+//		Smarto.addTexture(maze.Oranje);
+//		Smartw.addTexture(maze.Smarttex);
 		Kaft1.addTexture(maze.Blauw);
 		Kaft2.addTexture(maze.Groen);
 		Kaft3.addTexture(maze.Rood);
@@ -486,18 +477,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 			
 			
 			
-			if(visibleObjects.get(i) instanceof Smarto){
-				Smarto so = (Smarto) visibleObjects.get(i);
+			if(visibleObjects.get(i) instanceof Smart){
+				Smart so = (Smart) visibleObjects.get(i);
 					if(so.destroy){
 						visibleObjects.remove(i);
 					}
 				}
-				else if(visibleObjects.get(i) instanceof Smartw){
-					Smartw sw = (Smartw) visibleObjects.get(i);
-						if(sw.destroy){
-							visibleObjects.remove(i);
-						}
-					}			
+						
 		}
 		
 		

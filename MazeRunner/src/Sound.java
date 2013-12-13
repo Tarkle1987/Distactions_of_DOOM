@@ -42,8 +42,17 @@ public class Sound {
 		return clip;
 	}
 	
-	public void Start(){
-		this.thisClip().start();
+	public void play(){
+		try {
+			this.thisClip().open(audioInputStream);
+		} catch (LineUnavailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		this.thisClip().loop(0);
 	}
 	
 	public void setGain(float Gain){

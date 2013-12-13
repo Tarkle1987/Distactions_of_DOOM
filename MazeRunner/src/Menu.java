@@ -58,6 +58,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	
 	private Sound bird = new Sound("bird.wav");
 
+
 	// A GLCanvas is a component that can be added to a frame. The drawing
 	// happens on this component.
 	private GLCanvas canvas;
@@ -216,6 +217,8 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	}
 
 	public void MenuScreen(GL gl){
+		Sound peter = new Sound("Peter1.wav");
+		
 		
 		Button button1 = new Button(gl, screenWidth, screenHeight, 2, "Start Game");
 		Button button2 = new Button(gl, screenWidth, screenHeight, 3, "Settings");
@@ -245,11 +248,13 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		}else if(button4.CursorInButton(ReleaseX, ReleaseY) && button4.CursorInButton(WasPressedX, WasPressedY)){
 			MenuButton4();
 		}else if(sound.CursorInButton(ReleaseX, ReleaseY) && sound.CursorInButton(WasPressedX, WasPressedY)){
-			bird.playloop();
-			bird.setGain(1.0f);
-		
+//			bird.playloop();
+//			bird.setGain(1.0f);
+//		
+			peter.play();
+			peter.setGain(1.0f);
 		}else if(gain.CursorInButton(ReleaseX, ReleaseY) && gain.CursorInButton(WasPressedX, WasPressedY)){
-			bird.IncreaseGain();
+			peter.IncreaseGain();
 		}
 		
 		// resetting used values
