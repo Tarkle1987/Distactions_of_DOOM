@@ -122,6 +122,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 	
 			if(maze.isWall(PlayerLocation[0], PlayerLocation[1])){
 				follow = 0;
+				routeplanner = 0;
 			}
 
 			

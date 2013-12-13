@@ -212,12 +212,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Smartw.addColour("wit");
 		visibleObjects.add(Smartw);
 //	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
-	    lifeforms.add(c1);
-	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
-		lifeforms.add(c2);
-		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
-		lifeforms.add(c3);
+//		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
+//	    lifeforms.add(c1);
+//	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
+//		lifeforms.add(c2);
+//		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
+//		lifeforms.add(c3);
+		
+		CompanionCube(10,1.5);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap(coordT[0], coordT[1]);
@@ -276,6 +278,30 @@ public class MazeRunner extends Frame implements GLEventListener {
 		Papier.addColour("wit");
 		visibleObjects.add(Papier);
 	
+	}
+	
+	public void CompanionCube(int num, double size){
+		for(int i = 0; i < num; i ++){
+			double X = player.locationX;
+			double Z = player.locationZ;
+			
+			boolean GO = true;
+			while(GO){
+				X = Math.random()*21*maze.SQUARE_SIZE;
+				Z = Math.random()*21*maze.SQUARE_SIZE;
+				
+				
+				if(!(maze.isWall(X+(size*Math.sqrt(2))/2,Z)||maze.isWall(X-(size*Math.sqrt(2))/2,Z)||maze.isWall(X,Z+(size*Math.sqrt(2))/2)||maze.isWall(X,Z-(size*Math.sqrt(2))/2)||
+						maze.isWall(X+(size*Math.sqrt(2))/2,Z+(size*Math.sqrt(2))/2)||maze.isWall(X+(size*Math.sqrt(2))/2, Z-(size*Math.sqrt(2))/2)||maze.isWall(X-(size*Math.sqrt(2))/2,Z+(size*Math.sqrt(2))/2)||maze.isWall(X-(size*Math.sqrt(2))/2,Z-(size*Math.sqrt(2))/2))){
+					
+					
+					GO = false;
+				}
+			}
+			
+			CompanionCube CC = new CompanionCube(X,0,Z,size);
+			lifeforms.add(CC);
+		}
 	}
 	
 	public void init(GLAutoDrawable drawable) {
