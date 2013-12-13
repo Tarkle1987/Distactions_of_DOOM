@@ -14,5 +14,7 @@ public interface Lifeform {
 	double getLocationZ();
 	void stepBack(int deltaTime);
 	boolean getPlayerHit();
-	
+	double[] getPlayerLocation();
+	void SetPlayerLocation(double[] PL);
+	boolean getSight();
 }

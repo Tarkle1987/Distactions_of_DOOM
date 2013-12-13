@@ -3,107 +3,38 @@ import java.util.PriorityQueue;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-
+/**
+ * 
+ * @author Paul de Goffau
+ *
+ *	Class that contains functions that together calculate the shortest route between given Tiles.
+ *	This code uses the Dijkstra Algorithm, and the heart of the code is based on a standard implementation,
+ *	from http://www.algolist.com/code/java/Dijkstra%27s_algorithm
+ */
 public class Routeplanner
 {
 	Vertex[] vertices;
-
-	public void computePaths(Vertex source)
-	{
-		source.minDistance = 0.;
-		PriorityQueue<Vertex> vertexQueue = new PriorityQueue<Vertex>();
-		vertexQueue.add(source);
-
-		while (!vertexQueue.isEmpty()) {
-			Vertex u = vertexQueue.poll();
-			// Visit each edge exiting u
-			for (int k =0; k< u.adjacencies.length; k++)
-			{
-				Edge e = u.adjacencies[k];
-				Vertex v = e.target;
-				double weight = e.weight;
-				double distanceThroughU = u.minDistance + weight;
-				if (distanceThroughU < v.minDistance) {
-					vertexQueue.remove(v);
-					v.minDistance = distanceThroughU ;
-					v.previous = u;
-					vertexQueue.add(v);
-				}
-			}
-		}
-	}
-
-	public static List<Vertex> getShortestPathTo(Vertex target)
-	{
-		List<Vertex> path = new ArrayList<Vertex>();
-		for (Vertex vertex = target; vertex != null; vertex = vertex.previous)
-		{
-			path.add(vertex);
-		}
-		Collections.reverse(path);
-		return path;
-	}
-
-	private static Vertex getNextVertexTo(Vertex target, Boolean ownTile) 
-	{
-		Vertex res = null;
-		if(ownTile)
-		{
-			for(Vertex vertex = target; vertex.previous != null; vertex = vertex.previous)
-			{
-				res = vertex;
-			}
-		}
-		else
-		{
-			for(Vertex vertex = target; vertex !=null; vertex = vertex.previous)
-			{
-				res = vertex;
-			}
-		}
-
-		return res;
-	}
-
-	public void init(int[][] currentMaze)
-	{
-		PatternCheck patterns = new PatternCheck(currentMaze);
-		ArrayList<Vertex> crosspoints = patterns.getCrossPoints();
-
-		for(int k =0; k < crosspoints.size(); k++)
-		{
-			switch(crosspoints.get(k).pattern)
-			{
-			case "A": SetAdjacensiesA(crosspoints, k, currentMaze);
-			break; 									// 4 mogelijkheden
-			case "B": SetAdjacensiesB(crosspoints, k, currentMaze);
-			break; 									// 2 mogelijkheden
-			case "C": SetAdjacensiesC(crosspoints, k, currentMaze);
-			break; 										// 2 mogelijkheden
-			case "D": SetAdjacensiesD(crosspoints, k, currentMaze);
-			break; 										// 2 mogelijkheden
-			case "E":SetAdjacensiesE(crosspoints, k, currentMaze);
-			break; 									// 2 mogelijkheden
-			case "F":SetAdjacensiesF(crosspoints, k, currentMaze);
-			break; 									// 3 mogelijkheden
-			case "G":SetAdjacensiesG(crosspoints, k, currentMaze);
-			break; 									// 3 mogelijkheden
-			case "H":SetAdjacensiesH(crosspoints, k, currentMaze);
-			break; 									// 3 mogelijkheden
-			case "I":SetAdjacensiesI(crosspoints, k, currentMaze);
-			break;										// 3 mogelijkheden
-			default: break;
-			}
-
-		}
-		this.vertices = new Vertex[crosspoints.size()];
-		for(int i =0; i <crosspoints.size(); i++)
-		{
-			this.vertices[i] = crosspoints.get(i);
-		}
-	}
-
-	public int testRoute(Maze maze, Tile objectTile, Tile targetTile)
+/**
+ * This method has to be called to calculate the next direction, according to the right route.
+ * First, we check if the player and the object are in the same maze, if not, return 0;
+ * If true, the right sector of the maze is loaded, such that we do only the needed calculations.
+ * 
+ * Then method init() creates a set of crosspoints and their connections.
+ * After the initializations are done, the closest crosspoints for both the player and the object are
+ * calculated.
+ * 
+ *For all the possible combinations the Dijkstra Algorithm is called(computepaths)
+ *The shortest combination is selected, and the nextcrosspoint is determined by method
+ *getNextVertexTo().
+ *According to that vertex, and the vertex of the object is a new direction determined.
+ *This direction is returned.
+ * 
+ * @param maze the maze, read from mazes.txt
+ * @param objectTile the combined x and z position from the object
+ * @param targetTile the combined x and z position from the player
+ * @return the next direction for the object to come nearer to the player.
+ */
+	public int getRoute(Maze maze, Tile objectTile, Tile targetTile)
 	{
 		if(inTheSameMaze(maze, objectTile,targetTile))
 		{
@@ -176,6 +107,120 @@ public class Routeplanner
 		}
 		return 0;
 	}
+	
+/**
+ * This is the function that finds for each vertex in the maze the shortest combination of vertices
+ * to the given vertex source.
+ * @param source the vertex from which the paths are determined
+ */
+	public void computePaths(Vertex source)
+	{
+		source.minDistance = 0.;
+		PriorityQueue<Vertex> vertexQueue = new PriorityQueue<Vertex>();
+		vertexQueue.add(source);
+
+		while (!vertexQueue.isEmpty()) {
+			Vertex u = vertexQueue.poll();
+			// Visit each edge exiting u
+			for (int k =0; k< u.adjacencies.length; k++)
+			{
+				Edge e = u.adjacencies[k];
+				Vertex v = e.target;
+				double weight = e.weight;
+				double distanceThroughU = u.minDistance + weight;
+				if (distanceThroughU < v.minDistance) {
+					vertexQueue.remove(v);
+					v.minDistance = distanceThroughU ;
+					v.previous = u;
+					vertexQueue.add(v);
+				}
+			}
+		}
+	}
+/**
+ * This method returns the path from the source given to method computepaths to the given parameter target
+ * @param target 
+ * @return the path from the source given to method computepaths to the given parameter target
+ */
+	public static List<Vertex> getShortestPathTo(Vertex target)
+	{
+		List<Vertex> path = new ArrayList<Vertex>();
+		for (Vertex vertex = target; vertex != null; vertex = vertex.previous)
+		{
+			path.add(vertex);
+		}
+		Collections.reverse(path);
+		return path;
+	}
+/**
+ * This method returns the next crosspoint(vertex) to which the object has to travel
+ * @param target 
+ * @param ownTile boolean value that gives the right next crosspoint when the object is at a crosspoint
+ * @return the next crosspoint(vertex) to which the object has to travel
+ */
+	private static Vertex getNextVertexTo(Vertex target, Boolean ownTile) 
+	{
+		Vertex res = null;
+		if(ownTile)
+		{
+			for(Vertex vertex = target; vertex.previous != null; vertex = vertex.previous)
+			{
+				res = vertex;
+			}
+		}
+		else
+		{
+			for(Vertex vertex = target; vertex !=null; vertex = vertex.previous)
+			{
+				res = vertex;
+			}
+		}
+
+		return res;
+	}
+/**
+ * This method calls a patterncheck to find all crosspoints, and after that link them 
+ * with separated functions
+ * @param currentMaze the maze in which the player and the object are.
+ */
+	public void init(int[][] currentMaze)
+	{
+		PatternCheck patterns = new PatternCheck(currentMaze);
+		ArrayList<Vertex> crosspoints = patterns.getCrossPoints();
+
+		for(int k =0; k < crosspoints.size(); k++)
+		{
+			switch(crosspoints.get(k).pattern)
+			{
+			case "A": SetAdjacensiesA(crosspoints, k, currentMaze);
+			break; 									// 4 mogelijkheden
+			case "B": SetAdjacensiesB(crosspoints, k, currentMaze);
+			break; 									// 2 mogelijkheden
+			case "C": SetAdjacensiesC(crosspoints, k, currentMaze);
+			break; 										// 2 mogelijkheden
+			case "D": SetAdjacensiesD(crosspoints, k, currentMaze);
+			break; 										// 2 mogelijkheden
+			case "E":SetAdjacensiesE(crosspoints, k, currentMaze);
+			break; 									// 2 mogelijkheden
+			case "F":SetAdjacensiesF(crosspoints, k, currentMaze);
+			break; 									// 3 mogelijkheden
+			case "G":SetAdjacensiesG(crosspoints, k, currentMaze);
+			break; 									// 3 mogelijkheden
+			case "H":SetAdjacensiesH(crosspoints, k, currentMaze);
+			break; 									// 3 mogelijkheden
+			case "I":SetAdjacensiesI(crosspoints, k, currentMaze);
+			break;										// 3 mogelijkheden
+			default: break;
+			}
+
+		}
+		this.vertices = new Vertex[crosspoints.size()];
+		for(int i =0; i <crosspoints.size(); i++)
+		{
+			this.vertices[i] = crosspoints.get(i);
+		}
+	}
+
 
 	private static int getNextDirection(Maze maze, Vertex next, Tile objectTile) {
 		// As seen from mazes.txt:
@@ -271,11 +316,11 @@ public class Routeplanner
 	private static boolean atCrosspoint(Maze maze, Vertex[] vertices,Tile objectTile)
 	{
 		int Xs = maze.convertToGridX(objectTile.getX());
-		int Xf = maze.convertToGridX(objectTile.getX() + 1);
-		int Xb = maze.convertToGridX(objectTile.getX() - 1);
+		int Xf = maze.convertToGridX(objectTile.getX() + 1.1);
+		int Xb = maze.convertToGridX(objectTile.getX() - 1.1);
 		int Zs = maze.convertToGridZ(objectTile.getZ());
-		int Zf = maze.convertToGridZ(objectTile.getZ() + 1);
-		int Zb = maze.convertToGridZ(objectTile.getZ() - 1);
+		int Zf = maze.convertToGridZ(objectTile.getZ() + 1.1);
+		int Zb = maze.convertToGridZ(objectTile.getZ() - 1.1);
 
 		if(Xs == Xf && Xs == Xb && Zs == Zf && Zs == Zb)
 		{

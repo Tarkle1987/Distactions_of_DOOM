@@ -18,11 +18,11 @@ public class CompanionCube extends GameObject implements Lifeform {
 
 	// Follow player attributes
 	private double[] PlayerLocation = new double[2];
-
+	
 	private int follow = 0;
 	static final int followtime = 15;
-	private boolean routeplanner = false;
-	private boolean freemovement = true;
+	private int routeplanner = 0;
+	static final int routeplannertime = 30;
 	
 	private int sightrange = 60;
 	private int hearingrange = 10;
@@ -34,7 +34,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 	private boolean stun = false;
 	private int stuntimer = 0;
 	static final int stuntime = 2;
-	
+	private boolean freemovement = false;
 	private double directionX = 0;
 	private double directionZ = 1;
 	private double sightX = 0;
@@ -61,6 +61,8 @@ public class CompanionCube extends GameObject implements Lifeform {
 		
 		float[] CubeColor = { 0.1333f, 0.545f, 0.1333f, 1f };
 		
+		if(routeplanner > 0)
+			CubeColor = new float[]{ 0f, 0f, 0f, 1f};
 		if(follow > 0)
 			CubeColor = new float[]{ 1f, 0.627f, 0f, 1f };
 		if(sight)
@@ -110,7 +112,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 
 		sight = CheckSight(X,Z, maze);
 		
-		routeplanner = true;
 		if(sight){
 			momentum = 0;
 
@@ -118,9 +119,10 @@ public class CompanionCube extends GameObject implements Lifeform {
 			
 			PlayerLocation[0] = X;
 			PlayerLocation[1] = Z;
-
+	
 			if(maze.isWall(PlayerLocation[0], PlayerLocation[1])){
 				follow = 0;
+				routeplanner = 0;
 			}
 
 			
@@ -132,20 +134,16 @@ public class CompanionCube extends GameObject implements Lifeform {
 				dZ = 0;
 				playerhit = true;
 			}
-//			System.out.println("Follow player");
-//			System.out.println("Last Known Location");
-
-	
-//			System.out.println("Follow player");
 
 
 		}else if(follow > 0){
 			momentum = 0;
-			follow = follow - deltaTime;
+			routeplanner = 0;
+			
 			dX = PlayerLocation[0] - locationX;
 			dZ = PlayerLocation[1] - locationZ;
 
-			//System.out.println(PlayerLocation[0] + " " + locationX);
+	
 
 
 			dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
@@ -159,40 +157,46 @@ public class CompanionCube extends GameObject implements Lifeform {
 
 				follow = 0;
 			}
-		}else if(routeplanner)
-		{
+		}else if(routeplanner > 0) {
 			Routeplanner nieuw = new Routeplanner();
+<<<<<<< HEAD
 			int direction = nieuw.testRoute(maze, new Tile(this.locationX, this.locationZ), new Tile(X,Z));
+=======
+			int direction = nieuw.getRoute(maze, new Tile(this.locationX, this.locationZ), new Tile(PlayerLocation[0],PlayerLocation[1]));
+	
+>>>>>>> 043e9ec825e68d48a060661fdc97b39e6ba04706
 			
 			if(direction == 1){
 				dX = -1;
 				dZ = 0;
-				freemovement = false;
+		
 				momentum = 0;
 			}else if(direction == 2){
 				dX = 0;
 				dZ = 1;
-				freemovement = false;
+
 				momentum = 0;
 			}else if(direction == 3){
 				dX = 1;
 				dZ = 0;
-				freemovement = false;
+		
 				momentum = 0;
 			}else if(direction == 4){
 				dX = 0;
 				dZ = -1;
-				freemovement = false;
+	
 				momentum = 0;
 			}else {
-				freemovement = true;
+			    freemovement = true;
 				dX = 0;
 				dZ = 0;
 			}
+		}else {
+			freemovement = true;
 		}
-		if(freemovement)
-		{
-			//System.out.println("Free movement");
+		
+		if(freemovement) {
+			freemovement = false;
 			momentum = momentum - deltaTime;
 
 			if(momentum <= 0){
@@ -264,10 +268,13 @@ public class CompanionCube extends GameObject implements Lifeform {
 				}
 			}
 		}
-
 		directionX = dX;
 		directionZ = dZ;
-		//System.out.println("Xobj: " + this.locationX + " Zobj: " + this.locationZ);
+		
+		if(follow > 0)
+			follow = follow - deltaTime;
+		if(routeplanner > 0)
+			routeplanner = routeplanner - deltaTime;
 	}
 
 	private void CubeRotate(int deltaTime){
@@ -470,7 +477,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 		double z = p.locationZ;
 
 		if((x > locationX - 0.75*size) && (x < locationX + 0.75*size) 
-				&& (y > locationY - 0.5*size) && (y < locationY + 1.75*size) 
+				&& (y < locationY + 1.75*size) 
 				&& (z > locationZ - 0.75*size) && (z < locationZ + 0.75*size)){
 			hit = true;
 		}
@@ -533,5 +540,30 @@ public class CompanionCube extends GameObject implements Lifeform {
 	public boolean getPlayerHit(){
 		return playerhit;
 	}
+
+
+	@Override
+	public double[] getPlayerLocation() {
+	
+		return PlayerLocation;
+	}
+
+
+	@Override
+	public void SetPlayerLocation(double[] PL) {
+		
+		this.PlayerLocation = PL;
+		
+		routeplanner = routeplannertime*1000;
+	}
+	
+	@Override
+	public boolean getSight(){
+		return sight;
+	}
+	
+	
+	
+	
 
 }

@@ -390,6 +390,9 @@ public class Maze implements VisibleObject {
 	{
 		return (int)Math.floor( x / SQUARE_SIZE );
 	}
+	protected double convertFromGridX( int x ){
+		return x * SQUARE_SIZE;
+	}
 
 	/**
 	 * Converts the double z-coordinate to its correspondent integer coordinate.
@@ -400,14 +403,17 @@ public class Maze implements VisibleObject {
 	{
 		return (int)Math.floor( z / SQUARE_SIZE );
 	}
+	protected double convertFromGridZ( int z ){
+		return z*SQUARE_SIZE;
+	}
 	
 	public void display(GL gl) {
 		
 		GLUT glut = new GLUT();
-		if(initie){
-			textures();
-			initie = false;
-		}
+//		if(initie){
+//			textures();
+//			initie = false;
+//		}
         // Setting the wall colour and material.
         // draw the grid with the current material
       
