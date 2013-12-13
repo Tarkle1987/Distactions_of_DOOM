@@ -390,6 +390,9 @@ public class Maze implements VisibleObject {
 	{
 		return (int)Math.floor( x / SQUARE_SIZE );
 	}
+	protected double convertFromGridX( int x ){
+		return x * SQUARE_SIZE;
+	}
 
 	/**
 	 * Converts the double z-coordinate to its correspondent integer coordinate.
@@ -399,6 +402,9 @@ public class Maze implements VisibleObject {
 	protected int convertToGridZ( double z )
 	{
 		return (int)Math.floor( z / SQUARE_SIZE );
+	}
+	protected double convertFromGridZ( int z ){
+		return z*SQUARE_SIZE;
 	}
 	
 	public void display(GL gl) {
