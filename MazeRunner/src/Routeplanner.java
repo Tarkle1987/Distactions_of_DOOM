@@ -14,6 +14,15 @@ import java.util.Collections;
 public class Routeplanner
 {
 	Vertex[] vertices;
+	double size;
+	double range;
+	
+	public Routeplanner(double size) 
+	{
+		this.size = size;
+		this.range = size/2 + 0.35;
+	}
+
 /**
  * This method has to be called to calculate the next direction, according to the right route.
  * First, we check if the player and the object are in the same maze, if not, return 0;
@@ -72,7 +81,6 @@ public class Routeplanner
 			if(vertices.length >0 && closestCrosspointsObject.size() > 0 && closestCrosspointsPlayer.size() > 0)
 			{
 				double min = Double.MAX_VALUE;
-				int bestObj = 0;
 				int bestTar = 0;
 				double totalDistance = 0.0;
 				List<Vertex> path = null;
@@ -89,7 +97,6 @@ public class Routeplanner
 						if(totalDistance < min)
 						{
 							min = totalDistance;
-							bestObj = k;
 							bestTar = j;
 							path = getShortestPathTo(closestCrosspointsPlayer.get(bestTar));
 							next = getNextVertexTo(closestCrosspointsPlayer.get(bestTar), ownTile);
@@ -310,17 +317,16 @@ public class Routeplanner
 			if(vertices[k].getX() == Xs && vertices[k].getZ() == Zs)
 				return k;
 		}
-		// TODO Auto-generated method stub
 		return 0;
 	}
-	private static boolean atCrosspoint(Maze maze, Vertex[] vertices,Tile objectTile)
+	private boolean atCrosspoint(Maze maze, Vertex[] vertices,Tile objectTile)
 	{
 		int Xs = maze.convertToGridX(objectTile.getX());
-		int Xf = maze.convertToGridX(objectTile.getX() + 1.1);
-		int Xb = maze.convertToGridX(objectTile.getX() - 1.1);
+		int Xf = maze.convertToGridX(objectTile.getX() + this.range);
+		int Xb = maze.convertToGridX(objectTile.getX() - this.range);
 		int Zs = maze.convertToGridZ(objectTile.getZ());
-		int Zf = maze.convertToGridZ(objectTile.getZ() + 1.1);
-		int Zb = maze.convertToGridZ(objectTile.getZ() - 1.1);
+		int Zf = maze.convertToGridZ(objectTile.getZ() + this.range);
+		int Zb = maze.convertToGridZ(objectTile.getZ() - this.range);
 
 		if(Xs == Xf && Xs == Xb && Zs == Zf && Zs == Zb)
 		{
