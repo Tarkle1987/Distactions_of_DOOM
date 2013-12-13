@@ -200,27 +200,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the players startpoint as a Tile.
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */  
-	      
-<<<<<<< HEAD
-//		float size = (float)maze.SQUARE_SIZE;
-//		Trap((float)1.5, (float)19);
+
 		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
 	    lifeforms.add(c1);
 	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
 		lifeforms.add(c2);
 		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
 		lifeforms.add(c3);
-=======
-		float size = (float)maze.SQUARE_SIZE;
-		Trap((float)1.5, (float)19);
-		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
-		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smarto.addColour("wit");
-		visibleObjects.add(Smarto);
-		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
-		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
-		Smartw.addColour("wit");
-		visibleObjects.add(Smartw);
 //	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 //		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
 //	    lifeforms.add(c1);
@@ -230,7 +216,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		lifeforms.add(c3);
 		
 		CompanionCube(10,1.5);
->>>>>>> 043e9ec825e68d48a060661fdc97b39e6ba04706
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap(coordT[0], coordT[1]);
@@ -269,22 +254,22 @@ public class MazeRunner extends Frame implements GLEventListener {
 		
 		float size = (float)maze.SQUARE_SIZE;
 		Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj", (float)0.0175);
-		Kaft1.setCor((float)x*size, (float)z*size, 0);
+		Kaft1.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
 		Kaft1.rotateVerticesZ(-90, 1, 1);
 		Kaft1.addColour("rood");
 		visibleObjects.add(Kaft1);
 		Kaft2 = CustomMazeObject.readFromOBJ("Kaft2.obj", (float)0.0175);
-		Kaft2.setCor((float)x*size, (float)z*size, 0);
+		Kaft2.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
 		Kaft2.rotateVerticesZ(-90, 1, 1);
 		Kaft2.addColour("groen");
 		visibleObjects.add(Kaft2);
 		Kaft3 = CustomMazeObject.readFromOBJ("Kaft3.obj", (float)0.0175);
-		Kaft3.setCor((float)x*size, (float)z*size, 0);
+		Kaft3.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
 		Kaft3.rotateVerticesZ(-90, 1, 1);
 		Kaft3.addColour("blauw");
 		visibleObjects.add(Kaft3);
 		Papier = CustomMazeObject.readFromOBJ("Papier.obj", (float)0.0175);
-		Papier.setCor((float)((x + 1)*size), (float)((z + 0.75)*size), 0);
+		Papier.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
 		Papier.rotateVerticesZ(-90, 1, 1);
 		Papier.addColour("wit");
 		visibleObjects.add(Papier);
