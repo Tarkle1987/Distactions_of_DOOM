@@ -21,6 +21,7 @@ public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
 	private double sprintspeed = 0.015;
+	private double godmodespeed = 0.1;
 
 	protected int hp;
 	private int hittimer = 0;
@@ -161,7 +162,9 @@ public class Player extends GameObject {
 				{
 					speed = sprintspeed;
 				}
-
+				
+				if(GodMode)
+					speed = godmodespeed;
 				if (!maze.isWall(X - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5 ,Z) && !maze.isWall(X - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) - 0.5 ,Z) || GodMode)
 				{
 					setLocationX(X - speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
@@ -175,6 +178,9 @@ public class Player extends GameObject {
 				// reset speed to default
 				speed = 0.01;
 			}
+			if(GodMode)
+				speed = godmodespeed;
+			
 			if (control.back){
 
 				if(!maze.isWall(X + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5, Z) && !maze.isWall(X + speed  * deltaTime * Math.sin(Math.toRadians(horAngle))-0.5, Z)|| GodMode)
