@@ -1,4 +1,4 @@
-package NotDefined;
+package Score;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -32,7 +32,7 @@ public class DatabaseAccess
 		String res = "";
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "SELECT * FROM Score"; // Hier moet de goede sql query komen, liefst gesorteerd.
+			String sql = "SELECT * FROM Score ORDER BY 'Score.Score' DESC LIMIT 0,10;"; // Hier moet de goede sql query komen, liefst gesorteerd.
 			ResultSet rs = stmt.executeQuery(sql);
 			res = rs.getString(1) + ", " + rs.getInt(2);
 			while(rs.next())
@@ -51,7 +51,7 @@ public class DatabaseAccess
 	{
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "Insert " + name + " blabla" + score; // sql setting voor toevoegen van score
+			String sql = "INSERT INTO SCORE(Name, Score) VALUES (" + name + ", " + score + ");"; // sql setting voor toevoegen van score
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
