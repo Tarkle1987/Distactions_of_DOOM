@@ -1,4 +1,4 @@
-package NotDefined;
+package movingobjects;
 
 import java.util.ArrayList;
 

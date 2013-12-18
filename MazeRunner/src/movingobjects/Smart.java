@@ -1,28 +1,34 @@
-package NotDefined;
+package movingobjects;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
-import javax.vecmath.Vector3f;
 
 import Maze.Maze;
+import Player.Player;
+import Routeplanner.Tile;
 
-import com.sun.opengl.util.texture.Texture;
 
+public class Smart implements VisibleObject{
 
-public class Smartw implements VisibleObject{
-
-	private MazeObject Smartw;
+	private MazeObject Smarto,Smartw;
+	public boolean destroy = false;
 	private float size = 5;
 	private double locationX,locationZ;
-	protected boolean destroy = false;
-	protected Texture texture;
 	
-	public Smartw(float x, float z) {
+	public Smart(float x, float z) {
 		locationX = (double) x;
 		locationZ = (double) z;
+		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
+		Smarto.setCor((float)(x+0.5)*size, (float)(z+0.5)*size,(float)0.2*size);
+		Smarto.addColour("wit");
 		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
 		Smartw.setCor((float)(x+0.5)*size, (float)(z+0.5)*size,(float) 0.2*size);
-//		Smartw.addColour("oranje");
+		Smartw.addColour("oranje");
+	}
+	
+	
+	public MazeObject getSmarto(){
+		return Smarto;
 	}
 	
 	public MazeObject getSmartw(){
@@ -36,15 +42,11 @@ public class Smartw implements VisibleObject{
 	public double getLocationZ(){
 		return locationZ;
 	}
-	
-	public void addTexture(Texture t)
-	{
-		texture = t;
-		Smartw.addTexture(texture);
-	}
-	
+
+
 	@Override
 	public void display(GL gl) {
+		Smarto.display(gl);
 		Smartw.display(gl);
 	}
 
@@ -66,7 +68,7 @@ public class Smartw implements VisibleObject{
 		if (plocX==slocX){
 			if (plocZ==slocZ){
 				destroy = true;
-				player.hp = player.hp +1;
+				player.hp = player.hp+1;
 			}
 		}
 		

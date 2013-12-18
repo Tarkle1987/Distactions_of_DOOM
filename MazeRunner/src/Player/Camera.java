@@ -1,4 +1,7 @@
-package NotDefined;
+package Player;
+
+import movingobjects.GameObject;
+
 
 /**
  * Camera represents the camera player in MazeRunner.

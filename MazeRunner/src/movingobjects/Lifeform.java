@@ -1,9 +1,8 @@
-package LifeForms;
+package movingobjects;
 import javax.media.opengl.GL;
 
 import Maze.Maze;
-import NotDefined.Player;
-import NotDefined.Projectile;
+import Player.Player;
 
 
 public interface Lifeform {

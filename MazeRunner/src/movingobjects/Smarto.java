@@ -1,9 +1,11 @@
-package NotDefined;
+package movingobjects;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
 import Maze.Maze;
+import Player.Player;
+import Routeplanner.Tile;
 
 import com.sun.opengl.util.texture.Texture;
 

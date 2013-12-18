@@ -1,4 +1,5 @@
-package NotDefined;
+package Player;
+import movingobjects.GameObject;
 import Maze.Maze;
 
 

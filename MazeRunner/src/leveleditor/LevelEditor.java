@@ -1,4 +1,4 @@
-package NotDefined;
+package leveleditor;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;

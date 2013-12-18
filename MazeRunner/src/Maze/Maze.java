@@ -3,9 +3,8 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import NotDefined.Player;
-import NotDefined.Tile;
-import NotDefined.VisibleObject;
+import Player.Player;
+import Routeplanner.Tile;
 
 import com.sun.opengl.util.GLUT;
 
@@ -18,6 +17,8 @@ import java.nio.IntBuffer;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+
+import movingobjects.VisibleObject;
 
 import com.sun.corba.se.impl.ior.ByteBuffer;
 import com.sun.opengl.util.GLUT;

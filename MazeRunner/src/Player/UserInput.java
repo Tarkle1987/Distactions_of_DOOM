@@ -1,7 +1,8 @@
-package NotDefined;
+package Player;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.*;
+
 import javax.media.opengl.GLCanvas;
 
 

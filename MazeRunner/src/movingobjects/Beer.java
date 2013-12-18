@@ -1,13 +1,11 @@
-package LifeForms;
+package movingobjects;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
 import Maze.Maze;
-import NotDefined.GameObject;
-import NotDefined.Player;
-import NotDefined.Tile;
-import NotDefined.VisibleObject;
+import Player.Player;
+import Routeplanner.Tile;
 
 import com.sun.opengl.util.GLUT;
 

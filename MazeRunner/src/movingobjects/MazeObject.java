@@ -1,4 +1,4 @@
-package NotDefined;
+package movingobjects;
 
 import javax.media.opengl.*;
 

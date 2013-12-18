@@ -1,10 +1,12 @@
-package NotDefined;
+package movingobjects;
 
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
 import Maze.Maze;
+import Player.Player;
+import Routeplanner.Tile;
 
 /**
  * VisibleObject is the interface for all classes that have to be displayed on screen.
