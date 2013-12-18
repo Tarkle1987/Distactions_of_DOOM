@@ -21,16 +21,17 @@ public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
 	private double sprintspeed = 0.015;
+	private double godmodespeed = 0.1;
 
 	protected int hp;
 	private int hittimer = 0;
 	static final int hittimeInterval = 1;
-	
-	
+
+
 	private Control control = null;
-	
+
 	private boolean GodMode = false;
-	
+
 	/**
 	 * The Player constructor.
 	 * <p>
@@ -54,7 +55,7 @@ public class Player extends GameObject {
 		speed = 0.01;
 		hp = 6;
 	}
-	
+
 	/**
 	 * Sets the Control object that will control the player's motion
 	 * <p>
@@ -65,7 +66,7 @@ public class Player extends GameObject {
 	{
 		this.control = control;
 	}
-	
+
 	/**
 	 * Gets the Control object currently controlling the player
 	 * @return
@@ -106,7 +107,7 @@ public class Player extends GameObject {
 	public void setVerAngle(double verAngle) {
 		this.verAngle = verAngle;
 	}
-	
+
 	/**
 	 * Returns the speed.
 	 * @return the speed
@@ -126,85 +127,119 @@ public class Player extends GameObject {
 	/**
 	 * Updates the physical location and orientation of the player
 	 * @param deltaTime The time in milliseconds since the last update.
+	 * @param maze 
+	 * @return 
 	 * @return 
 	 */
-	public Tile update(int deltaTime)
+	public void update(int deltaTime, Maze maze)
 	{
+		double X = getLocationX();
+		double Z = getLocationZ();
+		double Y = getLocationY();
 		if (control != null)
 		{
 			control.update();
-			
-		
-			
+
+
+
 			double Hor = getHorAngle() - (0.1*control.getdX());
 			double Ver = getVerAngle() - (0.1*control.getdY());
-			
+
 			if( Ver > 89){
 				Ver = 89;
 			}
 			if( Ver < - 89){
 				Ver = - 89;
 			}
-			
+
 			setHorAngle(Hor);
 			setVerAngle(Ver);
 			// TODO: Rotate the player, according to control
-			
+
 			if (control.forward){
 				// sprint (only forward
-				if(control.sprint){
+				if(control.sprint)
+				{
 					speed = sprintspeed;
 				}
 				
-				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle)));
-				setLocationZ(getLocationZ() - getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle)));
+				if(GodMode)
+					speed = godmodespeed;
+				if (!maze.isWall(X - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5 ,Z) && !maze.isWall(X - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) - 0.5 ,Z) || GodMode)
+				{
+					setLocationX(X - speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
+				}
+				if (!maze.isWall(X,Z - speed * deltaTime * Math.cos(Math.toRadians(horAngle))+0.5)&& (!maze.isWall(X,Z - speed * deltaTime * Math.cos(Math.toRadians(horAngle))-0.5))|| GodMode)
+				{
+					setLocationZ(Z - speed  * deltaTime * Math.cos(Math.toRadians(horAngle)));
+				}
 
-				
+
 				// reset speed to default
 				speed = 0.01;
 			}
+			if(GodMode)
+				speed = godmodespeed;
+			
 			if (control.back){
-				setLocationX(getLocationX() + getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle)));
-				setLocationZ(getLocationZ() + getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle)));
-				
 
+				if(!maze.isWall(X + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5, Z) && !maze.isWall(X + speed  * deltaTime * Math.sin(Math.toRadians(horAngle))-0.5, Z)|| GodMode)
+				{
+					setLocationX(X + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
+				}
+				if(!maze.isWall(X, Z + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)) + 0.5)&& !maze.isWall(X, Z + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)) -0.5)|| GodMode)
+				{
+					setLocationZ(Z + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)));
+				}
 			}
 			if (control.left){
-				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle + 90)));
-				setLocationZ(getLocationZ() - getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle + 90)));
+				if(!maze.isWall(X - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90)) + 0.5, Z)&&!maze.isWall(X - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90))-0.5,Z)|| GodMode)
+				{
+					setLocationX(X - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90)));
+				}
+				if(!maze.isWall(X, (Z - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)))+0.5) && !maze.isWall(X, (Z - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)))-0.5)|| GodMode)
+				{
+					setLocationZ(Z - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)));
+				}
 			}
 			if (control.right){
-				setLocationX(getLocationX() - getSpeed() * deltaTime * Math.sin(Math.toRadians(horAngle - 90)));
-				setLocationZ(getLocationZ() - getSpeed() * deltaTime * Math.cos(Math.toRadians(horAngle - 90)));
+				if(!maze.isWall((X - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90)))+0.5, Z)&& !maze.isWall((X - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90))) -0.5, Z)|| GodMode)
+				{
+					setLocationX(X - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90)));
+				}
+				if(!maze.isWall(X, Z - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90)) +0.5) && !maze.isWall(X, Z - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90))-0.5)|| GodMode)
+				{
+					setLocationZ(Z - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90)));
+				}
 			}
 			if(control.space){
 				setVerAngle(0);
 			}
-			
+
 			if(GodMode){
 				if(control.up){
-					setLocationY(getLocationY() + getSpeed() * deltaTime);
+					setLocationY(Y + speed * deltaTime);
 				}
 				if(control.down){
-					setLocationY(getLocationY() - getSpeed() * deltaTime);
+					setLocationY(Y - speed * deltaTime);
 				}
 			}
-			
+
 			if(control.hpdown){
-				
-					hp = hp -1;
-				
+
+				hp = hp -1;
+
 				control.hpdown = false;
 			}
 			if(control.hpup){
-				
-					hp = hp + 1;
-			
+
+				hp = hp + 1;
+
 				control.hpup = false;
 			}
 		}
-	
-		
+
+
 		if(hp > 6){
 			hp = 6;
 		}else if(hp < 0){
@@ -212,18 +247,16 @@ public class Player extends GameObject {
 		}
 
 		hittimer = hittimer - deltaTime;
-		
-		Tile playerTile = new Tile(this.getLocationX(), this.getLocationZ());
-		return playerTile;
+
 	}
-	
+
 	public void setGodMode(boolean G){
 		GodMode = G;
 	}
 	public boolean getGodMode(){
 		return GodMode;
 	}
-	
+
 	public void Hit(){
 
 		if(hittimer <= 0){
@@ -232,7 +265,7 @@ public class Player extends GameObject {
 				hittimer = hittimeInterval*1000;
 			}
 		}
-		
-		
+
+
 	}
 }

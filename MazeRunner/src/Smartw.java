@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
+import javax.vecmath.Vector3f;
+
+import com.sun.opengl.util.texture.Texture;
 
 
 public class Smartw implements VisibleObject{
@@ -9,14 +12,14 @@ public class Smartw implements VisibleObject{
 	private float size = 5;
 	private double locationX,locationZ;
 	protected boolean destroy = false;
+	protected Texture texture;
 	
 	public Smartw(float x, float z) {
 		locationX = (double) x;
 		locationZ = (double) z;
 		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
 		Smartw.setCor((float)(x+0.5)*size, (float)(z+0.5)*size,(float) 0.2*size);
-		Smartw.addColour("oranje");
-	
+//		Smartw.addColour("oranje");
 	}
 	
 	public MazeObject getSmartw(){
@@ -29,6 +32,12 @@ public class Smartw implements VisibleObject{
 	
 	public double getLocationZ(){
 		return locationZ;
+	}
+	
+	public void addTexture(Texture t)
+	{
+		texture = t;
+		Smartw.addTexture(texture);
 	}
 	
 	@Override

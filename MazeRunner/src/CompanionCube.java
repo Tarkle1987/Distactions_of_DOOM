@@ -158,10 +158,9 @@ public class CompanionCube extends GameObject implements Lifeform {
 				follow = 0;
 			}
 		}else if(routeplanner > 0) {
-			Routeplanner nieuw = new Routeplanner();
+
+			Routeplanner nieuw = new Routeplanner(size);
 			int direction = nieuw.getRoute(maze, new Tile(this.locationX, this.locationZ), new Tile(PlayerLocation[0],PlayerLocation[1]));
-	
-			
 			if(direction == 1){
 				dX = -1;
 				dZ = 0;

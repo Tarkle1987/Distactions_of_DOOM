@@ -60,8 +60,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private boolean textrue = true;
 	private CompanionCube c1;
 	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
-	private Texture Smart1texture;
-	private Texture Oranje;
+	private Smarto Smo;
+	private Smartw Smw;
 	private Beer b1, b2, b3, b4, b5;
 
 	// Ingame seconden tellen
@@ -200,8 +200,22 @@ public class MazeRunner extends Frame implements GLEventListener {
 	     * TODO: Give the players startpoint as a Tile.
 	     * TODO: Give the cube's startpoint as a Tile.
 	  */  
+<<<<<<< HEAD
 	      
 
+=======
+
+		float size = (float)maze.SQUARE_SIZE;
+		Trap((float)1.5, (float)19);
+		Smarto = CustomMazeObject.readFromOBJ("Smartoranje.obj", 2);
+		Smarto.setCor((float)10.5*size, 10*size,(float)0.5*size);
+		Smarto.addColour("wit");
+		visibleObjects.add(Smarto);
+		Smartw = CustomMazeObject.readFromOBJ("Smartwit.obj", 2);
+		Smartw.setCor((float)10.5*size, 10*size,(float)0.5*size);
+		Smartw.addColour("wit");
+		visibleObjects.add(Smartw);
+>>>>>>> d5db835d3fff09abc54670f06aaf361f146fe4bd
 
 //	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
 //		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
@@ -249,22 +263,22 @@ public class MazeRunner extends Frame implements GLEventListener {
 		
 		float size = (float)maze.SQUARE_SIZE;
 		Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj", (float)0.0175);
-		Kaft1.setCor((float)x*size, (float)z*size, 0);
+		Kaft1.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
 		Kaft1.rotateVerticesZ(-90, 1, 1);
 		Kaft1.addColour("rood");
 		visibleObjects.add(Kaft1);
 		Kaft2 = CustomMazeObject.readFromOBJ("Kaft2.obj", (float)0.0175);
-		Kaft2.setCor((float)x*size, (float)z*size, 0);
+		Kaft2.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
 		Kaft2.rotateVerticesZ(-90, 1, 1);
 		Kaft2.addColour("groen");
 		visibleObjects.add(Kaft2);
 		Kaft3 = CustomMazeObject.readFromOBJ("Kaft3.obj", (float)0.0175);
-		Kaft3.setCor((float)x*size, (float)z*size, 0);
+		Kaft3.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
 		Kaft3.rotateVerticesZ(-90, 1, 1);
 		Kaft3.addColour("blauw");
 		visibleObjects.add(Kaft3);
 		Papier = CustomMazeObject.readFromOBJ("Papier.obj", (float)0.0175);
-		Papier.setCor((float)x*size, (float)z*size, 0);
+		Papier.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
 		Papier.rotateVerticesZ(-90, 1, 1);
 		Papier.addColour("wit");
 		visibleObjects.add(Papier);
@@ -344,8 +358,25 @@ public class MazeRunner extends Frame implements GLEventListener {
 	
 	private void textureAdd(GL gl){
 
+<<<<<<< HEAD
 //		Smarto.addTexture(maze.Oranje);
 //		Smartw.addTexture(maze.Smarttex);
+=======
+		
+		for (int i = 0; i < visibleObjects.size(); i++)
+		{
+			if (visibleObjects.get(i) instanceof Smarto)
+			{
+				Smo = (Smarto) visibleObjects.get(i);
+				Smo.addTexture(maze.Smarttex);
+			}
+			if (visibleObjects.get(i) instanceof Smartw)
+			{;
+				Smw = (Smartw) visibleObjects.get(i);
+				Smw.addTexture(maze.Oranje);
+			}
+		}
+>>>>>>> d5db835d3fff09abc54670f06aaf361f146fe4bd
 		Kaft1.addTexture(maze.Blauw);
 		Kaft2.addTexture(maze.Groen);
 		Kaft3.addTexture(maze.Rood);
@@ -465,7 +496,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	private void updateMovement(int deltaTime)
 	{
-		player.update(deltaTime);
+		player.update(deltaTime, maze);
 		/*
 		 * Update position of the objects to next Steps. ObjectPositions is given to the objects, so that they can look for
 		 * other objects, and avoid them. The one that is first called, 'wins'.
@@ -529,23 +560,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				}
 			}
 		}
-		
-		
-		if(!player.getGodMode()){
-			double x = player.getLocationX();
-			double z = player.getLocationZ();
-		
-			if (maze.isWall(x+.5,z)||maze.isWall(x-.5,z)||maze.isWall(x,z+.5)||maze.isWall(x,z-.5)||
-			maze.isWall(x+.5,z+.5)||maze.isWall(x+.5, z-.5)||maze.isWall(x-.5,z+.5)||maze.isWall(x-.5,z-.5))
-			{
-				player.update(-deltaTime);
-			}
-		}
 
-//		Tile PlayerTile = new Tile(player.locationX, player.locationZ);
-//		Tile companionTile = new Tile(c1.locationX, c1.locationZ);
-//		Routeplanner nieuw = new Routeplanner();
-//		nieuw.testRoute(maze, companionTile, PlayerTile);
 
 	}
 
