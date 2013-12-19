@@ -10,21 +10,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -35,7 +20,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
 import leveleditor.Image;
 import leveleditor.LevelEditor;
 import HUD.Clock;
@@ -44,7 +28,6 @@ import Maze.Mazescont;
 import MenuButtons.Button;
 import MenuButtons.RadioGroup;
 import NotDefined.Sound;
-
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.GLUT;
 

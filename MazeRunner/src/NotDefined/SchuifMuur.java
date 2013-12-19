@@ -18,34 +18,37 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 	public int y;
 	public Maze maze;
 	
-	private double dL;
+	private double dLmax;
+	private double dLmin;
 	
-	static final byte Open = 3;
+	public boolean open = false;
+	
+	public static final byte Open = 3;
 	
 	static final byte Opening = 1;
 	public int openingtimer = 0;
-	private int openingtime = 5 * 1000;
+	private int openingtime = 2 * 1000;
 	
 	static final byte Closing = 2;
 	public int closingtimer = 0;
-	private int closingtime = 2 * 1000;
+	private int closingtime = 1 * 1000;
 	
-	static final byte Closed = 0;
+	public static final byte Closed = 0;
 	public byte state = Closed;
 	
 	public boolean inrange = false;
 	
 	
 	public SchuifMuur(int x, int z, Maze maze){
-		super(maze.convertFromGridX(x),  maze.SQUARE_SIZE/2, maze.convertFromGridZ(z));
+		super(maze.convertFromGridX(x) + maze.SQUARE_SIZE/2,  maze.SQUARE_SIZE/2, maze.convertFromGridZ(z) + maze.SQUARE_SIZE/2);
 		
 		size = maze.SQUARE_SIZE;
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.maze = maze;
-		this.dL = 2*size;
-		
+		this.dLmax = size;
+		this.dLmin = size/2;
 	
 		
 	}
@@ -111,8 +114,20 @@ public class SchuifMuur extends GameObject implements VisibleObject {
           gl.glVertex3fv(backLL, 0);
           gl.glTexCoord2f(0.0f, 1.0f);
           gl.glVertex3fv(frontLL, 0);
+       // bottom face
+          gl.glNormal3f(0.0f, -1.0f, 0.0f);
+          gl.glTexCoord2f(0.0f, 0.0f);
+          gl.glVertex3fv(frontLL, 0);
+          gl.glTexCoord2f(1.0f, 0.0f);
+          gl.glVertex3fv(backLL, 0);
+          gl.glTexCoord2f(1.0f, 1.0f);
+          gl.glVertex3fv(backLR, 0);
+          gl.glTexCoord2f(0.0f, 1.0f);
+          gl.glVertex3fv(frontLR, 0);
+          
           gl.glEnd(); 
 		  gl.glPopMatrix();
+	
 	}
 
 	@Override
@@ -132,7 +147,7 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 		
 			double dLength =  Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
 		
-			if(dLength < dL)
+			if(dLength < dLmax && dLength >= dLmin)
 				inrange = true;
 			else
 				inrange = false;
@@ -153,19 +168,25 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 			
 			openingtimer = openingtimer - deltaTime;
 			
-			locationY = size*1.5 - size *openingtimer/openingtime;
+			if(openingtimer <= openingtime/2)
+				open = true;
+			
+			locationY = size*1.4 - 0.9*size *openingtimer/openingtime;
 			
 			if(openingtimer <= 0){
-				locationY = size*1.5;
+				locationY = size*1.4;
 				state = Open;
 				openingtimer = 0;
 			}
 		}else if(state == Closing){
 			inrange = false;
+			open = false;
 			
 			closingtimer = closingtimer - deltaTime;
+		
 			
-			locationY = size/2 + size * closingtimer/closingtime;
+			
+			locationY = size/2 + 0.9*size * closingtimer/closingtime;
 			
 			if(closingtimer <= 0){
 				locationY = size*.5;
