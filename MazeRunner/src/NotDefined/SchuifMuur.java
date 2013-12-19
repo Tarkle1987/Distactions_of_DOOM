@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
+import movingobjects.GameObject;
+import movingobjects.VisibleObject;
 import Maze.Maze;
+import Player.Player;
+import Routeplanner.Tile;
 
 public class SchuifMuur extends GameObject implements VisibleObject {
 

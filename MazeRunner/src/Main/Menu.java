@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 
 
 
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -35,17 +36,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import leveleditor.Image;
 import leveleditor.LevelEditor;
 import HUD.Clock;
 import Maze.Maze;
 import Maze.Mazescont;
 import MenuButtons.Button;
 import MenuButtons.RadioGroup;
-<<<<<<< HEAD
-import NotDefined.Image;
-import NotDefined.LevelEditor;
-=======
->>>>>>> c3f3f6a84b8577a331de608971784434101c30ca
 import NotDefined.Sound;
 
 import com.sun.opengl.util.Animator;

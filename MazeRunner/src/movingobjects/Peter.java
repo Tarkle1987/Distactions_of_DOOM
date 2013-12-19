@@ -1,11 +1,10 @@
-package LifeForms;
+package movingobjects;
 
 import javax.media.opengl.GL;
 
 import Maze.Maze;
-import NotDefined.CustomMazeObject;
-import NotDefined.MazeObject;
-import NotDefined.Player;
+import Player.Player;
+
 
 public class Peter extends CompanionCube {
 
