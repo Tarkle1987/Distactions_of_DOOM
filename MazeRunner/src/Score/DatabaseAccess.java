@@ -15,11 +15,11 @@ public class DatabaseAccess
 	}
 	public void connect()
 	{
-		String host = "http://sql.ewi.tudelft.nl/blabla"; // Site van de database
-		String username = "Username"; //username
-		String password = "Password"; //password
+		String host = "//sql.ewi.tudelft.nl/DoomMinorProject"; // Site van de database
+		String username = "Doom5"; //username
+		String password = "Distactions"; //password
 		try{
-		con = DriverManager.getConnection( host, username, password );
+		con = DriverManager.getConnection("jdbc:mysql:"+ host, username, password );
 		}
 		catch(SQLException err)
 		{
@@ -32,12 +32,11 @@ public class DatabaseAccess
 		String res = "";
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "SELECT * FROM Score ORDER BY 'Score.Score' DESC LIMIT 0,10;"; // Hier moet de goede sql query komen, liefst gesorteerd.
+			String sql = "SELECT * FROM Scores ORDER BY Scores.Score DESC LIMIT 0,10"; // Hier moet de goede sql query komen, liefst gesorteerd.
 			ResultSet rs = stmt.executeQuery(sql);
-			res = rs.getString(1) + ", " + rs.getInt(2);
 			while(rs.next())
 			{
-			res = res + "\n" + rs.getString(1) + ", " + rs.getInt(2);
+			res = res + rs.getString(1) + ", " + rs.getInt(2) + "\n";
 			}
 			
 		} catch (SQLException e) {
@@ -51,10 +50,11 @@ public class DatabaseAccess
 	{
 		try {
 			Statement stmt = con.createStatement();
-			String sql = "INSERT INTO SCORE(Name, Score) VALUES (" + name + ", " + score + ");"; // sql setting voor toevoegen van score
+			String sql = "INSERT INTO Scores(Name, Score) VALUES (\"" + name +"\", " + score + ");"; // sql setting voor toevoegen van score
 			stmt.executeUpdate(sql);
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
 	}
+	
 }
