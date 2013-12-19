@@ -91,11 +91,32 @@ public class Maze implements VisibleObject {
 	 */
 	public boolean isWall( int x, int z )
 	{
-		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE )
-			return maze[x][z] == 1;
-		else
-			return false;
+		boolean iswall = false;
+		
+		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE ){
+			
+			if(maze[x][z] == 1 || maze[x][z] == 7){
+				iswall = true;
+			}
+		}
+		
+		return iswall;
+		
 	}
+	
+	public boolean setWall( int x, int z){
+		boolean iswall = false;
+		
+		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE ){
+			
+			if(maze[x][z] == 1){
+				iswall = true;
+			}
+		}
+		
+		return iswall;
+	}
+	
 	
 	public boolean isEind(int x, int z){
 		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE )
@@ -334,6 +355,12 @@ public class Maze implements VisibleObject {
 		return isWall( gX, gZ );
 	}
 	
+	public boolean setWall(double x, double z){
+		int gX = convertToGridX(x);
+		int gZ = convertToGridZ(z);
+		return setWall(gX,gZ);
+	}
+	
 	public boolean isEind( double x, double z )
 	{
 		int gX = convertToGridX( x );
@@ -378,6 +405,29 @@ public class Maze implements VisibleObject {
 		for (int i = 0; i<Maze.length; i++){
 			for (int j = 0; j<Maze.length; j++){
 				if (Maze[j][i] == 3){
+					res[1+count] = j;
+					res[2+count] = i;
+					count = count+2;
+				}
+			}
+		}
+		return res;
+	}
+	public static int[] CoordSchuifMuur(int[][] Maze){
+		int aantal = 0;
+		for (int i = 0; i<Maze.length; i++){
+			for (int j = 0; j<Maze.length; j++){
+				if (Maze[j][i] == 7){
+					aantal = aantal+1;
+				}
+			}
+		}
+		int[] res = new int[2*aantal+1];
+		res[0]= aantal;
+		int count = 0;
+		for (int i = 0; i<Maze.length; i++){
+			for (int j = 0; j<Maze.length; j++){
+				if (Maze[j][i] == 7){
 					res[1+count] = j;
 					res[2+count] = i;
 					count = count+2;
@@ -446,7 +496,7 @@ public class Maze implements VisibleObject {
 	        	gl.glEnable(GL.GL_TEXTURE_2D);
 	        	gl.glPushMatrix();
 				gl.glTranslated( i * SQUARE_SIZE + SQUARE_SIZE / 2, SQUARE_SIZE / 2, j * SQUARE_SIZE + SQUARE_SIZE / 2 );
-				if ( isWall(i, j)){
+				if ( setWall(i, j)){
 					if (i==23&&j==21){
 					}
 					else if (i==22&&j==20){				

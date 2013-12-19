@@ -229,7 +229,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
 //		lifeforms.add(c3);
 		
-	    SchuifMuur SM = new SchuifMuur(33,33,maze);
+	    SchuifMuur SM = new SchuifMuur(5,5,maze);
 	    visibleObjects.add(SM);
 	    
 //		CompanionCube(10,1.5);
@@ -245,6 +245,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 			Smart Sm = new Smart((float)coordS[1+i*2],(float)coordS[2+i*2]);
 			visibleObjects.add(Sm);
 		
+		}
+		int[] coordSM = Maze.CoordSchuifMuur(Maze.maze);
+		for(int i = 0; i < coordSM[0]; i++){
+			SchuifMuur schuifmuur = new SchuifMuur(coordSM[1+i*2],coordSM[2+i*2], maze);
+			visibleObjects.add(schuifmuur);
 		}
 		//this.setUndecorated(true);
 		player.setControl(input);
@@ -495,7 +500,16 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 			visibleObjects.get(i).update(deltaTime, maze, visibleObjects ,player);
 			
-			
+			if(visibleObjects.get(i) instanceof SchuifMuur){
+				SchuifMuur SM = (SchuifMuur)visibleObjects.get(i);
+				if(SM.open){
+					maze.maze[SM.x][SM.z]= 0; 
+				}else if(!SM.open){
+					maze.maze[SM.x][SM.z]= 7; 
+				}
+				
+				
+			}
 			
 			if(visibleObjects.get(i) instanceof Smart){
 				Smart so = (Smart) visibleObjects.get(i);
@@ -505,6 +519,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 				}
 						
 		}
+		
+		visibleObjects.set(0, maze);
 		
 		
 		for(int i = 0; i < projectiles.size(); i ++){
