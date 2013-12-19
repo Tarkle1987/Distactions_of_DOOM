@@ -7,8 +7,18 @@ import java.io.InputStream;
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
 
+import movingobjects.Beer;
+import movingobjects.CompanionCube;
+import movingobjects.CustomMazeObject;
+import movingobjects.MazeObject;
+import movingobjects.Projectile;
+import movingobjects.Smart;
+import movingobjects.Smarto;
+import movingobjects.Smartw;
+import movingobjects.VisibleObject;
 import HUD.Clock;
 import HUD.HealthBar;
+<<<<<<< HEAD
 import LifeForms.Beer;
 import LifeForms.CompanionCube;
 import LifeForms.Lifeform;
@@ -27,6 +37,14 @@ import NotDefined.Smarto;
 import NotDefined.Smartw;
 import NotDefined.UserInput;
 import NotDefined.VisibleObject;
+=======
+import movingobjects.Lifeform;
+import Maze.Maze;
+import MenuButtons.Button;
+import Player.Camera;
+import Player.Player;
+import Player.UserInput;
+>>>>>>> c3f3f6a84b8577a331de608971784434101c30ca
 
 import com.sun.opengl.util.*;
 import com.sun.opengl.util.texture.Texture;
