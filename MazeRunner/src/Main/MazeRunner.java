@@ -3,14 +3,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
-
+import MenuButtons.Button;
 import movingobjects.Beer;
 import movingobjects.CompanionCube;
 import movingobjects.CustomMazeObject;
+import movingobjects.Lifeform;
 import movingobjects.MazeObject;
+import movingobjects.Peter;
 import movingobjects.Projectile;
 import movingobjects.Smart;
 import movingobjects.Smarto;
@@ -18,22 +19,19 @@ import movingobjects.Smartw;
 import movingobjects.VisibleObject;
 import HUD.Clock;
 import HUD.HealthBar;
-import movingobjects.Lifeform;
+import leveleditor.Image;
 import Maze.Maze;
-import MenuButtons.Button;
+import NotDefined.SchuifMuur;
 import Player.Camera;
 import Player.Player;
 import Player.UserInput;
-
 import com.sun.opengl.util.*;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
@@ -87,6 +85,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private int miliseconds = 0;
 	
 	private Clock clock = new Clock();
+	
+	private byte[] E = Image.loadImage("E.png");
 	
 
 
@@ -199,7 +199,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		// Add the maze that we will be using.
 		maze = new Maze();
-		visibleObjects.add( maze );
+		visibleObjects.add(maze);
+		visibleObjects.set(0, maze);
 
 		// Initialize the player.
 		input = new UserInput(canvas);
@@ -228,7 +229,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 //		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
 //		lifeforms.add(c3);
 		
-		CompanionCube(10,1.5);
+	    SchuifMuur SM = new SchuifMuur(33,33,maze);
+	    visibleObjects.add(SM);
+	    
+//		CompanionCube(10,1.5);
+	    
+//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
+//	    lifeforms.add(peter);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap(coordT[0], coordT[1]);
@@ -540,8 +547,20 @@ public class MazeRunner extends Frame implements GLEventListener {
 						lifeforms.get(k).SetPlayerLocation(lifeforms.get(i).getPlayerLocation());
 					}
 				}
-			}
+			}	
 		}
+		
+//		if(input.action){
+//			for(int i = 0; i < maze.maze.length; i ++){
+//				for(int j = 0; j < maze.maze.length; j++){
+//					if(maze.maze[i][j] == 1){
+//						maze.maze[i][j] = 0;
+//					}
+//				}
+//			}
+//			
+//			visibleObjects.set(0, maze);
+//		}
 
 
 	}
@@ -747,6 +766,20 @@ public class MazeRunner extends Frame implements GLEventListener {
 		bar.display(gl);
 	
 		clock.display(gl, screenWidth, screenHeight);
+		
+		boolean drawE = false;
+		
+		for(int i = 0; i < visibleObjects.size(); i++){
+			if(visibleObjects.get(i) instanceof SchuifMuur){
+				SchuifMuur SM = (SchuifMuur)visibleObjects.get(i);
+				
+				if(SM.inrange)
+					drawE = true;
+			}
+		}
+		
+		if(drawE)
+			Image.drawImage(gl, screenWidth/2 - 127/2, screenHeight/2 - 119/2, 127, 119, E);
 		
 		switchTo3D(drawable);
 		

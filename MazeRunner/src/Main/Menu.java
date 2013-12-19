@@ -24,6 +24,7 @@ import java.awt.event.WindowEvent;
 
 
 
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -35,6 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import leveleditor.Image;
 import leveleditor.LevelEditor;
 import HUD.Clock;
 import Maze.Maze;
@@ -56,7 +58,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	static final long serialVersionUID = 7526471155622776147L;
 
 	// Screen size.
-	private int screenWidth = 600, screenHeight = 600;
+	private int screenWidth = 600, screenHeight = 735;
 	private float buttonHeight = screenHeight / 15.0f;
 	private float buttonWidth = screenWidth / 2.5f;
 	private float buttonSpace = buttonHeight + buttonHeight / 4.0f;
@@ -73,6 +75,8 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	private int Difficulty = 0;
 	
 	private Sound bird = new Sound("bird.wav");
+	
+	private byte[] menu = Image.loadImage("Menu.png");
 
 
 	// A GLCanvas is a component that can be added to a frame. The drawing
@@ -138,6 +142,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 
 		// With everything set up, the frame can now be displayed to the user.
 		setVisible(true);
+		setResizable(false);
 	}
 
 	@Override
@@ -233,9 +238,6 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	}
 
 	public void MenuScreen(GL gl){
-		Sound peter = new Sound("Peter1.wav");
-		
-		
 		Button button1 = new Button(gl, screenWidth, screenHeight, 2, "Start Game");
 		Button button2 = new Button(gl, screenWidth, screenHeight, 3, "Settings");
 		Button button3 = new Button(gl, screenWidth, screenHeight, 4, "Level Editor");
@@ -267,7 +269,8 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		// resetting used values
 		ReleaseX = 0;ReleaseY = 0;
 
-
+//		Image.drawImage(gl, 0, 0, 600, 700, menu);
+		
 	}
 	public void SettingScreen(GL gl){
 		

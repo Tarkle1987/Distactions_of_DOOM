@@ -26,6 +26,7 @@ public abstract class Control
 	public boolean up = false;
 	public boolean down = false;
 	public boolean space = false;
+	public boolean action = false;
 	public boolean pauze = false;
 	public boolean waspauzed = false;
 	

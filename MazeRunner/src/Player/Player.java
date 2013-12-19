@@ -25,11 +25,13 @@ public class Player extends GameObject {
 	private double horAngle, verAngle;
 	private double speed;
 	private double sprintspeed = 0.015;
-	private double godmodespeed = 0.1;
+	private double godmodespeed = 0.02;
 
 	public int hp;
 	private int hittimer = 0;
 	static final int hittimeInterval = 1;
+	
+	public boolean action = false;
 
 
 	private Control control = null;
@@ -142,6 +144,12 @@ public class Player extends GameObject {
 		{
 			control.update();
 
+			
+			if(control.action){
+				this.action = true;
+			}else{
+				this.action = false;
+			}
 
 
 			double Hor = getHorAngle() - (0.1*control.getdX());
