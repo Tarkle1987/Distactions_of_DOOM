@@ -56,28 +56,6 @@ public class PatternCheck
 					Vertex crosspoint = new Vertex(new Tile(x,z), "I");
 					crosspoints.add(crosspoint);
 				}
-				/*
-				if(patternJ(x,z,maze)) 
-				{
-					Vertex crosspoint = new Vertex(new Tile(x,z), "J");
-					crosspoints.add(crosspoint);
-				}				
-				if(patternK(x,z,maze)) 
-				{
-					Vertex crosspoint = new Vertex(new Tile(x,z), "K");
-					crosspoints.add(crosspoint);
-				}				
-				if(patternL(x,z,maze)) 
-				{
-					Vertex crosspoint = new Vertex(new Tile(x,z), "L");
-					crosspoints.add(crosspoint);
-				}				
-				if(patternM(x,z,maze)) 
-				{
-					Vertex crosspoint = new Vertex(new Tile(x,z), "M");
-					crosspoints.add(crosspoint);
-				}
-				*/
 			}
 	}
 	
