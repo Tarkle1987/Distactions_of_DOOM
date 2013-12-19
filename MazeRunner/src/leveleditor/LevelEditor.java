@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,11 +36,13 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import Main.Menu;
-import Maze.Mazes;
 import Maze.Mazescont;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * A frame for us to draw on using OpenGL.
@@ -51,7 +54,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	static final long serialVersionUID = 1;
 
 	// Screen size.
-	private  int screenWidth = 1800, screenHeight = 705;
+	private  int screenWidth = 1210, screenHeight = 505;
 	private  int rast = 20;
 	private int rastwidth = screenHeight-100;
 	private int rastspace = 50;
@@ -62,16 +65,20 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	private int[][] SaveMaze = new int[22][22];
 	private int unit = rastwidth/rast;
 	private float buttonSize = unit *2;
-	private byte[] vloer45 = Image.loadImage("Vloer45.jpg");
-	private byte[] vloer90 = Image.loadImage("Vloer90.jpg");
-	private byte[] muur45 = Image.loadImage("muur45.jpg");
-	private byte[] muur90 = Image.loadImage("muur90.jpg");
-	private byte[] trap45 = Image.loadImage("Trap45.jpg");
-	private byte[] trap90 = Image.loadImage("Trap90.jpg");
-	private byte[] smart45 = Image.loadImage("Smart45.jpg");
-	private byte[] smart90 = Image.loadImage("Smart90.jpg");
-	private byte[] trapop45 = Image.loadImage("TrapOp45.jpg");
-	private byte[] trapop90 = Image.loadImage("TrapOp90.jpg");
+	private byte[] vloer18 = Image.loadImage("vloer18.jpg");
+	private byte[] vloer36 = Image.loadImage("vloer36.jpg");
+	private byte[] muur18 = Image.loadImage("muur18.jpg");
+	private byte[] muur36 = Image.loadImage("muur36.jpg");
+	private byte[] trap18 = Image.loadImage("trapaf18.jpg");
+	private byte[] trap36 = Image.loadImage("trapaf36.jpg");
+	private byte[] smart18 = Image.loadImage("smart18.jpg");
+	private byte[] smart36 = Image.loadImage("smart36.jpg");
+	private byte[] trapop18 = Image.loadImage("trapop18.jpg");
+	private byte[] trapop36 = Image.loadImage("trapop36.jpg");
+	private byte[] deur18 = Image.loadImage("deur18.jpg");
+	private byte[] deur36 = Image.loadImage("deur36.jpg");
+	
+	protected Texture muurText, floorText, smartText, trapText, trapopText;
 	// A GLCanvas is a component that can be added to a frame. The drawing
 	// happens on this component.
 	private GLCanvas canvas;
@@ -80,6 +87,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	private static final byte DM_MUUR = 1;
 	private static final byte DM_TRAP = 2;
 	private static final byte DM_SMART = 3;
+	private static final byte DM_DEUR = 4;
 	private byte drawMode = DM_VLOER;
 
 	private ArrayList<Point2D.Float> points;
@@ -96,7 +104,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	public LevelEditor(final Menu that) {
 //		super("MinorProject");
 		this.that = that;
-		
+
 		for (int i = 0; i<Mazeconf.length; i++){
 			for (int j = 0; j<Mazeconf.length; j++){
 				Mazeconf[i][j]=0;
@@ -170,6 +178,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 //
 //		// With everything set up, the frame can now be displayed to the user.
 //		setVisible(true);
+
 	}
 
 	private void drawVertical1(){
@@ -478,6 +487,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		//		boxOnScreen(gl, 10*unit, 10*unit+1, unit);
 		// Flush the OpenGL buffer, outputting the result to the screen.
 		gl.glFlush();
+		System.out.println(unit);
 
 	}
 
@@ -489,7 +499,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		gl.glRasterPos2i(x, y); // raster position in 2D
 		for(int i=0; i<length; i++)
 		{
-			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18, text.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
+			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_12, text.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
 		}
 	}
 
@@ -500,22 +510,22 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 0:
 //					gl.glColor3f(1f, 1f,1f);
 //					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, vloer45);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, vloer18);
 					break;
 				case 1:
 //					gl.glColor3f(0.0f, 0.0f, 0.0f);
 //					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, muur45);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, muur18);
 					break;
 				case 2:
 //					gl.glColor3f(0.5f, 0.5f, 0.0f);
 //					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, trap45);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, trap18);
 					break;
 				case 3:
 //					gl.glColor3f(0.5f, 0.0f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, smart45);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, smart18);
 					break;
 				case 4:
 					gl.glColor3f(0.5f, 0.5f, 0.5f);
@@ -525,11 +535,15 @@ public class LevelEditor implements GLEventListener, MouseListener {
 					gl.glColor3f(0.75f, 0f, 0.5f);
 					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
 					break;
-				
 				case 6:
 //					gl.glColor3f(0.5f, 0.5f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,28,28, trapop45);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, trapop18);
+					break;
+				case 7:
+//					gl.glColor3f(0.5f, 0.0f, 0.5f);
+//					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, deur18);
 					break;
 				}
 			}
@@ -540,22 +554,22 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 0:
 //					gl.glColor3f(1f, 1f,1f);
 //					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, vloer45);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,18,18, vloer18);
 					break;
 				case 1:
 //					gl.glColor3f(0.0f, 0.0f, 0.0f);
 //					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, muur45);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,18,18, muur18);
 					break;
 				case 2:
 //					gl.glColor3f(0.5f, 0.5f, 0.0f);
 //					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, trap45);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,18,18, trap18);
 					break;
 				case 3:
 //					gl.glColor3f(0.5f, 0.0f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, smart45);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,18,18, smart18);
 					break;
 				case 4:
 					gl.glColor3f(0.5f, 0.5f, 0.5f);
@@ -568,7 +582,12 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 6:
 //					gl.glColor3f(0.5f, 0.5f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,28,28, trapop45);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,18,18, trapop18);
+					break;
+				case 7:
+//					gl.glColor3f(0.5f, 0.0f, 0.5f);
+//					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit, unit);
+					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, deur18);
 					break;
 				}
 			}
@@ -579,22 +598,22 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 0:
 //					gl.glColor3f(1f, 1f,1f);
 //					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, vloer45);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,18,18, vloer18);
 					break;
 				case 1:
 //					gl.glColor3f(0.0f, 0.0f, 0.0f);
 //					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, muur45);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,18,18, muur18);
 					break;
 				case 2:
 //					gl.glColor3f(0.5f, 0.5f, 0.0f);
 //					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, trap45);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,18,18, trap18);
 					break;
 				case 3:
 //					gl.glColor3f(0.5f, 0.0f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace), (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, smart45);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,18,18, smart18);
 					break;
 				case 4:
 					gl.glColor3f(0.5f, 0.5f, 0.5f);
@@ -607,8 +626,29 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 6:
 //					gl.glColor3f(0.5f, 0.5f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit, (rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,28,28, trapop45);
+					Image.drawImage(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit,18,18, trapop18);
 					break;
+				case 7:
+					//				gl.glEnable(GL.GL_TEXTURE_2D);
+					//				gl.glPushMatrix();
+					//				gl.glTranslated((rast-i)*unit,(rast-j)*unit,0);
+					//				trapopText.enable();
+					//				trapopText.bind();
+					//				gl.glBegin(GL.GL_QUADS);
+					//				gl.glTexCoord2f(0.0f, 0.0f);
+					//		        gl.glVertex2f(0,0);
+					//		        gl.glTexCoord2f(1.0f, 0.0f);
+					//		        gl.glVertex2f(unit, 0);
+					//		        gl.glTexCoord2f(1.0f, 1.0f);
+					//		        gl.glVertex2f(unit, unit);
+					//		        gl.glTexCoord2f(0.0f, 1.0f);
+					//		        gl.glVertex2f(0, unit);
+					//				gl.glPopMatrix();
+					//				gl.glEnd();
+//									gl.glColor3f(0.5f, 0.0f, 0.5f);
+//									boxOnScreen(gl, (rast-i)*unit+2*(rastwidth+rastspace),(rast-j)*unit, unit);
+									Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, deur18);
+									break;
 				}
 			}
 		}
@@ -621,19 +661,22 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		gl.glColor3f(0f, 0f, 0f);
 		gl.glLineWidth(1);
 		//level 1
+		drawText(gl,"Level 1",  0,(int) (rastwidth+10));
 		for (int i = 0; i<=rast; i++){
-			lineOnScreen(gl, i*unit, 0,i*unit, rastwidth);
-			lineOnScreen(gl, 0, i*unit,rastwidth, i*unit);
+			lineOnScreen(gl, i*unit, 0,i*unit, rastwidth-11);
+			lineOnScreen(gl, 0, i*unit,rastwidth-12, i*unit);
 		}
 		//level 2
+		drawText(gl,"Level 2",  (int) rastwidth+rastspace,(int) (rastwidth+10));
 		for (int i = 0; i<=rast; i++){
-			lineOnScreen(gl, i*unit+rastwidth+rastspace, 0,i*unit+rastwidth+rastspace, rastwidth);
-			lineOnScreen(gl, rastwidth+rastspace, i*unit,2*rastwidth+rastspace, i*unit);
+			lineOnScreen(gl, i*unit+rastwidth+rastspace, 0,i*unit+rastwidth+rastspace, rastwidth-11);
+			lineOnScreen(gl, rastwidth+rastspace, i*unit,2*rastwidth+rastspace-12, i*unit);
 		}
 		//level 3
+		drawText(gl,"Level 3",  (int) 2*(rastwidth+rastspace),(int) (rastwidth+10));
 		for (int i = 0; i<=rast; i++){
-			lineOnScreen(gl, i*unit+2*rastwidth+2*rastspace, 0,i*unit+2*rastwidth+2*rastspace, rastwidth);
-			lineOnScreen(gl, 2*rastwidth+2*rastspace, i*unit,3*rastwidth+2*rastspace, i*unit);
+			lineOnScreen(gl, i*unit+2*rastwidth+2*rastspace, 0,i*unit+2*rastwidth+2*rastspace, rastwidth-11);
+			lineOnScreen(gl, 2*rastwidth+2*rastspace, i*unit,3*rastwidth+2*rastspace-12, i*unit);
 		}
 	}
 	/**
@@ -647,36 +690,41 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		// Vloer
 //		gl.glColor3f(1f, 1f, 1f);
 //		boxOnScreen(gl, 0,buttonpos-buttonSize, buttonSize);
-		Image.drawImage(gl, 0,(int)(buttonpos-buttonSize),56,56, vloer90);
+		Image.drawImage(gl, 0,(int)(buttonpos-buttonSize),36,36, vloer36);
 		drawText(gl,"Add Floor",  (int) (buttonSize+10),(int) (buttonpos-0.5*buttonSize));
 		// Muur
 //		gl.glColor3f(0.0f, 0.0f, 0.0f);
 //		boxOnScreen(gl, buttonSize+200, buttonpos-buttonSize, buttonSize);
-		Image.drawImage(gl, (int) buttonSize+200,(int)(buttonpos-buttonSize),56,56, muur90);
-		drawText(gl,"Add Wall", (int) (2*buttonSize+210),(int) (buttonpos-0.5*buttonSize));
+		Image.drawImage(gl, (int) buttonSize+100,(int)(buttonpos-buttonSize),36,36, muur36);
+		drawText(gl,"Add Wall", (int) (2*buttonSize+110),(int) (buttonpos-0.5*buttonSize));
 		// Trap
 //		gl.glColor3f(0.5f, 0.5f, 0.0f);
 //		boxOnScreen(gl, 2*buttonSize+400, buttonpos-buttonSize, buttonSize);
-		Image.drawImage(gl, (int) (2*buttonSize+400),(int)(buttonpos-buttonSize),56,56, trap90);
-		drawText(gl,"Add Stairs", (int) (3*buttonSize+410),(int) (buttonpos-0.5*buttonSize));
+		Image.drawImage(gl, (int) (2*buttonSize+200),(int)(buttonpos-buttonSize),36,36, trap36);
+		drawText(gl,"Add Stairs", (int) (3*buttonSize+210),(int) (buttonpos-0.5*buttonSize));
+		//Deur
+//		gl.glColor3f(0.5f, 0.0f, 0.5f);
+//		boxOnScreen(gl, 3*buttonSize+300, buttonpos-buttonSize, buttonSize);
+		Image.drawImage(gl, (int) (3*buttonSize+300),(int)(buttonpos-buttonSize),36,36, deur36);
+		drawText(gl,"Add Door", (int) (4*buttonSize+310),(int) (buttonpos-0.5*buttonSize));
 		// Smart
 //		gl.glColor3f(0.5f, 0.0f, 0.5f);
 //		boxOnScreen(gl, 3*buttonSize+600, buttonpos-buttonSize, buttonSize);
-		Image.drawImage(gl, (int) (3*buttonSize+600),(int)(buttonpos-buttonSize),56,56, smart90);
-		drawText(gl,"Add Smartdrug", (int) (4*buttonSize+610),(int) (buttonpos-0.5*buttonSize));
+		Image.drawImage(gl, (int) (4*buttonSize+400),(int)(buttonpos-buttonSize),36,36, smart36);
+		drawText(gl,"Add Smartdrug", (int) (5*buttonSize+410),(int) (buttonpos-0.5*buttonSize));
 		// Save
 		gl.glColor3f(0f, 1.0f, 0.5f);
-		boxOnScreen(gl, 4*buttonSize+800, buttonpos-buttonSize, buttonSize);
-		drawText(gl,"Save Maze", (int) (5*buttonSize+810),(int) (buttonpos-0.5*buttonSize));
+		boxOnScreen(gl, 5*buttonSize+500, buttonpos-buttonSize, buttonSize);
+		drawText(gl,"Save Maze", (int) (6*buttonSize+510),(int) (buttonpos-0.5*buttonSize));
 		//Exit
 		gl.glColor3f(0.1f, 0.1f, 0.1f);
-		boxOnScreen(gl, 5*buttonSize+1000, buttonpos-buttonSize, buttonSize);
+		boxOnScreen(gl, 6*buttonSize+600, buttonpos-buttonSize, buttonSize);
 		// Draw a cross on top of exit box
 		gl.glLineWidth(3);
 		gl.glColor3f(1.0f, 1.0f, 1.0f);
-		lineOnScreen(gl, 5*buttonSize+1000,buttonpos, 6*buttonSize+1000,buttonpos-buttonSize);
-		lineOnScreen(gl, 5*buttonSize+1000,buttonpos-buttonSize, 6*buttonSize+1000,buttonpos);
-		drawText(gl,"Exit LevelEditor", (int) (6*buttonSize+1010),(int) (buttonpos-0.5*buttonSize));
+		lineOnScreen(gl, 6*buttonSize+600,buttonpos, 7*buttonSize+600,buttonpos-buttonSize);
+		lineOnScreen(gl, 6*buttonSize+600,buttonpos-buttonSize, 7*buttonSize+600,buttonpos);
+		drawText(gl,"Exit LevelEditor", (int) (7*buttonSize+610),(int) (buttonpos-0.5*buttonSize));
 
 		//		// Draw a point on top of the first box
 		//		gl.glPointSize(5.0f);
@@ -898,6 +946,44 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			}
 			points.clear();
 			break;
+		case DM_DEUR:
+			if (points.size() >= 1)	{
+				if (points.get(0).y<rastwidth){
+					if (points.get(0).x<=rastwidth){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastX = (((int) p1.x)/(unit));
+						int rastY = (((int) p1.y)/(unit));
+						if (!isBegin(rastX,rastY)&&!isTrap(rastX,rastY)){
+							Mazeconf[Mazeconf.length-rastY-2][Mazeconf.length-rastX-2]=7;
+						}
+					}
+					else if (points.get(0).x<=2*rastwidth+rastspace&&points.get(0).x>=rastwidth+rastspace){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastX2 = ((int) ((p1.x-(rastwidth+rastspace))/(unit)));
+						int rastY2 = (((int) p1.y)/(unit));
+						if (!isEindTrap2(rastX2,rastY2)&&!isTrap2(rastX2,rastY2)){
+							Mazeconf2[Mazeconf2.length-rastY2-2][Mazeconf2.length-rastX2-2]=7;
+						}
+						
+					}
+					else if (points.get(0).x<=3*rastwidth+2*rastspace&&points.get(0).x>=2*rastwidth+2*rastspace){
+						// If the draw mode is "point" and the user has supplied at
+						// least one point, draw that point.
+						p1 = points.get(0);
+						int rastX3 = ((int) ((p1.x-(2*rastwidth+2*rastspace))/(unit)));
+						int rastY3 = (((int) p1.y)/(unit));
+						if (!isEind(rastX3,rastY3)&&!isEindTrap3(rastX3,rastY3)){
+							Mazeconf3[Mazeconf3.length-rastY3-2][Mazeconf3.length-rastX3-2]=7;
+						}
+					}
+				}
+			}
+			points.clear();
+			break;
 		case DM_SMART:
 //			if (points.size() >= 1) {
 //				if (points.get(0).x<=rastwidth){
@@ -1040,27 +1126,34 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				drawMode = DM_VLOER;
 				System.out.println("Draw mode: DRAW_VLOER");
 				buttonPressed = true;
-			}else if (me.getX() > buttonSize+200&& me.getX()<buttonSize+200+buttonSize) {
+			}else if (me.getX() > buttonSize+100&& me.getX()<buttonSize+100+buttonSize) {
 				// The second button is clicked
 				points.clear();
 				drawMode = DM_MUUR;
 				System.out.println("Draw mode: DRAW_MUUR");
 				buttonPressed = true;
-			}else if (me.getX() > 2 * buttonSize+400&& me.getX()<2 * buttonSize+400+buttonSize) {
+			}else if (me.getX() > 2 * buttonSize+200&& me.getX()<2 * buttonSize+200+buttonSize) {
 				// The third button is clicked
 				points.clear();
 				drawMode = DM_TRAP;
 				System.out.println("Draw mode: DRAW_TRAP");
 				buttonPressed = true;
 			}
-			else if (me.getX() > 3 * buttonSize+600&& me.getX()<3 * buttonSize+600+buttonSize) {
-				// The third button is clicked
+			else if (me.getX() > 3 * buttonSize+300&& me.getX()<3 * buttonSize+300+buttonSize) {
+				// The fourth button is clicked
+				points.clear();
+				drawMode = DM_DEUR;
+				System.out.println("Draw mode: DRAW_DEUR");
+				buttonPressed = true;
+			}
+			else if (me.getX() > 4 * buttonSize+400&& me.getX()<4 * buttonSize+400+buttonSize) {
+				// The fifth button is clicked
 				points.clear();
 				drawMode = DM_SMART;
 				System.out.println("Draw mode: DRAW_SMART");
 				buttonPressed = true;
 			}
-			else if (me.getX() > 4 * buttonSize+800&& me.getX()<4 * buttonSize+800+buttonSize) {
+			else if (me.getX() > 5 * buttonSize+500&& me.getX()<5 * buttonSize+500+buttonSize) {
 				SaveWin SW = new SaveWin();
 				SW.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 				SW.setSize(300,150);
@@ -1069,7 +1162,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				System.out.println("SAVE");
 				//save
 			}
-			else if (me.getX() > 5 * buttonSize+1000&& me.getX()<5 * buttonSize+1000+buttonSize) {
+			else if (me.getX() > 6 * buttonSize+600&& me.getX()<6 * buttonSize+600+buttonSize) {
 				dispose = true;
 				//exit
 			}
@@ -1087,6 +1180,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				// If we're drawing lines and two points were already stored, reset the points list
 				points.clear();
 			}if (drawMode == DM_TRAP && points.size() >= 1) {
+				// If we're drawing lines and two points were already stored, reset the points list
+				points.clear();
+			}if (drawMode == DM_DEUR && points.size() >= 1) {
 				// If we're drawing lines and two points were already stored, reset the points list
 				points.clear();
 			}
@@ -1171,7 +1267,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				int[][] m = Mazeconf;
 				int[][] m2 = Mazeconf2;
 				int[][] m3 = Mazeconf3;
-				Mazes tempMaze = new Mazes(m,m2,m3,naamtemp);
+				Maze.Mazes tempMaze = new Maze.Mazes(m,m2,m3,naamtemp);
 				tempMaze.addtofile("Mazes.txt");
 				dispose();
 			}

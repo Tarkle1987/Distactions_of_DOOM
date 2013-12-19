@@ -138,6 +138,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 
 		// With everything set up, the frame can now be displayed to the user.
 		setVisible(true);
+		setResizable(false);
 	}
 
 	@Override
