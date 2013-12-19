@@ -36,7 +36,7 @@ public class DatabaseAccess
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next())
 			{
-			res = res + "\n" + rs.getString(1) + ", " + rs.getInt(2);
+			res = res + rs.getString(1) + ", " + rs.getInt(2) + "\n";
 			}
 			
 		} catch (SQLException e) {
@@ -57,14 +57,4 @@ public class DatabaseAccess
 		}
 	}
 	
-	public static void main(String[] args) {
-		DatabaseAccess DB = new DatabaseAccess();
-		DB.connect();
-		DB.setScore("Paul", 10);
-		DB.setScore("Martijn", 12);
-		DB.setScore("Lennard", 30);
-		DB.setScore("Joost", 55);
-		System.out.println(DB.getHighScoreList());
-		
-	}
 }
