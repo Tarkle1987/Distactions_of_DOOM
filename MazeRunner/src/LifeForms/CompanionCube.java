@@ -36,11 +36,11 @@ public class CompanionCube extends GameObject implements Lifeform {
 	private int hearingrange = 10;
 	private boolean sight = false;
 	
-	private boolean playerhit = false;
+	protected boolean playerhit = false;
 	
 	// Movement Variables
-	private boolean stun = false;
-	private int stuntimer = 0;
+	protected boolean stun = false;
+	protected int stuntimer = 0;
 	static final int stuntime = 2;
 	private boolean freemovement = false;
 	private double directionX = 0;
@@ -280,7 +280,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 			routeplanner = routeplanner - deltaTime;
 	}
 
-	private void CubeRotate(int deltaTime){
+	protected void CubeRotate(int deltaTime){
 		// trying to let the cube turn to the player
 
 		// Vector van de speler bepalen ten opzichte van de kubus

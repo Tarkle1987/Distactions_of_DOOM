@@ -26,7 +26,6 @@ public class UserInput extends Control
 		implements MouseListener, MouseMotionListener, KeyListener
 {
 	public int xd, yd, xp, yp;
-	public boolean view_right, view_left;
 	public double boundx = 0;
 	public double boundy = 0;
 	public int screenWidth;
@@ -69,23 +68,9 @@ public class UserInput extends Control
 		xp = screenWidth/2;
 		yp = screenHeight/2;
 		
-		if(xd-xp != 0)
-		{
-			
-			dX = -2*(xp-xd);
 	
-		}
-		else
-			if(view_left == true)
-				if(view_right == true)
-					dX = 0;
-				else
-					dX = -1.5;
-			else
-				if(view_right == true)
-					dX = 1.5;
-				else
-					dX = 0;
+		dX = -2*(xp-xd);
+
 	
 		dY = -2*(yp-yd);
 
@@ -144,9 +129,9 @@ public class UserInput extends Control
 		break;
 		case 68: right = true;		// 'd'
 		break;
-		case 69: view_right = true;	// 'e'
+		case 69: 	action = true;	// 'e'
 		break;
-		case 81: view_left = true;	// 'q'
+		case 81: 	// 'q'
 		break;
 		case 32: space = true;    // 'space;
 		break;
@@ -174,7 +159,7 @@ public class UserInput extends Control
 		case 16:				  // 'shift'
 			sprint = true;
 			break;
-			
+	
 		
 		default: break;
 		}
@@ -198,9 +183,9 @@ public class UserInput extends Control
 		break;
 		case 68: right = false;			// 'd'
 		break;
-		case 69: view_right = false;	// 'e'
+		case 69: action = false;	// 'e'
 		break;
-		case 81: view_left = false;		// 'q'
+		case 81: ;		// 'q'
 		break;
 		case 32: space = false;    // 'space; 
 		break;

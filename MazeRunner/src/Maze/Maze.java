@@ -49,7 +49,7 @@ public class Maze implements VisibleObject {
 	public final double SINGLE_SIZE = 22;
 	public final double MAZE_SIZE = 2*SINGLE_SIZE;
 	public final double SQUARE_SIZE = 5;
-	protected Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
+	public Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
 	public Texture Oranje, Rood, Blauw, Groen, Wit, Smarttex;
 	private boolean initie = true;
 	private int textswitch;
@@ -395,7 +395,7 @@ public class Maze implements VisibleObject {
 	{
 		return (int)Math.floor( x / SQUARE_SIZE );
 	}
-	protected double convertFromGridX( int x ){
+	public double convertFromGridX( int x ){
 		return x * SQUARE_SIZE;
 	}
 
@@ -408,7 +408,7 @@ public class Maze implements VisibleObject {
 	{
 		return (int)Math.floor( z / SQUARE_SIZE );
 	}
-	protected double convertFromGridZ( int z ){
+	public double convertFromGridZ( int z ){
 		return z*SQUARE_SIZE;
 	}
 	
