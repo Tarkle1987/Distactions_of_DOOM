@@ -16,17 +16,10 @@ public class Score
 	}
 	
 	public void calculateNewScore(int hp, int TimeInSeconds){
-		if(TimeInSeconds < 60)
+		this.bonus = (1000- TimeInSeconds)*10;
+		if(this.bonus < 0)
 		{
-			this.bonus = 10000;
-		}
-		else if(TimeInSeconds < 180)
-		{
-			this.bonus = 1000;
-		}
-		else if(TimeInSeconds < 360)
-		{
-			this.bonus = 100;
+			this.bonus = 0;
 		}
 		this.newScore = hp*50 + bonus;
 	}
@@ -52,7 +45,10 @@ public class Score
 	public void drawScore()
 	{
 		//TODO: Drawing score on the endscreen, but first make an endscreen
-		System.out.println(divided[0]);
+		for(int i =0; i <divided.length; i++)
+		{
+			System.out.println(divided[i]);
+		}
 	}
 	
 	public static void main(String[] args)
