@@ -44,6 +44,8 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 	
 	public boolean inrange = false;
 	
+
+	
 	public SchuifMuur(int x, int z, Maze maze){
 		super(maze.convertFromGridX(x) + maze.SQUARE_SIZE/2,  maze.SQUARE_SIZE/2, maze.convertFromGridZ(z) + maze.SQUARE_SIZE/2);
 		
@@ -166,9 +168,13 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 				if(state == Closed){
 					state = Opening;
 					openingtimer = openingtime;
+					Sound vierseconden = new Sound("SchuifDeur4s.wav");
+					vierseconden.play();
 				}else if(state == Open){
 					state = Closing;
 					closingtimer = closingtime;
+					Sound tweeseconden = new Sound("SchuifDeur2s.wav");
+					tweeseconden.play();
 				}
 			}
 		}
