@@ -26,6 +26,7 @@ import leveleditor.Image;
 import Main.Menu.SelectWin;
 import Maze.Maze;
 import NotDefined.SchuifMuur;
+import NotDefined.Sound;
 import Player.Camera;
 import Player.Player;
 import Player.UserInput;
@@ -217,35 +218,36 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 
 		player = new Player( 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
-				maze.SQUARE_SIZE / 2,							// y-position
-				1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// z-position
-				90, 0 );										// horizontal and vertical angle
 
-		camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
-				player.getHorAngle(), player.getVerAngle() );
+							 maze.SQUARE_SIZE / 2,							// y-position
+							 1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// z-position
+							 90, 0 );										// horizontal and vertical angle
+
+	    camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
+		             player.getHorAngle(), player.getVerAngle() );
+			
+	
+			    /*
+	     * Start positions for the game objects. Be aware: for the player the start position must two times be set..
+
+	  */  
 
 
-		/*
-		 * Start positions for the game objects. Be aware: for the player the start position must two times be set..
-
-		 */  
-
-
-		//	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-		//		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
-		//	    lifeforms.add(c1);
-		//	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
-		//		lifeforms.add(c2);
-		//		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
-		//		lifeforms.add(c3);
-
-		SchuifMuur SM = new SchuifMuur(5,5,maze);
-		visibleObjects.add(SM);
-
-		//		CompanionCube(10,1.5);
-
-		//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
-		//	    lifeforms.add(peter);
+//	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+//		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
+//	    lifeforms.add(c1);
+//	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
+//		lifeforms.add(c2);
+//		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
+//		lifeforms.add(c3);
+		
+	    SchuifMuur SM = new SchuifMuur(5,5,maze);
+	    visibleObjects.add(SM);
+	    
+		CompanionCube(1,1.5);
+	    
+//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
+//	    lifeforms.add(peter);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap(coordT[0], coordT[1]);
@@ -423,6 +425,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 				Projectile book = new Projectile( player.locationX, player.locationY, player.locationZ,player.getHorAngle(),player.getVerAngle());
 				projectiles.add(book);
 
+				
+				Sound bookthrow = new Sound("BookThrow.wav");
+				bookthrow.play();
+				bookthrow.setGain(-10);
+				
 				input.schiet = false;
 			}
 
