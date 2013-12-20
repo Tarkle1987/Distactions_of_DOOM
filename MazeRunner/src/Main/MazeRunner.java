@@ -4,14 +4,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
-
+import MenuButtons.Button;
 import movingobjects.Beer;
 import movingobjects.CompanionCube;
 import movingobjects.CustomMazeObject;
+import movingobjects.Lifeform;
 import movingobjects.MazeObject;
+import movingobjects.Peter;
 import movingobjects.Projectile;
 import movingobjects.Smart;
 import movingobjects.Smarto;
@@ -19,22 +20,19 @@ import movingobjects.Smartw;
 import movingobjects.VisibleObject;
 import HUD.Clock;
 import HUD.HealthBar;
-import movingobjects.Lifeform;
+import leveleditor.Image;
 import Maze.Maze;
-import MenuButtons.Button;
+import NotDefined.SchuifMuur;
 import Player.Camera;
 import Player.Player;
 import Player.UserInput;
-
 import com.sun.opengl.util.*;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
@@ -96,8 +94,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	// Ingame seconden tellen
 	private int miliseconds = 0;
-
+	
 	private Clock clock = new Clock();
+	
+	private byte[] E = Image.loadImage("E.png");
+	
 
 	/*
 	 * **********************************************
@@ -212,33 +213,42 @@ public class MazeRunner extends Frame implements GLEventListener {
 		maze = new Maze();
 		visibleObjects.add(maze);
 
+		visibleObjects.set(0, maze);
+
 		// Initialize the player.
 		input = new UserInput(canvas);
+		
+		
+		player = new Player( 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
+							 maze.SQUARE_SIZE / 2,							// y-position
+							 1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// z-position
+							 90, 0 );										// horizontal and vertical angle
 
-		player = new Player(20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, // x-position
-				maze.SQUARE_SIZE / 2, // y-position
-				1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, // z-position
-				90, 0); // horizontal and vertical angle
+	    camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
+		             player.getHorAngle(), player.getVerAngle() );
+			
+	
+			    /*
+	     * Start positions for the game objects. Be aware: for the player the start position must two times be set..
 
-		camera = new Camera(player.getLocationX(), player.getLocationY(),
-				player.getLocationZ(), player.getHorAngle(),
-				player.getVerAngle());
+	  */  
 
-		/*
-		 * Start positions for the game objects. Be aware: for the player the
-		 * start position must two times be set..
-		 */
 
-		// CompanionCube c1 = new CompanionCube(player.locationX, 0,
-		// player.locationZ, 1.5);
-		// CompanionCube c1 = new CompanionCube(103, 0, 53, 1.5);
-		// lifeforms.add(c1);
-		// CompanionCube c2 = new CompanionCube(103, 0, 72, 1.5);
-		// lifeforms.add(c2);
-		// CompanionCube c3 = new CompanionCube(83, 0, 72, 1.5);
-		// lifeforms.add(c3);
-
-		CompanionCube(10, 1.5);
+//	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+//		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
+//	    lifeforms.add(c1);
+//	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
+//		lifeforms.add(c2);
+//		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
+//		lifeforms.add(c3);
+		
+	    SchuifMuur SM = new SchuifMuur(5,5,maze);
+	    visibleObjects.add(SM);
+	    
+//		CompanionCube(10,1.5);
+	    
+//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
+//	    lifeforms.add(peter);
 
 		int[] coordT = Maze.CoordTrap(Maze.maze);
 		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
@@ -257,7 +267,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 			visibleObjects.add(Sm);
 
 		}
-		// this.setUndecorated(true);
+
+		int[] coordSM = Maze.CoordSchuifMuur(Maze.maze);
+		for(int i = 0; i < coordSM[0]; i++){
+			SchuifMuur schuifmuur = new SchuifMuur(coordSM[1+i*2],coordSM[2+i*2], maze);
+			visibleObjects.add(schuifmuur);
+		}
+		//this.setUndecorated(true);
 		player.setControl(input);
 
 		input.screenWidth = screenWidth;
@@ -497,10 +513,21 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		for (int i = 0; i < visibleObjects.size(); i++) {
 
-			visibleObjects.get(i).update(deltaTime, maze, visibleObjects,
-					player);
+			visibleObjects.get(i).update(deltaTime, maze, visibleObjects ,player);
+			
+			if(visibleObjects.get(i) instanceof SchuifMuur){
+				SchuifMuur SM = (SchuifMuur)visibleObjects.get(i);
+				if(SM.open){
+					maze.maze[SM.x][SM.z]= 0; 
+				}else if(!SM.open){
+					maze.maze[SM.x][SM.z]= 7; 
+				}
+				
+				
+			}
+			
+			if(visibleObjects.get(i) instanceof Smart){
 
-			if (visibleObjects.get(i) instanceof Smart) {
 				Smart so = (Smart) visibleObjects.get(i);
 				if (so.destroy) {
 					visibleObjects.remove(i);
@@ -508,8 +535,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 			}
 
 		}
+		
+		visibleObjects.set(0, maze);
+		
+		
+		for(int i = 0; i < projectiles.size(); i ++){
 
-		for (int i = 0; i < projectiles.size(); i++) {
 			projectiles.get(i).update(deltaTime, maze);
 
 			for (int j = 0; j < lifeforms.size(); j++) {
@@ -550,8 +581,20 @@ public class MazeRunner extends Frame implements GLEventListener {
 								lifeforms.get(i).getPlayerLocation());
 					}
 				}
-			}
+			}	
 		}
+		
+//		if(input.action){
+//			for(int i = 0; i < maze.maze.length; i ++){
+//				for(int j = 0; j < maze.maze.length; j++){
+//					if(maze.maze[i][j] == 1){
+//						maze.maze[i][j] = 0;
+//					}
+//				}
+//			}
+//			
+//			visibleObjects.set(0, maze);
+//		}
 
 	}
 
@@ -759,6 +802,21 @@ public class MazeRunner extends Frame implements GLEventListener {
 		bar.display(gl);
 
 		clock.display(gl, screenWidth, screenHeight);
+		
+		boolean drawE = false;
+		
+		for(int i = 0; i < visibleObjects.size(); i++){
+			if(visibleObjects.get(i) instanceof SchuifMuur){
+				SchuifMuur SM = (SchuifMuur)visibleObjects.get(i);
+				
+				if(SM.inrange)
+					drawE = true;
+			}
+		}
+		
+		if(drawE)
+			Image.drawImage(gl, screenWidth/2 - 127/2, screenHeight/2 - 119/2, 127, 119, E);
+		
 
 		switchTo3D(drawable);
 
