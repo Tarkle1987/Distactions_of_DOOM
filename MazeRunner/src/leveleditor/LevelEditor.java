@@ -119,7 +119,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		drawHorizontal2();
 		drawVertical3();
 		drawHorizontal3();
-		System.out.println(unit);
 		for (int i = 0; i<Mazeconf.length;i++){
 			Mazeconf[0][i]=1;
 			Mazeconf[Mazeconf.length-1][i]= 1;
@@ -487,7 +486,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		//		boxOnScreen(gl, 10*unit, 10*unit+1, unit);
 		// Flush the OpenGL buffer, outputting the result to the screen.
 		gl.glFlush();
-		System.out.println(unit);
 
 	}
 
@@ -985,26 +983,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			points.clear();
 			break;
 		case DM_SMART:
-//			if (points.size() >= 1) {
-//				if (points.get(0).x<=rastwidth){
-//					if (bevat(3)[0]==1){
-//						Mazeconf[bevat(3)[1]][bevat(3)[2]]=0;
-//					}
-//					p1 = points.get(0);
-//					int rastXs = (((int) p1.x)/(unit));
-//					int rastYs = (((int) p1.y)/(unit));
-//					if (!isBed(rastXs,rastYs)&&!isEind(rastXs,rastYs)){
-//						Mazeconf[Mazeconf.length-rastYs-2][Mazeconf.length-rastXs-2]=3;
-					
-					//					System.out.println(unit);
-					//					System.out.println(rastXs + " " + rastYs);
-					//					System.out.println(Mazeconf[Mazeconf.length-rastYs-2][rast-rastXs]);
-					//					drawMaze(gl);
-					//					drawRaster(gl);
-//				}
-//			}
-//			points.clear();
-//			break;
 			if (points.size() >= 1)	{
 				if (points.get(0).y<rastwidth){
 					if (points.get(0).x<=rastwidth){
@@ -1193,7 +1171,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 
 			// Add a new point to the points list.
 			points.add(new Point2D.Float(me.getX(), screenHeight - me.getY()));
-//			System.out.println(points.get(0).getX() + ", "+ points.get(0).getY());
 			String Mazeres = "";
 			for (int i = 0; i<Mazeconf.length; i++){
 				for (int j = 0; j<Mazeconf.length; j++){
@@ -1204,7 +1181,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				}
 			}
 
-//			System.out.println(Mazeres);
 		}
 	}
 

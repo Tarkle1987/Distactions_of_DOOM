@@ -50,7 +50,8 @@ public class Maze implements VisibleObject {
 	public final double SINGLE_SIZE = 22;
 	public final double MAZE_SIZE = 2*SINGLE_SIZE;
 	public final double SQUARE_SIZE = 5;
-	protected Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
+	protected Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6; 
+	public Texture trapafTexture;
 	public Texture Oranje, Rood, Blauw, Groen, Wit, Smarttex;
 	private boolean initie = true;
 	private int textswitch;
@@ -290,7 +291,14 @@ public class Maze implements VisibleObject {
 			e.printStackTrace();
 			System.exit(0);
 		}	
-		
+		try{
+			InputStream stream = getClass().getResourceAsStream("TrapNeer.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "TrapNeer.jpg"); 
+			this.trapafTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 	
 	public static void setMaze(Mazes temp) {
@@ -354,6 +362,21 @@ public class Maze implements VisibleObject {
 		for (int i = 0; i<Maze.length; i++){
 			for (int j = 0; j<Maze.length; j++){
 				if (Maze[j][i] == 2){
+					res[0+count] = j;
+					res[1+count] = i;
+					count = count+2;
+				}
+			}
+		}
+		return res;
+	}
+	
+	public static int[] CoordTrapaf(int[][] Maze){
+		int[] res = new int[4];
+		int count = 0;
+		for (int i = 0; i<Maze.length; i++){
+			for (int j = 0; j<Maze.length; j++){
+				if (Maze[j][i] == 6){
 					res[0+count] = j;
 					res[1+count] = i;
 					count = count+2;
@@ -674,16 +697,18 @@ public class Maze implements VisibleObject {
 		{
 			for(int j= 0; j < size; j++)
 			{
-	        gl.glBegin(GL.GL_QUADS);
-		        gl.glVertex3d((0 + (i*SQUARE_SIZE)), 0, 0 + (j*SQUARE_SIZE));
-		        gl.glTexCoord2f(0.0f, 0.0f);
-		        gl.glVertex3d(0 + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
-		        gl.glTexCoord2f(0.0f, 1.0f);
-		        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
-		        gl.glTexCoord2f(1.0f, 1.0f);
-		        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, 0 + (j*SQUARE_SIZE));
-		        gl.glTexCoord2f(1.0f, 0.0f);
-			gl.glEnd();	
+			if (maze[i][j]!=6){
+				gl.glBegin(GL.GL_QUADS);
+		        	gl.glVertex3d((0 + (i*SQUARE_SIZE)), 0, 0 + (j*SQUARE_SIZE));
+			        gl.glTexCoord2f(0.0f, 0.0f);
+			        gl.glVertex3d(0 + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
+			        gl.glTexCoord2f(0.0f, 1.0f);
+			        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
+			        gl.glTexCoord2f(1.0f, 1.0f);
+			        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, 0 + (j*SQUARE_SIZE));
+			        gl.glTexCoord2f(1.0f, 0.0f);
+				gl.glEnd();	
+			}
 			}
 		}
 		floorTexture.disable();
