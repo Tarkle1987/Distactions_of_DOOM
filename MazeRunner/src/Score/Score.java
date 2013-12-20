@@ -2,6 +2,10 @@ package Score;
 
 import java.util.NoSuchElementException;
 
+import javax.media.opengl.GL;
+
+import com.sun.opengl.util.GLUT;
+
 public class Score 
 {
 	private int newScore;
@@ -42,21 +46,52 @@ public class Score
 		}
 	}
 	
-	public void drawScore()
+	public void drawHighScores(GL gl, int screenWidth, int screenHeight)
 	{
+		getHighScore();
+		int x = (int)(0.25*screenWidth);
+		int y = (int)(0.1*screenWidth);
 		//TODO: Drawing score on the endscreen, but first make an endscreen
 		for(int i =0; i <divided.length; i++)
 		{
-			System.out.println(divided[i]);
+			y = y + 20;
+			String row = i + ": " + divided[i];
+			drawText(gl, row, x,y);
 		}
 	}
 	
-	public static void main(String[] args)
+	public void drawText(GL gl, String string, int x, int y)
 	{
-		Score score = new Score();
-		score.calculateNewScore(5, 109);
-		score.submitScore("test");
-		score.getHighScore();
-		score.drawScore();
+		int length = string.length();
+		
+		GLUT glut = new GLUT();
+		gl.glColor3f(0.0f, 1.0f, 0.0f);
+		gl.glRasterPos2i(x, y); // raster position in 2D
+		for(int i=0; i<length; i++)
+		{
+			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18, string.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
+		}
+	}
+
+	public void drawScore(GL gl, int screenWidth, int screenHeight) {
+		// TODO Auto-generated method stub
+		String congrats = "Congratulations, you have reached the end!";
+		String yourscore = "Your score for this game is: " +this.newScore;
+		
+		drawBigText(gl, congrats, screenWidth-400, screenHeight - 80);
+		drawText(gl, yourscore, screenWidth-400, screenHeight - 120);
+	}
+
+	private void drawBigText(GL gl, String congrats, int x, int y) 
+	{
+		int length = congrats.length();
+		
+		GLUT glut = new GLUT();
+		gl.glColor3f(1.0f, 0.0f, 0.0f);
+		gl.glRasterPos2i(x, y); // raster position in 2D
+		for(int i=0; i<length; i++)
+		{
+			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18, congrats.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
+		}
 	}
 }
