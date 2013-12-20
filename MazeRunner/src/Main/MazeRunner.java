@@ -104,6 +104,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Clock clock = new Clock();
 	
 	private byte[] E = Image.loadImage("E.png");
+	private int[] coordT,coordTa;
 	
 
 	/*
@@ -256,12 +257,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 //	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
 //	    lifeforms.add(peter);
 
-		int[] coordT = Maze.CoordTrap(Maze.maze);
+		coordT = Maze.CoordTrap(Maze.maze);
 		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
 		Trap tr2 = new Trap((float) coordT[2], (float) coordT[3]);
 		visibleObjects.add(tr1);
 		visibleObjects.add(tr2);
-		int[] coordTa = Maze.CoordTrapaf(Maze.maze);
+		coordTa = Maze.CoordTrapaf(Maze.maze);
 		Trapaf tra1 = new Trapaf((float) coordTa[0], (float) coordTa[1]);
 		Trapaf tra2 = new Trapaf((float) coordTa[2], (float) coordTa[3]);
 		visibleObjects.add(tra1);
@@ -538,8 +539,22 @@ public class MazeRunner extends Frame implements GLEventListener {
 				}else if(!SM.open){
 					maze.maze[SM.x][SM.z]= 7; 
 				}
-				
-				
+			}
+			
+			if(visibleObjects.get(i) instanceof Trap){
+				Trap tr = (Trap)visibleObjects.get(i);
+				if(tr.transport){
+					if (maze.convertToGridX(player.getLocationZ())>22){
+						player.setLocationX(maze.convertFromGridX(coordTa[0])+0.5*maze.SQUARE_SIZE);
+						player.setLocationZ(maze.convertFromGridZ(coordTa[1])+0.5*maze.SQUARE_SIZE);
+						tr.transport = false;
+					}
+					else{
+						player.setLocationX(maze.convertFromGridX(coordTa[2])+0.5*maze.SQUARE_SIZE);
+						player.setLocationZ(maze.convertFromGridZ(coordTa[3])+0.5*maze.SQUARE_SIZE);
+						tr.transport = false;
+						}
+				}
 			}
 			
 			if(visibleObjects.get(i) instanceof Smart){

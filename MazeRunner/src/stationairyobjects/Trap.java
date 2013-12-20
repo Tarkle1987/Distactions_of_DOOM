@@ -15,7 +15,7 @@ import Routeplanner.Tile;
 
 public class Trap implements VisibleObject{
 	public MazeObject Kaft1,Kaft2,Kaft3,Papier;
-	protected boolean transport = false;
+	public boolean transport = false;
 	private float size = 5;
 	private double locationX,locationZ;
 	
@@ -117,13 +117,11 @@ public class Trap implements VisibleObject{
 		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ);
 		
 		double dLength =  Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
-		System.out.println(dLength);
-		if(dLength < dLmax)
+		if(dLength < 1.5*dLmax)
 			inrange = true;
 		else
 			inrange = false;
 			
-		System.out.println(inrange);
 		
 		if(inrange && player.action){
 			transport=true;
