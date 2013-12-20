@@ -88,7 +88,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private boolean textrue = true;
 	private CompanionCube c1;
-	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto,
+	private MazeObject Trap, Smart, Smarto,
 			Smartw;
 	private Beer b1, b2, b3, b4, b5;
 
@@ -256,8 +256,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		visibleObjects.add(tr1);
 		visibleObjects.add(tr2);
 		int[] coordTa = Maze.CoordTrapaf(Maze.maze);
-		Trapaf tra1 = new Trapaf((float) coordTa[0], (float) coordTa[1], maze);
-		Trapaf tra2 = new Trapaf((float) coordTa[2], (float) coordTa[3], maze);
+		Trapaf tra1 = new Trapaf((float) coordTa[0], (float) coordTa[1]);
+		Trapaf tra2 = new Trapaf((float) coordTa[2], (float) coordTa[3]);
 		visibleObjects.add(tra1);
 		visibleObjects.add(tra2);
 		int[] coordS = Maze.CoordSmart(Maze.maze);
@@ -388,11 +388,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 	}
 
 	private void textureAdd(GL gl) {
+		for (int i = 0; i < visibleObjects.size(); i++) {
 
-		Kaft1.addTexture(maze.Blauw);
-		Kaft2.addTexture(maze.Groen);
-		Kaft3.addTexture(maze.Rood);
-		Papier.addTexture(maze.Wit);
+			if(visibleObjects.get(i) instanceof Trap){
+				Trap tr = (Trap)visibleObjects.get(i);
+				tr.Kaft1.addTexture(maze.Blauw);
+				tr.Kaft2.addTexture(maze.Groen);
+				tr.Kaft3.addTexture(maze.Rood);
+				tr.Papier.addTexture(maze.Wit);
+				
+				
+			}
+		}
 	}
 
 	/**
