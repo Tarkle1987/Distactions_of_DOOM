@@ -204,9 +204,6 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 				closingtimer = 0;
 			}
 		}
-		
-		
-		System.out.println("state: " + state);
 	}
 
 	@Override

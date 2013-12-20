@@ -95,7 +95,7 @@ public class Maze implements VisibleObject {
 		
 		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE ){
 			
-			if(maze[x][z] == 1 || maze[x][z] == 7){
+			if(maze[x][z] == 1 || maze[x][z] == 7 ){
 				iswall = true;
 			}
 		}
