@@ -50,7 +50,7 @@ public class Maze implements VisibleObject {
 	public final double SINGLE_SIZE = 22;
 	public final double MAZE_SIZE = 2*SINGLE_SIZE;
 	public final double SQUARE_SIZE = 5;
-	public Texture muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
+	public Texture DeurTexture, muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
 	public Texture Oranje, Rood, Blauw, Groen, Wit, Smarttex;
 	private boolean initie = true;
 	private int textswitch;
@@ -95,7 +95,7 @@ public class Maze implements VisibleObject {
 		
 		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE ){
 			
-			if(maze[x][z] == 1 || maze[x][z] == 7){
+			if(maze[x][z] == 1 || maze[x][z] == 7 ){
 				iswall = true;
 			}
 		}
@@ -157,6 +157,14 @@ public class Maze implements VisibleObject {
 	
 	
 	public void textures(){
+		try{
+			InputStream stream = getClass().getResourceAsStream("Deur.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Deur.jpg"); 
+			this.DeurTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
 		try{
 			InputStream stream = getClass().getResourceAsStream("Muur.jpg");
 			TextureData data = TextureIO.newTextureData(stream, false, "Muur.jpg"); 

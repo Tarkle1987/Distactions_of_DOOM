@@ -1,8 +1,14 @@
 package NotDefined;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
+
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureData;
+import com.sun.opengl.util.texture.TextureIO;
 
 import movingobjects.GameObject;
 import movingobjects.VisibleObject;
@@ -38,6 +44,7 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 	
 	public boolean inrange = false;
 	
+
 	
 	public SchuifMuur(int x, int z, Maze maze){
 		super(maze.convertFromGridX(x) + maze.SQUARE_SIZE/2,  maze.SQUARE_SIZE/2, maze.convertFromGridZ(z) + maze.SQUARE_SIZE/2);
@@ -50,7 +57,7 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 		this.dLmax = size;
 		this.dLmin = size/2;
 	
-		
+
 	}
 	
 	@Override
@@ -61,8 +68,12 @@ public class SchuifMuur extends GameObject implements VisibleObject {
     	gl.glPushMatrix();
 		gl.glTranslated(locationX,locationY,locationZ);
 		
-		maze.muurTexture.enable();
-		maze.muurTexture.bind();
+//		maze.muurTexture.enable();
+//		maze.muurTexture.bind();
+	
+
+		maze.DeurTexture.enable();
+		maze.DeurTexture.bind();
 		
 		gl.glBegin(GL.GL_QUADS);
           
@@ -128,6 +139,7 @@ public class SchuifMuur extends GameObject implements VisibleObject {
           gl.glEnd(); 
 		  gl.glPopMatrix();
 	
+		  maze.DeurTexture.disable();
 	}
 
 	@Override
@@ -156,9 +168,13 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 				if(state == Closed){
 					state = Opening;
 					openingtimer = openingtime;
+					Sound vierseconden = new Sound("SchuifDeur4s.wav");
+					vierseconden.play();
 				}else if(state == Open){
 					state = Closing;
 					closingtimer = closingtime;
+					Sound tweeseconden = new Sound("SchuifDeur2s.wav");
+					tweeseconden.play();
 				}
 			}
 		}
@@ -194,9 +210,6 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 				closingtimer = 0;
 			}
 		}
-		
-		
-		System.out.println("state: " + state);
 	}
 
 	@Override

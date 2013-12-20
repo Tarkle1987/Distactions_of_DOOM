@@ -15,6 +15,9 @@ public class Projectile extends GameObject {
 	private double verAngle;
 	private double speed;
 	private double size;
+	private double width;
+	private double height;
+	private double depth;
 	
 	protected double dX;
 	protected double dY;
@@ -31,7 +34,10 @@ public class Projectile extends GameObject {
 		
 		
 		this.speed = 0.1;
-		this.size = 0.5;
+		this.size = 0.2;
+		this.width = 2*size;
+		this.depth = 1*size;
+		this.height = 3*size;
 		
 		dX = Math.sin(Math.toRadians(horAngle));
 		dY = Math.cos(Math.toRadians(horAngle));
@@ -66,48 +72,129 @@ public class Projectile extends GameObject {
 		
 		float CubeColor[] = { 1f, 0.627f, 0f, 1f };
 		gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, CubeColor, 0);
+		gl.glEnable(GL.GL_TEXTURE_2D);
 		
 		gl.glPushMatrix();
 		gl.glTranslated(locationX,locationY,locationZ);
 		gl.glRotated(horAngle -90, 0, 1, 0);
-		gl.glTranslated(0, 0, size/2);
-		glut.glutSolidCube( (float) size);
-		gl.glPopMatrix();
 		
-		gl.glPushMatrix();
-		gl.glTranslated(locationX,locationY,locationZ);
-		gl.glRotated(horAngle -90, 0, 1, 0);
-		gl.glTranslated(0, 0, -size/2);
-		glut.glutSolidCube( (float) size);
-		gl.glPopMatrix();
+		gl.glBegin(GL.GL_QUADS);
 		
-		gl.glPushMatrix();
-		gl.glTranslated(locationX,locationY,locationZ);
-		gl.glRotated(horAngle -90, 0, 1, 0);
-		gl.glTranslated(0, size, size/2);
-		glut.glutSolidCube( (float) size);
-		gl.glPopMatrix();
+        final float[] frontUL = {(float) (-0.5*depth),(float) (0.5*height),(float) (0.5*width)};
+        final float[] frontUR = {(float) (0.5*depth),(float) (0.5*height),(float) (0.5*width)};
+        final float[] frontLR = {(float) (0.5*depth),(float) (-0.5*height),(float) (0.5*width)};
+        final float[] frontLL = {(float) (-0.5*depth),(float) (-0.5*height),(float) (0.5*width)};
+        final float[] backUL = {(float) (-0.5*depth),(float) (0.5*height),(float) (-0.5*width)};
+        final float[] backUR = {(float) (0.5*depth),(float) (0.5*height),(float) (-0.5*width)};
+        final float[] backLR = {(float) (0.5*depth),(float) (-0.5*height),(float) (-0.5*width)};
+        final float[] backLL = {(float) (-0.5*depth),(float) (-0.5*height),(float) (-0.5*width)};
 		
-		gl.glPushMatrix();
-		gl.glTranslated(locationX,locationY,locationZ);
-		gl.glRotated(horAngle -90, 0, 1, 0);
-		gl.glTranslated(0, size, -size/2);
-		glut.glutSolidCube( (float) size);
+        // Front Face.
+        gl.glNormal3f(0.0f, 0.0f, 1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3fv(frontUR, 0);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3fv(frontUL, 0);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3fv(frontLL, 0);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3fv(frontLR, 0);
+        // Back Face.
+        gl.glNormal3f(0.0f, 0.0f, -1.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3fv(backUL, 0);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3fv(backUR, 0);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3fv(backLR, 0);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3fv(backLL, 0);
+        // right face
+        gl.glNormal3f(1.0f, 0.0f, 0.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3fv(backUR, 0);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3fv(frontUR, 0);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3fv(frontLR, 0);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3fv(backLR, 0);
+     // left face
+        gl.glNormal3f(-1.0f, 0.0f, 0.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3fv(frontUL, 0);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3fv(backUL, 0);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3fv(backLL, 0);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3fv(frontLL, 0);
+     // bottom face
+        gl.glNormal3f(0.0f, -1.0f, 0.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3fv(frontLL, 0);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3fv(backLL, 0);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3fv(backLR, 0);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3fv(frontLR, 0);
+        
+     // top face
+        gl.glNormal3f(0.0f, 1.0f, 0.0f);
+        gl.glTexCoord2f(0.0f, 0.0f);
+        gl.glVertex3fv(frontUR, 0);
+        gl.glTexCoord2f(1.0f, 0.0f);
+        gl.glVertex3fv(backUR, 0);
+        gl.glTexCoord2f(1.0f, 1.0f);
+        gl.glVertex3fv(backUL, 0);
+        gl.glTexCoord2f(0.0f, 1.0f);
+        gl.glVertex3fv(frontUL, 0);
+        
+        gl.glEnd(); 
 		gl.glPopMatrix();
-		
-		gl.glPushMatrix();
-		gl.glTranslated(locationX,locationY,locationZ);
-		gl.glRotated(horAngle -90, 0, 1, 0);
-		gl.glTranslated(0,-size, size/2);
-		glut.glutSolidCube( (float) size);
-		gl.glPopMatrix();
-		
-		gl.glPushMatrix();
-		gl.glTranslated(locationX,locationY,locationZ);
-		gl.glRotated(horAngle -90, 0, 1, 0);
-		gl.glTranslated(0, -size, -size/2);
-		glut.glutSolidCube( (float) size);
-		gl.glPopMatrix();
+        
+//		gl.glPushMatrix();
+//		gl.glTranslated(locationX,locationY,locationZ);
+//		gl.glRotated(horAngle -90, 0, 1, 0);
+//		gl.glTranslated(0, 0, size/2);
+//		glut.glutSolidCube( (float) size);
+//		gl.glPopMatrix();
+//		
+//		gl.glPushMatrix();
+//		gl.glTranslated(locationX,locationY,locationZ);
+//		gl.glRotated(horAngle -90, 0, 1, 0);
+//		gl.glTranslated(0, 0, -size/2);
+//		glut.glutSolidCube( (float) size);
+//		gl.glPopMatrix();
+//		
+//		gl.glPushMatrix();
+//		gl.glTranslated(locationX,locationY,locationZ);
+//		gl.glRotated(horAngle -90, 0, 1, 0);
+//		gl.glTranslated(0, size, size/2);
+//		glut.glutSolidCube( (float) size);
+//		gl.glPopMatrix();
+//		
+//		gl.glPushMatrix();
+//		gl.glTranslated(locationX,locationY,locationZ);
+//		gl.glRotated(horAngle -90, 0, 1, 0);
+//		gl.glTranslated(0, size, -size/2);
+//		glut.glutSolidCube( (float) size);
+//		gl.glPopMatrix();
+//		
+//		gl.glPushMatrix();
+//		gl.glTranslated(locationX,locationY,locationZ);
+//		gl.glRotated(horAngle -90, 0, 1, 0);
+//		gl.glTranslated(0,-size, size/2);
+//		glut.glutSolidCube( (float) size);
+//		gl.glPopMatrix();
+//		
+//		gl.glPushMatrix();
+//		gl.glTranslated(locationX,locationY,locationZ);
+//		gl.glRotated(horAngle -90, 0, 1, 0);
+//		gl.glTranslated(0, -size, -size/2);
+//		glut.glutSolidCube( (float) size);
+//		gl.glPopMatrix();
 	}
 	
 	public double getHorAngle(){
