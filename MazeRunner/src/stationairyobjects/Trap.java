@@ -8,6 +8,7 @@ import movingobjects.CustomMazeObject;
 import movingobjects.MazeObject;
 import movingobjects.VisibleObject;
 import Maze.Maze;
+import NotDefined.Sound;
 import Player.Player;
 import Routeplanner.Tile;
 
@@ -18,10 +19,16 @@ public class Trap implements VisibleObject{
 	private float size = 5;
 	private double locationX,locationZ;
 	
+	public Maze maze;
+	
+	private double dLmax;
+	public boolean inrange = false;
+	
 	public Trap(float x, float z) {
 		
 		locationX = (double) x;
 		locationZ = (double) z;
+		dLmax = (double) size;
 		Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj",(float) 0.0175);
 		Kaft1.setCor((float)(x+1)*size, (float)(z+0.6)*size, 0);
 		Kaft1.rotateVerticesZ(-90, 1, 1);
@@ -96,16 +103,33 @@ public class Trap implements VisibleObject{
 	public void update(int deltaTime, Maze maze,
 			ArrayList<VisibleObject> visibleObjects, Player player) {
 		// TODO Auto-generated method stub
-		int plocX = maze.convertToGridX(player.getLocationX());
-		int plocZ =	maze.convertToGridZ(player.getLocationZ());
-		int tlocX = (int) Math.floor(locationX);
-		int tlocZ = (int) Math.floor(locationZ);
-		if (plocX==tlocX){
-			if (plocZ==tlocZ){
-				transport = true;
-			}
+//		int plocX = maze.convertToGridX(player.getLocationX());
+//		int plocZ =	maze.convertToGridZ(player.getLocationZ());
+//		int tlocX = (int) Math.floor(locationX);
+//		int tlocZ = (int) Math.floor(locationZ);
+//		if (plocX==tlocX){
+//			if (plocZ==tlocZ){
+//				transport = true;
+//			}
+//		}
+		this.maze = maze;
+		double dX = player.locationX - maze.convertFromGridX((int)locationX);
+		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ);
+		
+		double dLength =  Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+		System.out.println(dLength);
+		if(dLength < dLmax)
+			inrange = true;
+		else
+			inrange = false;
+			
+		System.out.println(inrange);
+		
+		if(inrange && player.action){
+			transport=true;
 		}
 	}
+
 
 	@Override
 	public boolean getDestroy() {

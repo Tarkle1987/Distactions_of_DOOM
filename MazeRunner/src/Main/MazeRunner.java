@@ -4,8 +4,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
+
 import MenuButtons.Button;
 import movingobjects.Beer;
 import movingobjects.CompanionCube;
@@ -23,16 +25,20 @@ import HUD.HealthBar;
 import leveleditor.Image;
 import Maze.Maze;
 import NotDefined.SchuifMuur;
+import NotDefined.Sound;
 import Player.Camera;
 import Player.Player;
 import Player.UserInput;
+
 import com.sun.opengl.util.*;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
@@ -245,7 +251,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	    SchuifMuur SM = new SchuifMuur(5,5,maze);
 	    visibleObjects.add(SM);
 	    
-//		CompanionCube(10,1.5);
+		CompanionCube(1,1.5);
 	    
 //	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
 //	    lifeforms.add(peter);
@@ -434,7 +440,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.locationY, player.locationZ,
 						player.getHorAngle(), player.getVerAngle());
 				projectiles.add(book);
-
+				
+				Sound bookthrow = new Sound("BookThrow.wav");
+				bookthrow.play();
+				bookthrow.setGain(-10);
 				input.schiet = false;
 			}
 
@@ -817,6 +826,24 @@ public class MazeRunner extends Frame implements GLEventListener {
 				SchuifMuur SM = (SchuifMuur)visibleObjects.get(i);
 				
 				if(SM.inrange)
+					drawE = true;
+			}
+		}
+		
+		for(int i = 0; i < visibleObjects.size(); i++){
+			if(visibleObjects.get(i) instanceof Trap){
+				Trap tr = (Trap)visibleObjects.get(i);
+				
+				if(tr.inrange)
+					drawE = true;
+			}
+		}
+		
+		for(int i = 0; i < visibleObjects.size(); i++){
+			if(visibleObjects.get(i) instanceof Trapaf){
+				Trapaf traf = (Trapaf)visibleObjects.get(i);
+				
+				if(traf.inrange)
 					drawE = true;
 			}
 		}

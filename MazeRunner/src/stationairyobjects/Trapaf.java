@@ -19,8 +19,13 @@ public class Trapaf implements VisibleObject{
 	protected boolean transport = false;
 	private float size = 5;
 	private double locationX,locationZ;
+	public Maze maze;
+	
+	private double dLmax;
+	public boolean inrange = false;
 	
 	public Trapaf(float x, float z) {
+		dLmax = (double) size;
 		locationX = (double) x;
 		locationZ = (double) z;
 	}
@@ -46,16 +51,31 @@ public class Trapaf implements VisibleObject{
 	public void update(int deltaTime, Maze maze,
 			ArrayList<VisibleObject> visibleObjects, Player player) {
 		// TODO Auto-generated method stub
-		int plocX = maze.convertToGridX(player.getLocationX());
-		int plocZ =	maze.convertToGridZ(player.getLocationZ());
-		int tlocX = (int) Math.floor(locationX);
-		int tlocZ = (int) Math.floor(locationZ);
-		if (plocX==tlocX){
-			if (plocZ==tlocZ){
-				transport = true;
-			}
+//		int plocX = maze.convertToGridX(player.getLocationX());
+//		int plocZ =	maze.convertToGridZ(player.getLocationZ());
+//		int tlocX = (int) Math.floor(locationX);
+//		int tlocZ = (int) Math.floor(locationZ);
+//		if (plocX==tlocX){
+//			if (plocZ==tlocZ){
+//				transport = true;
+//			}
+//		}
+		this.maze = maze;
+		double dX = player.locationX - maze.convertFromGridX((int)locationX);
+		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ);
+		
+		double dLength =  Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+		
+		if(dLength < dLmax)
+			inrange = true;
+		else
+			inrange = false;
+			
+		if(inrange && player.action){
+			transport=true;
 		}
 	}
+	
 
 	@Override
 	public boolean getDestroy() {

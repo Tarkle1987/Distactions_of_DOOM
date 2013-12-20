@@ -60,9 +60,7 @@ public class Sound {
 		FloatControl gainControl = 
 			    (FloatControl) this.thisClip().getControl(FloatControl.Type.MASTER_GAIN);
 		float gain = gainControl.getValue();	
-		gainControl.setValue(Gain); // Reduce volume by 10 decibels.
-		
-		System.out.println(gainControl.getValue());
+		gainControl.setValue(Gain);
 	}
 	public void IncreaseGain(){
 		FloatControl gainControl = 
@@ -70,7 +68,7 @@ public class Sound {
 		float gain = gainControl.getValue();	
 		
 		if(gainControl.getValue() <= 5){
-			gainControl.setValue(gainControl.getValue() + 1.0f); // Reduce volume by 10 decibels.
+			gainControl.setValue(gainControl.getValue() + 1.0f);
 		}
 		
 		System.out.println(gainControl.getValue());
