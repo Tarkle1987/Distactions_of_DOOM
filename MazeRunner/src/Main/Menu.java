@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -20,14 +21,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 import leveleditor.Image;
 import leveleditor.LevelEditor;
 import HUD.Clock;
 import Maze.Maze;
 import Maze.Mazescont;
 import MenuButtons.Button;
+import MenuButtons.Knop;
 import MenuButtons.RadioGroup;
 import NotDefined.Sound;
+
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.GLUT;
 
@@ -42,6 +46,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 
 	// Screen size.
 	private int screenWidth = 600, screenHeight = 735;
+	private int Width = 600, Height = 735;
 	private float buttonHeight = screenHeight / 15.0f;
 	private float buttonWidth = screenWidth / 2.5f;
 	private float buttonSpace = buttonHeight + buttonHeight / 4.0f;
@@ -59,8 +64,6 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	
 	private Sound bird = new Sound("bird.wav");
 	
-	private byte[] menu = Image.loadImage("Menu.png");
-
 
 	// A GLCanvas is a component that can be added to a frame. The drawing
 	// happens on this component.
@@ -71,6 +74,16 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	private static final byte Level_Editor = 2;
 	private byte mode = Menu;
 
+	private byte[] menuImage = Image.loadImage("Menu.png");
+	private byte[] startHover = Image.loadImage("StartHover.png");
+	private byte[] startKlik = Image.loadImage("StartKlik.png");
+	private byte[] settingHover = Image.loadImage("SettingsHover.png");
+	private byte[] settingsKlik = Image.loadImage("SettingsKlik.png");
+	private byte[] LEHover = Image.loadImage("LevedHover.png");
+	private byte[] LEKlik = Image.loadImage("LevedKlik.png");
+	private byte[] exitHover = Image.loadImage("ExitHover.png");
+	private byte[] exitKlik = Image.loadImage("ExitKlik.png");
+	
 	private LevelEditor LE;
 
 
@@ -164,6 +177,8 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		// We have a simple 2D application, so we do not need to check for depth
 		// when rendering.
 		gl.glDisable(GL.GL_DEPTH_TEST);
+		
+		
 	}
 
 	@Override
@@ -184,13 +199,16 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		case(Menu) :
 			
 			MenuScreen(gl);
+			this.setSize(Width,Height);
+	
 			break;
 		case(Settings) :
 			SettingScreen(gl);
 			break;
 		case(Level_Editor) :
 			LE.display(drawable);
-			LE.reshape(drawable, this.getX(), this.getY(), screenWidth, screenHeight);
+			this.setSize(LE.Width,LE.Height);
+			LE.reshape(drawable, this.getX(), this.getY(), LE.screenWidth, LE.screenHeight);
 			if(LE.dispose){
 				mode = Menu;
 				//this.setSize(600, 600);
@@ -221,33 +239,69 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	}
 
 	public void MenuScreen(GL gl){
-		Button button1 = new Button(gl, screenWidth, screenHeight, 2, "Start Game");
-		Button button2 = new Button(gl, screenWidth, screenHeight, 3, "Settings");
-		Button button3 = new Button(gl, screenWidth, screenHeight, 4, "Level Editor");
-		Button button4 = new Button(gl, screenWidth, screenHeight, 5, "Exit Game");
+//		Button button1 = new Button(gl, screenWidth, screenHeight, 2, "Start Game");
+//		Button button2 = new Button(gl, screenWidth, screenHeight, 3, "Settings");
+//		Button button3 = new Button(gl, screenWidth, screenHeight, 4, "Level Editor");
+//		Button button4 = new Button(gl, screenWidth, screenHeight, 5, "Exit Game");
+		
+		
+		Image.drawImage(gl, 0,0, 600, 700, menuImage);
+		
+		Knop knopStart = new Knop(203,389,458,355);
+		Knop knopLE = new Knop(203,417,458,389);
+		Knop knopSettings = new Knop(203,441,458,417);
+		Knop knopExit = new Knop(203,464,458,441);
+		
+		if(knopStart.inKnop(CurrentX, CurrentY))
+			Image.drawImage(gl, 0,0, 600, 700, startHover);
+		else if(knopLE.inKnop(CurrentX, CurrentY))
+			Image.drawImage(gl, 0,0, 600, 700, LEHover);
+		else if(knopSettings.inKnop(CurrentX, CurrentY))
+			Image.drawImage(gl, 0,0, 600, 700, settingHover);
+		else if(knopExit.inKnop(CurrentX, CurrentY))
+			Image.drawImage(gl, 0,0, 600, 700, exitHover);
+		
+		if(knopStart.inKnop(PressedX, PressedY))
+			Image.drawImage(gl, 0,0, 600, 700, startKlik);
+		else if(knopLE.inKnop(PressedX, PressedY))
+			Image.drawImage(gl, 0,0, 600, 700, LEKlik);
+		else if(knopSettings.inKnop(PressedX, PressedY))
+				Image.drawImage(gl, 0,0, 600, 700, settingsKlik);
+		else if(knopExit.inKnop(PressedX, PressedY))
+				Image.drawImage(gl, 0,0, 600, 700, exitKlik);
 	
+		if(knopStart.inKnop(ReleaseX, ReleaseY) && knopStart.inKnop(WasPressedX, WasPressedY)){
+		MenuButton1();
 		
-		button1.NegIfIn(CurrentX,CurrentY);
-		button2.NegIfIn(CurrentX,CurrentY);
-		button3.NegIfIn(CurrentX,CurrentY);
-		button4.NegIfIn(CurrentX,CurrentY);
+	}else if(knopLE.inKnop(ReleaseX, ReleaseY) && knopLE.inKnop(WasPressedX, WasPressedY)){
+		MenuButton2();
+	}else if(knopSettings.inKnop(ReleaseX, ReleaseY) && knopSettings.inKnop(WasPressedX, WasPressedY)){
+		MenuButton3();
+	}else if(knopExit.inKnop(ReleaseX, ReleaseY) && knopExit.inKnop(WasPressedX, WasPressedY)){
+		MenuButton4();
+	}
 		
-		button1.PresIfIn(PressedX, PressedY);
-		button2.PresIfIn(PressedX, PressedY);
-		button3.PresIfIn(PressedX, PressedY);
-		button4.PresIfIn(PressedX, PressedY);
+//		button1.NegIfIn(CurrentX,CurrentY);
+//		button2.NegIfIn(CurrentX,CurrentY);
+//		button3.NegIfIn(CurrentX,CurrentY);
+//		button4.NegIfIn(CurrentX,CurrentY);
+//		
+//		button1.PresIfIn(PressedX, PressedY);
+//		button2.PresIfIn(PressedX, PressedY);
+//		button3.PresIfIn(PressedX, PressedY);
+//		button4.PresIfIn(PressedX, PressedY);
 		
 		
-		if(button1.CursorInButton(ReleaseX, ReleaseY) && button1.CursorInButton(WasPressedX, WasPressedY)){
-			MenuButton1();
-			
-		}else if(button2.CursorInButton(ReleaseX, ReleaseY) && button2.CursorInButton(WasPressedX, WasPressedY)){
-			MenuButton2();
-		}else if(button3.CursorInButton(ReleaseX, ReleaseY) && button3.CursorInButton(WasPressedX, WasPressedY)){
-			MenuButton3();
-		}else if(button4.CursorInButton(ReleaseX, ReleaseY) && button4.CursorInButton(WasPressedX, WasPressedY)){
-			MenuButton4();
-		}
+//		if(button1.CursorInButton(ReleaseX, ReleaseY) && button1.CursorInButton(WasPressedX, WasPressedY)){
+//			MenuButton1();
+//			
+//		}else if(button2.CursorInButton(ReleaseX, ReleaseY) && button2.CursorInButton(WasPressedX, WasPressedY)){
+//			MenuButton2();
+//		}else if(button3.CursorInButton(ReleaseX, ReleaseY) && button3.CursorInButton(WasPressedX, WasPressedY)){
+//			MenuButton3();
+//		}else if(button4.CursorInButton(ReleaseX, ReleaseY) && button4.CursorInButton(WasPressedX, WasPressedY)){
+//			MenuButton4();
+//		}
 		
 		// resetting used values
 		ReleaseX = 0;ReleaseY = 0;
@@ -382,11 +436,12 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		
 	}
 	public void MenuButton2(){
-		mode = Settings;
-	}
-	public void MenuButton3(){
 		LE = new LevelEditor(this);
 		mode = Level_Editor;
+	}
+	public void MenuButton3(){
+
+		mode = Settings;
 	}
 	public void MenuButton4(){
 		System.out.println("Exit");
