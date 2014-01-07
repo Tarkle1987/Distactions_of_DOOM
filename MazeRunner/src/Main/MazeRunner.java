@@ -449,6 +449,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 			this.setCursor(Cursor.getDefaultCursor());
 
+			
+			ButtonGodMode();
+			
 			// Start PauzeMenu
 			Pauzemenu(drawable);
 
@@ -975,10 +978,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 
 			player.setGodMode(false);
-		}else if(!player.getGodMode()){
-
-			player.setGodMode(true);
 		}
+
 	}
 
 
