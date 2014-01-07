@@ -239,10 +239,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	}
 
 	public void MenuScreen(GL gl){
-//		Button button1 = new Button(gl, screenWidth, screenHeight, 2, "Start Game");
-//		Button button2 = new Button(gl, screenWidth, screenHeight, 3, "Settings");
-//		Button button3 = new Button(gl, screenWidth, screenHeight, 4, "Level Editor");
-//		Button button4 = new Button(gl, screenWidth, screenHeight, 5, "Exit Game");
+
 		
 		
 		Image.drawImage(gl, 0,0, 600, 700, menuImage);
@@ -280,33 +277,11 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	}else if(knopExit.inKnop(ReleaseX, ReleaseY) && knopExit.inKnop(WasPressedX, WasPressedY)){
 		MenuButton4();
 	}
-		
-//		button1.NegIfIn(CurrentX,CurrentY);
-//		button2.NegIfIn(CurrentX,CurrentY);
-//		button3.NegIfIn(CurrentX,CurrentY);
-//		button4.NegIfIn(CurrentX,CurrentY);
-//		
-//		button1.PresIfIn(PressedX, PressedY);
-//		button2.PresIfIn(PressedX, PressedY);
-//		button3.PresIfIn(PressedX, PressedY);
-//		button4.PresIfIn(PressedX, PressedY);
-		
-		
-//		if(button1.CursorInButton(ReleaseX, ReleaseY) && button1.CursorInButton(WasPressedX, WasPressedY)){
-//			MenuButton1();
-//			
-//		}else if(button2.CursorInButton(ReleaseX, ReleaseY) && button2.CursorInButton(WasPressedX, WasPressedY)){
-//			MenuButton2();
-//		}else if(button3.CursorInButton(ReleaseX, ReleaseY) && button3.CursorInButton(WasPressedX, WasPressedY)){
-//			MenuButton3();
-//		}else if(button4.CursorInButton(ReleaseX, ReleaseY) && button4.CursorInButton(WasPressedX, WasPressedY)){
-//			MenuButton4();
-//		}
+
 		
 		// resetting used values
 		ReleaseX = 0;ReleaseY = 0;
 
-//		Image.drawImage(gl, 0, 0, 600, 700, menu);
 		
 	}
 	public void SettingScreen(GL gl){
