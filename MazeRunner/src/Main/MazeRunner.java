@@ -9,6 +9,7 @@ import javax.media.opengl.glu.*;
 import javax.swing.JFrame;
 
 import MenuButtons.Button;
+import MenuButtons.Knop;
 import movingobjects.Beer;
 import movingobjects.CompanionCube;
 import movingobjects.CustomMazeObject;
@@ -98,6 +99,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Clock clock = new Clock();
 
 	private byte[] E = Image.loadImage("E.png");
+	
+	private byte[] PauzeImage = Image.loadImage("Pauze.png");
+	private byte[] PauzeResumeClick = Image.loadImage("ResumeClick.png");
+	private byte[] PauzeResumeHover = Image.loadImage("Resumehover.png");
+	private byte[] PauzeExitClick = Image.loadImage("ExitClick.png");
+	private byte[] PauzeExitHover = Image.loadImage("PauzeExitHover.png");
 
 
 
@@ -826,40 +833,54 @@ public class MazeRunner extends Frame implements GLEventListener {
 		switchTo2D(drawable);
 
 		// Draw PauzeMenu
-		gl.glColor3f(1f, 0f, 0f);
+//		gl.glColor3f(1f, 0f, 0f);
+//
+//		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, screenHeight/1.5f, screenWidth/1.5f);
+//
+//		gl.glColor3f(0.35f, 0.35f, 0.35f);
+//
+//		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight/1.5f, (float)0.95*screenWidth/1.5f);
 
-		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, screenHeight/1.5f, screenWidth/1.5f);
-
-		gl.glColor3f(0.35f, 0.35f, 0.35f);
-
-		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight/1.5f, (float)0.95*screenWidth/1.5f);
-
+		Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeImage);
+		
 		// Draw PauzeMenuButtons
-		Button button1 = new Button(gl, screenWidth, screenHeight, 1, "Resume");
-		Button button2 = new Button(gl, screenWidth, screenHeight, 2, "Not implemented");
-		Button button3 = new Button(gl, screenWidth, screenHeight, 3, "Switch GodMode");
-		Button button4 = new Button(gl, screenWidth, screenHeight, 4, "Exit to main menu");
-
-		button1.NegIfIn(input.CurrentX, input.CurrentY);
-		button2.NegIfIn(input.CurrentX,  input.CurrentY);
-		button3.NegIfIn(input.CurrentX,  input.CurrentY);
-		button4.NegIfIn(input.CurrentX, input.CurrentY);
-
-		button1.PresIfIn(input.PressedX, input.PressedY);
-		button2.PresIfIn(input.PressedX, input.PressedY);
-		button3.PresIfIn(input.PressedX, input.PressedY);
-		button4.PresIfIn(input.PressedX, input.PressedY);
+		
+		Knop knopResume = new Knop(screenWidth/2 - 295 + 152, screenHeight/2 - 295 + 162, screenWidth/2 - 295 + 269, screenHeight/2 - 295 + 134);
+		Knop knopExit = new Knop(screenWidth/2 - 295 + 173, screenHeight/2 - 295 + 256, screenWidth/2 - 295 + 234, screenHeight/2 - 295 + 226);
+		
+		if(knopResume.inKnop(input.CurrentX, input.CurrentY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeResumeHover);
+		}else if(knopExit.inKnop(input.CurrentX, input.CurrentY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeExitHover);
+		}
+			
+		if(knopResume.inKnop(input.PressedX, input.PressedY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeResumeClick);
+		}else if(knopExit.inKnop(input.PressedX, input.PressedY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeExitClick);
+		}
+		
+//		Button button1 = new Button(gl, screenWidth, screenHeight, 1, "Resume");
+//		Button button2 = new Button(gl, screenWidth, screenHeight, 2, "Not implemented");
+//		Button button3 = new Button(gl, screenWidth, screenHeight, 3, "Switch GodMode");
+//		Button button4 = new Button(gl, screenWidth, screenHeight, 4, "Exit to main menu");
+//
+//		button1.NegIfIn(input.CurrentX, input.CurrentY);
+//		button2.NegIfIn(input.CurrentX,  input.CurrentY);
+//		button3.NegIfIn(input.CurrentX,  input.CurrentY);
+//		button4.NegIfIn(input.CurrentX, input.CurrentY);
+//
+//		button1.PresIfIn(input.PressedX, input.PressedY);
+//		button2.PresIfIn(input.PressedX, input.PressedY);
+//		button3.PresIfIn(input.PressedX, input.PressedY);
+//		button4.PresIfIn(input.PressedX, input.PressedY);
 
 		switchTo3D(drawable);  
 
 		// Checking if button is pressed
-		if(button1.CursorInButton(input.ReleaseX, input.ReleaseY) && button1.CursorInButton(input.WasPressedX, input.WasPressedY)){
+		if(knopResume.inKnop(input.ReleaseX, input.ReleaseY) && knopResume.inKnop(input.WasPressedX, input.WasPressedY)){
 			ButtonResume();
-		}else if(button2.CursorInButton(input.ReleaseX, input.ReleaseY) && button2.CursorInButton(input.WasPressedX, input.WasPressedY)){
-
-		}else if(button3.CursorInButton(input.ReleaseX, input.ReleaseY) && button3.CursorInButton(input.WasPressedX, input.WasPressedY)){
-			ButtonGodMode();
-		}else if(button4.CursorInButton(input.ReleaseX, input.ReleaseY) && button4.CursorInButton(input.WasPressedX, input.WasPressedY)){
+		}else if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
 			ButtonExit();
 		}
 
