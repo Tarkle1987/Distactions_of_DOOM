@@ -491,10 +491,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		//		boxOnScreen(gl, 10*unit, 10*unit+1, unit);
 		// Flush the OpenGL buffer, outputting the result to the screen.
 		gl.glFlush();
-<<<<<<< HEAD
-=======
-		
->>>>>>> 45d4c41de84b583894113f9b90ca030a08a0a574
 
 	}
 
