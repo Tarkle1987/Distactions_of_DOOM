@@ -113,8 +113,8 @@ public class Trap implements VisibleObject{
 //			}
 //		}
 		this.maze = maze;
-		double dX = player.locationX - maze.convertFromGridX((int)locationX);
-		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ);
+		double dX = player.locationX - maze.convertFromGridX((int)locationX)-2.5;
+		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ)-2.5;
 		
 		double dLength =  Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
 		if(dLength < 1.5*dLmax)

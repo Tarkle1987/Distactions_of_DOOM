@@ -16,7 +16,7 @@ import movingobjects.VisibleObject;
 
 
 public class Trapaf implements VisibleObject{
-	protected boolean transport = false;
+	public boolean transport = false;
 	private float size = 5;
 	private double locationX,locationZ;
 	public Maze maze;
@@ -61,12 +61,12 @@ public class Trapaf implements VisibleObject{
 //			}
 //		}
 		this.maze = maze;
-		double dX = player.locationX - maze.convertFromGridX((int)locationX);
-		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ);
+		double dX = player.locationX - maze.convertFromGridX((int)locationX)-2.5;
+		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ)-2.5;
 		
 		double dLength =  Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
 		
-		if(dLength < 1.5*dLmax)
+		if(dLength < 1.5*dLmax&&dLength > 0.5*dLmax)
 			inrange = true;
 		else
 			inrange = false;
