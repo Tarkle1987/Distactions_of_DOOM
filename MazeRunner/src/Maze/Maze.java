@@ -50,7 +50,9 @@ public class Maze implements VisibleObject {
 	public final double SINGLE_SIZE = 22;
 	public final double MAZE_SIZE = 2*SINGLE_SIZE;
 	public final double SQUARE_SIZE = 5;
-	public Texture DeurTexture, muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
+
+	public Texture DeurTexture,trapopTexture, trapafTexture,muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
+
 	public Texture Oranje, Rood, Blauw, Groen, Wit, Smarttex;
 	private boolean initie = true;
 	private int textswitch;
@@ -95,7 +97,7 @@ public class Maze implements VisibleObject {
 		
 		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE ){
 			
-			if(maze[x][z] == 1 || maze[x][z] == 7 ){
+			if(maze[x][z] == 1 || maze[x][z] == 7 ||maze[x][z]==2){
 				iswall = true;
 			}
 		}
@@ -319,7 +321,22 @@ public class Maze implements VisibleObject {
 			e.printStackTrace();
 			System.exit(0);
 		}	
-		
+		try{
+			InputStream stream = getClass().getResourceAsStream("TrapNeer.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "TrapNeer.jpg"); 
+			this.trapafTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("TrapOp.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "TrapOp.jpg"); 
+			this.trapopTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
 	}
 	
 	public static void setMaze(Mazes temp) {
@@ -389,6 +406,21 @@ public class Maze implements VisibleObject {
 		for (int i = 0; i<Maze.length; i++){
 			for (int j = 0; j<Maze.length; j++){
 				if (Maze[j][i] == 2){
+					res[0+count] = j;
+					res[1+count] = i;
+					count = count+2;
+				}
+			}
+		}
+		return res;
+	}
+	
+	public static int[] CoordTrapaf(int[][] Maze){
+		int[] res = new int[4];
+		int count = 0;
+		for (int i = 0; i<Maze.length; i++){
+			for (int j = 0; j<Maze.length; j++){
+				if (Maze[j][i] == 6){
 					res[0+count] = j;
 					res[1+count] = i;
 					count = count+2;
@@ -722,30 +754,40 @@ public class Maze implements VisibleObject {
 	{
         // Setting the floor color and material.
         float wallColour[] = { 0.0f, 0.0f, 0.0f, 0.0f };				// The floor is blue.
-        gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the floor.
-        floorTexture.enable();
-        floorTexture.bind();
-        
+        gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the floor.    
         gl.glNormal3d(0, 1, 0);
 
 		for(int i = 0; i < size; i++)
 		{
 			for(int j= 0; j < size; j++)
 			{
-	        gl.glBegin(GL.GL_QUADS);
-		        gl.glVertex3d((0 + (i*SQUARE_SIZE)), 0, 0 + (j*SQUARE_SIZE));
-		        gl.glTexCoord2f(0.0f, 0.0f);
-		        gl.glVertex3d(0 + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
-		        gl.glTexCoord2f(0.0f, 1.0f);
-		        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
-		        gl.glTexCoord2f(1.0f, 1.0f);
-		        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, 0 + (j*SQUARE_SIZE));
-		        gl.glTexCoord2f(1.0f, 0.0f);
-			gl.glEnd();	
+			if (maze[i][j]==6){
+				trapafTexture.enable();
+		        trapafTexture.bind();
+			}
+			else{
+				 floorTexture.enable();
+			     floorTexture.bind();
+			}
+				gl.glBegin(GL.GL_QUADS);
+		        	gl.glVertex3d((0 + (i*SQUARE_SIZE)), 0, 0 + (j*SQUARE_SIZE));
+			        gl.glTexCoord2f(0.0f, 0.0f);
+			        gl.glVertex3d(0 + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
+			        gl.glTexCoord2f(0.0f, 1.0f);
+			        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, SQUARE_SIZE + (j*SQUARE_SIZE));
+			        gl.glTexCoord2f(1.0f, 1.0f);
+			        gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), 0, 0 + (j*SQUARE_SIZE));
+			        gl.glTexCoord2f(1.0f, 0.0f);
+				gl.glEnd();	
+				if (maze[i][j]==6){
+					 trapafTexture.disable();
+				}
+				else{
+					floorTexture.disable();
+				}
 			}
 		}
-		floorTexture.disable();
-	}	
+	}
 	private void paintSingleRoofTile(GL gl, double size,double height)
 	{
         // Setting the floor color and material.
@@ -760,14 +802,21 @@ public class Maze implements VisibleObject {
 		
 		float wallColour[] = { 0.0f, 0.0f, 0.0f, 0.0f };				// The floor is blue.
 	    gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the floor.
-	    plafondTexture.enable();
-	    plafondTexture.bind();
+	    
 	    
 	    gl.glNormal3d(0, 1, 0);
 		for(int i = 0; i < size; i++)
 		{
 			for(int j= 0; j < size; j++)
 			{
+		    if (maze[i][j]==2){
+		    	trapopTexture.enable();
+			    trapopTexture.bind();
+				}
+			else{
+				plafondTexture.enable();
+				plafondTexture.bind();
+				}
 	        gl.glBegin(GL.GL_QUADS);
 	        	gl.glVertex3d(SQUARE_SIZE + (i*SQUARE_SIZE), height, 0 + (j*SQUARE_SIZE));
 	            gl.glTexCoord2f(0.0f, 0.0f);
@@ -778,9 +827,15 @@ public class Maze implements VisibleObject {
 		        gl.glVertex3d((0 + (i*SQUARE_SIZE)), height, 0 + (j*SQUARE_SIZE));
 		        gl.glTexCoord2f(1.0f, 0.0f);
 			gl.glEnd();	
+			if (maze[i][j]==6){
+				 trapopTexture.disable();
+			}
+			else{
+				plafondTexture.disable();
 			}
 		}
-		plafondTexture.disable();
+	}
+
 	}
 
 	@Override

@@ -144,6 +144,11 @@ public class Player extends GameObject {
 		{
 			control.update();
 
+
+			
+		if(control.y && control.s)
+			GodMode = true;
+			
 			
 			if(control.action){
 				this.action = true;

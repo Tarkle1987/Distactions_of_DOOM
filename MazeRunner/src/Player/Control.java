@@ -45,6 +45,10 @@ public abstract class Control
 	public boolean hpup = false;
 	public boolean sprint = false;
 	
+	public boolean y = false;
+	public boolean s = false;
+
+	
 	/**
 	 * @return Returns true if forward motion is desired.
 	 */

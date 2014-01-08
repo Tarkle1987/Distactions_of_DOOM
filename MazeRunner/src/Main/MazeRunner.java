@@ -1,4 +1,5 @@
 package Main;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -47,15 +48,21 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
-/** 
- * MazeRunner is the base class of the game, functioning as the view controller and game logic manager.
+import stationairyobjects.Trap;
+import stationairyobjects.Trapaf;
+
+/**
+ * MazeRunner is the base class of the game, functioning as the view controller
+ * and game logic manager.
  * <p>
- * Functioning as the window containing everything, it initializes both JOGL, the 
- * game objects and the game logic needed for MazeRunner.
+ * Functioning as the window containing everything, it initializes both JOGL,
+ * the game objects and the game logic needed for MazeRunner.
  * <p>
- * For more information on JOGL, visit <a href="http://jogamp.org/wiki/index.php/Main_Page">this page</a>
- * for general information, and <a href="https://jogamp.org/deployment/jogamp-next/javadoc/jogl/javadoc/">this page</a>
- * for the specification of the API.
+ * For more information on JOGL, visit <a
+ * href="http://jogamp.org/wiki/index.php/Main_Page">this page</a> for general
+ * information, and <a
+ * href="https://jogamp.org/deployment/jogamp-next/javadoc/jogl/javadoc/">this
+ * page</a> for the specification of the API.
  * 
  * @author Bruno Scheele, revised by Mattijs Driel
  * 
@@ -70,15 +77,21 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	private GLCanvas canvas;
 
-	private int screenWidth = 1000, screenHeight = 1000;		// Screen size.
-	private ArrayList<VisibleObject> visibleObjects;		// A list of objects that will be displayed on screen.
+	private int screenWidth = 1000, screenHeight = 1000; // Screen size.
+	private ArrayList<VisibleObject> visibleObjects; // A list of objects that
+														// will be displayed on
+														// screen.
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Lifeform> lifeforms;
-	private Player player;									// The player object.
-	private Camera camera;									// The camera object.
-	private UserInput input;								// The user input object that controls the player.
-	private Maze maze; 										// The maze.
-	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used to calculate elapsed time.
+	private Player player; // The player object.
+	private Camera camera; // The camera object.
+	private UserInput input; // The user input object that controls the player.
+	private Maze maze; // The maze.
+	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used
+																			// to
+																			// calculate
+																			// elapsed
+																			// time
 
 	private int endx = 23;
 	private int endz = 20;
@@ -92,9 +105,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private boolean textrue = true;
 	private CompanionCube c1;
-	private MazeObject Trap, Kaft1, Kaft2, Kaft3, Papier, Smart, Smarto, Smartw;
-	private Smarto Smo;
-	private Smartw Smw;
+	private MazeObject Trap, Smart, Smarto,
+			Smartw;
 	private Beer b1, b2, b3, b4, b5;
 
 	// Ingame seconden tellen
@@ -104,53 +116,51 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private byte[] E = Image.loadImage("E.png");
 
+	private int[] coordT,coordTa,coordTo = new int[4];
+	
 	private byte[] PauzeImage = Image.loadImage("Pauze.png");
 	private byte[] PauzeResumeClick = Image.loadImage("ResumeClick.png");
 	private byte[] PauzeResumeHover = Image.loadImage("Resumehover.png");
 	private byte[] PauzeExitClick = Image.loadImage("ExitClick.png");
 	private byte[] PauzeExitHover = Image.loadImage("PauzeExitHover.png");
-
-
-
-
 	/*
 	 * **********************************************
-	 * *		Initialization methods				*
-	 * **********************************************
-	 */
+	 * * Initialization methods * **********************************************
+	/*
 	/**
 	 * Initializes the complete MazeRunner game.
 	 * <p>
-	 * MazeRunner extends Java AWT Frame, to function as the window. It creats a canvas on 
-	 * itself where JOGL will be able to paint the OpenGL graphics. It then initializes all 
-	 * game components and initializes JOGL, giving it the proper settings to accurately 
-	 * display MazeRunner. Finally, it adds itself as the OpenGL event listener, to be able 
-	 * to function as the view controller.
+	 * MazeRunner extends Java AWT Frame, to function as the window. It creats a
+	 * canvas on itself where JOGL will be able to paint the OpenGL graphics. It
+	 * then initializes all game components and initializes JOGL, giving it the
+	 * proper settings to accurately display MazeRunner. Finally, it adds itself
+	 * as the OpenGL event listener, to be able to function as the view
+	 * controller.
 	 */
 	public MazeRunner() {
 		// Make a new window.
 		super("MazeRunner");
 
 		// Let's change the window to our liking.
-		setSize( screenWidth, screenHeight);
-		setBackground( Color.white );
+		setSize(screenWidth, screenHeight);
+		setBackground(Color.white);
 
 		// The window also has to close when we want to.
-		this.addWindowListener( new WindowAdapter()
-		{
-			public void windowClosing( WindowEvent e )
-			{
+
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
 
 				System.exit(0); // End the program
-
 
 			}
 		});
 
-		initJOGL();							// Initialize JOGL.
-		initObjects();						// Initialize all the objects!
+		initJOGL(); // Initialize JOGL.
+		initObjects(); // Initialize all the objects!
 
-		// Set the frame to visible. This automatically calls upon OpenGL to prevent a blank screen.
+		// Set the frame to visible. This automatically calls upon OpenGL to
+		// prevent a blank screen.
+
 		setVisible(true);
 
 	}
@@ -158,70 +168,79 @@ public class MazeRunner extends Frame implements GLEventListener {
 	/**
 	 * initJOGL() sets up JOGL to work properly.
 	 * <p>
-	 * It sets the capabilities we want for MazeRunner, and uses these to create the GLCanvas upon which 
-	 * MazeRunner will actually display our screen. To indicate to OpenGL that is has to enter a 
-	 * continuous loop, it uses an Animator, which is part of the JOGL api.
+	 * It sets the capabilities we want for MazeRunner, and uses these to create
+	 * the GLCanvas upon which MazeRunner will actually display our screen. To
+	 * indicate to OpenGL that is has to enter a continuous loop, it uses an
+	 * Animator, which is part of the JOGL api.
 	 */
-	private void initJOGL()	{
+	private void initJOGL() {
 		// First, we set up JOGL. We start with the default settings.
 		GLCapabilities caps = new GLCapabilities();
-		// Then we make sure that JOGL is hardware accelerated and uses double buffering.
-		caps.setDoubleBuffered( true );
-		caps.setHardwareAccelerated( true );
+		// Then we make sure that JOGL is hardware accelerated and uses double
+		// buffering.
+		caps.setDoubleBuffered(true);
+		caps.setHardwareAccelerated(true);
 
-		// Now we add the canvas, where OpenGL will actually draw for us. We'll use settings we've just defined. 
-		canvas = new GLCanvas( caps );
-		add( canvas );
+		// Now we add the canvas, where OpenGL will actually draw for us. We'll
+		// use settings we've just defined.
+		canvas = new GLCanvas(caps);
+		add(canvas);
 
-
-
-
-		/* We need to add a GLEventListener to interpret OpenGL events for us. Since MazeRunner implements
-		 * GLEventListener, this means that we add the necesary init(), display(), displayChanged() and reshape()
-		 * methods to this class.
-		 * These will be called when we are ready to perform the OpenGL phases of MazeRunner. 
+		/*
+		 * We need to add a GLEventListener to interpret OpenGL events for us.
+		 * Since MazeRunner implements GLEventListener, this means that we add
+		 * the necesary init(), display(), displayChanged() and reshape()
+		 * methods to this class. These will be called when we are ready to
+		 * perform the OpenGL phases of MazeRunner.
 		 */
-		canvas.addGLEventListener( this );
+		canvas.addGLEventListener(this);
 
 
-
-		/* We need to create an internal thread that instructs OpenGL to continuously repaint itself.
-		 * The Animator class handles that for JOGL.
+		/*
+		 * We need to create an internal thread that instructs OpenGL to
+		 * continuously repaint itself. The Animator class handles that for
+		 * JOGL.
 		 */
-		Animator anim = new Animator( canvas );
+		Animator anim = new Animator(canvas);
 		anim.start();
 
 		canvas.setVisible(true);
 	}
 
 	/**
-	 * initializeObjects() creates all the objects needed for the game to start normally.
+	 * initializeObjects() creates all the objects needed for the game to start
+	 * normally.
 	 * <p>
 	 * This includes the following:
 	 * <ul>
-	 * <li> the default Maze
-	 * <li> the Player
-	 * <li> the Camera
-	 * <li> the User input
+	 * <li>the default Maze
+	 * <li>the Player
+	 * <li>the Camera
+	 * <li>the User input
 	 * </ul>
 	 * <p>
-	 * Remember that every object that should be visible on the screen, should be added to the
-	 * visualObjects list of MazeRunner through the add method, so it will be displayed 
-	 * automagically. 
+	 * Remember that every object that should be visible on the screen, should
+	 * be added to the visualObjects list of MazeRunner through the add method,
+	 * so it will be displayed automagically.
 	 */
 
-	private void initObjects()	{
-		// We define an ArrayList of VisibleObjects to store all the objects that need to be
+
+	private void initObjects() {
+		// We define an ArrayList of VisibleObjects to store all the objects
+		// that need to be
+
 		// displayed by MazeRunner.
 		visibleObjects = new ArrayList<VisibleObject>();
 		projectiles = new ArrayList<Projectile>();
 		lifeforms = new ArrayList<Lifeform>();
-		// We define an ArrayList of Tiles to store all the current positions of the gameobjects
-		//objectPositions = new ArrayList<Tile>();
+		// We define an ArrayList of Tiles to store all the current positions of
+		// the gameobjects
+		// objectPositions = new ArrayList<Tile>();
 
 		// Add the maze that we will be using.
 		maze = new Maze();
 		visibleObjects.add(maze);
+
 		visibleObjects.set(0, maze);
 
 		// Initialize the player.
@@ -260,15 +279,24 @@ public class MazeRunner extends Frame implements GLEventListener {
 		//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
 		//	    lifeforms.add(peter);
 
-		int[] coordT = Maze.CoordTrap(Maze.maze);
-		Trap(coordT[0], coordT[1]);
-		Trap(coordT[2], coordT[3]);
+		coordT = Maze.CoordTrap(Maze.maze);
+		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
+		Trap tr2 = new Trap((float) coordT[2], (float) coordT[3]);
+		visibleObjects.add(tr1);
+		visibleObjects.add(tr2);
+		coordTa = Maze.CoordTrapaf(Maze.maze);
+		Trapaf tra1 = new Trapaf((float) coordTa[0], (float) coordTa[1]);
+		Trapaf tra2 = new Trapaf((float) coordTa[2], (float) coordTa[3]);
+		visibleObjects.add(tra1);
+		visibleObjects.add(tra2);
 		int[] coordS = Maze.CoordSmart(Maze.maze);
-		for (int i = 0; i<coordS[0];i++){
-			Smart Sm = new Smart((float)coordS[1+i*2],(float)coordS[2+i*2]);
+		for (int i = 0; i < coordS[0]; i++) {
+			Smart Sm = new Smart((float) coordS[1 + i * 2],
+					(float) coordS[2 + i * 2]);
 			visibleObjects.add(Sm);
 
 		}
+
 		int[] coordSM = Maze.CoordSchuifMuur(Maze.maze);
 		for(int i = 0; i < coordSM[0]; i++){
 			SchuifMuur schuifmuur = new SchuifMuur(coordSM[1+i*2],coordSM[2+i*2], maze);
@@ -281,77 +309,74 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.screenHeight = screenHeight;
 		input.mouseReset();
 
+	}
+
+	/*
+	 * **********************************************
+	 * * OpenGL event handlers * **********************************************
+=======
 
 	}
 	/*
 	 * **********************************************
 	 * *		OpenGL event handlers				*
 	 * **********************************************
+>>>>>>> cfd49c3c9a9e32f8d7e9ef9205e67e234446947f
 	 */
 
 	/**
-	 * init(GLAutodrawable) is called to initialize the OpenGL context, giving it the proper parameters for viewing.
+	 * init(GLAutodrawable) is called to initialize the OpenGL context, giving
+	 * it the proper parameters for viewing.
 	 * <p>
-	 * Implemented through GLEventListener. 
-	 * It sets up most of the OpenGL settings for the viewing, as well as the general lighting.
-	 * <p> 
-	 * It is <b>very important</b> to realize that there should be no drawing at all in this method.
+	 * Implemented through GLEventListener. It sets up most of the OpenGL
+	 * settings for the viewing, as well as the general lighting.
+	 * <p>
+	 * It is <b>very important</b> to realize that there should be no drawing at
+	 * all in this method.
 	 */
-	public void Trap(float x, float z) {
 
-		float size = (float)maze.SQUARE_SIZE;
-		Kaft1 = CustomMazeObject.readFromOBJ("Kaft1.obj", (float)0.0175);
-		Kaft1.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
-		Kaft1.rotateVerticesZ(-90, 1, 1);
-		Kaft1.addColour("rood");
-		visibleObjects.add(Kaft1);
-		Kaft2 = CustomMazeObject.readFromOBJ("Kaft2.obj", (float)0.0175);
-		Kaft2.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
-		Kaft2.rotateVerticesZ(-90, 1, 1);
-		Kaft2.addColour("groen");
-		visibleObjects.add(Kaft2);
-		Kaft3 = CustomMazeObject.readFromOBJ("Kaft3.obj", (float)0.0175);
-		Kaft3.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
-		Kaft3.rotateVerticesZ(-90, 1, 1);
-		Kaft3.addColour("blauw");
-		visibleObjects.add(Kaft3);
-		Papier = CustomMazeObject.readFromOBJ("Papier.obj", (float)0.0175);
-		Papier.setCor((float)((x + 1)*size), (float)((z + 0.6)*size), 0);
-		Papier.rotateVerticesZ(-90, 1, 1);
-		Papier.addColour("wit");
-		visibleObjects.add(Papier);
+	public void CompanionCube(int num, double size) {
+		for (int i = 0; i < num; i++) {
 
-	}
-
-	public void CompanionCube(int num, double size){
-		for(int i = 0; i < num; i ++){
 			double X = player.locationX;
 			double Z = player.locationZ;
 
 			boolean GO = true;
-			while(GO){
-				X = Math.random()*21*maze.SQUARE_SIZE;
-				Z = Math.random()*21*maze.SQUARE_SIZE;
 
+			while (GO) {
+				X = Math.random() * 21 * maze.SQUARE_SIZE;
+				Z = Math.random() * 21 * maze.SQUARE_SIZE;
 
-				if(!(maze.isWall(X+(size*Math.sqrt(2))/2,Z)||maze.isWall(X-(size*Math.sqrt(2))/2,Z)||maze.isWall(X,Z+(size*Math.sqrt(2))/2)||maze.isWall(X,Z-(size*Math.sqrt(2))/2)||
-						maze.isWall(X+(size*Math.sqrt(2))/2,Z+(size*Math.sqrt(2))/2)||maze.isWall(X+(size*Math.sqrt(2))/2, Z-(size*Math.sqrt(2))/2)||maze.isWall(X-(size*Math.sqrt(2))/2,Z+(size*Math.sqrt(2))/2)||maze.isWall(X-(size*Math.sqrt(2))/2,Z-(size*Math.sqrt(2))/2))){
-
-
+				if (!(maze.isWall(X + (size * Math.sqrt(2)) / 2, Z)
+						|| maze.isWall(X - (size * Math.sqrt(2)) / 2, Z)
+						|| maze.isWall(X, Z + (size * Math.sqrt(2)) / 2)
+						|| maze.isWall(X, Z - (size * Math.sqrt(2)) / 2)
+						|| maze.isWall(X + (size * Math.sqrt(2)) / 2, Z
+								+ (size * Math.sqrt(2)) / 2)
+						|| maze.isWall(X + (size * Math.sqrt(2)) / 2, Z
+								- (size * Math.sqrt(2)) / 2)
+						|| maze.isWall(X - (size * Math.sqrt(2)) / 2, Z
+								+ (size * Math.sqrt(2)) / 2) || maze.isWall(X
+						- (size * Math.sqrt(2)) / 2, Z - (size * Math.sqrt(2))
+						/ 2))) {
 					GO = false;
 				}
 			}
 
-			CompanionCube CC = new CompanionCube(X,0,Z,size);
+
+			CompanionCube CC = new CompanionCube(X, 0, Z, size);
 			lifeforms.add(CC);
 		}
 	}
 
 	public void init(GLAutoDrawable drawable) {
-		drawable.setGL( new DebugGL(drawable.getGL() )); // We set the OpenGL pipeline to Debugging mode.
+		drawable.setGL(new DebugGL(drawable.getGL())); // We set the OpenGL
+														// pipeline to Debugging
+														// mode.
 
 		GL gl = drawable.getGL();
 		GLU glu = new GLU();
+
 
 		gl.glClearColor(0, 0, 0, 0);								// Set the background color.
 
@@ -379,13 +404,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// Set the shading model.
 		gl.glShadeModel( GL.GL_SMOOTH );
 
-
 		// Loading textures
 		System.out.println("Loading textures");
 
-
-		if (textrue)
-		{
+		if (textrue) {
 
 			maze.textures();
 			textureAdd(gl);
@@ -394,24 +416,30 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	}
 
-	private void textureAdd(GL gl){
+	private void textureAdd(GL gl) {
+		for (int i = 0; i < visibleObjects.size(); i++) {
 
-
-		Kaft1.addTexture(maze.Blauw);
-		Kaft2.addTexture(maze.Groen);
-		Kaft3.addTexture(maze.Rood);
-		Papier.addTexture(maze.Wit);
+			if(visibleObjects.get(i) instanceof Trap){
+				Trap tr = (Trap)visibleObjects.get(i);
+				tr.Kaft1.addTexture(maze.Blauw);
+				tr.Kaft2.addTexture(maze.Groen);
+				tr.Kaft3.addTexture(maze.Rood);
+				tr.Papier.addTexture(maze.Wit);
+				
+				
+			}
+		}
 	}
 
-
 	/**
-	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a new frame and handles all of the drawing.
+	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
+	 * new frame and handles all of the drawing.
 	 * <p>
-	 * Implemented through GLEventListener. 
-	 * In order to draw everything needed, it iterates through MazeRunners' list of visibleObjects. 
-	 * For each visibleObject, this method calls the object's display(GL) function, which specifies 
-	 * how that object should be drawn. The object is passed a reference of the GL context, so it 
-	 * knows where to draw.
+	 * Implemented through GLEventListener. In order to draw everything needed,
+	 * it iterates through MazeRunners' list of visibleObjects. For each
+	 * visibleObject, this method calls the object's display(GL) function, which
+	 * specifies how that object should be drawn. The object is passed a
+	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable) {
 		input.thisX = this.getX();
@@ -431,8 +459,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 					new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),
 					"null"));
 
-			if(input.schiet){
-				Projectile book = new Projectile( player.locationX, player.locationY, player.locationZ,player.getHorAngle(),player.getVerAngle());
+			if (input.schiet) {
+				Projectile book = new Projectile(player.locationX,
+						player.locationY, player.locationZ,
+						player.getHorAngle(), player.getVerAngle());
 				projectiles.add(book);
 
 
@@ -452,6 +482,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 			this.setCursor(Cursor.getDefaultCursor());
 
+			
+			ButtonGodMode();
+			
 			// Start PauzeMenu
 			Pauzemenu(drawable);
 
@@ -477,28 +510,29 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	}
 
-
-
-
-
 	/**
-	 * displayChanged(GLAutoDrawable, boolean, boolean) is called upon whenever the display mode changes.
+	 * displayChanged(GLAutoDrawable, boolean, boolean) is called upon whenever
+	 * the display mode changes.
 	 * <p>
-	 * Implemented through GLEventListener. 
-	 * Seeing as this does not happen very often, we leave this unimplemented.
+	 * Implemented through GLEventListener. Seeing as this does not happen very
+	 * often, we leave this unimplemented.
 	 */
-	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
+			boolean deviceChanged) {
 		// GL gl = drawable.getGL();
 	}
 
 	/**
-	 * reshape(GLAutoDrawable, int, int, int, int, int) is called upon whenever the viewport changes shape, to update the viewport setting accordingly.
+	 * reshape(GLAutoDrawable, int, int, int, int, int) is called upon whenever
+	 * the viewport changes shape, to update the viewport setting accordingly.
 	 * <p>
-	 * Implemented through GLEventListener. 
-	 * This mainly happens when the window changes size, thus changin the canvas (and the viewport 
-	 * that OpenGL associates with it). It adjust the projection matrix to accomodate the new shape.
+	 * Implemented through GLEventListener. This mainly happens when the window
+	 * changes size, thus changin the canvas (and the viewport that OpenGL
+	 * associates with it). It adjust the projection matrix to accomodate the
+	 * new shape.
 	 */
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
 		GL gl = drawable.getGL();
 		GLU glu = new GLU();
 
@@ -511,13 +545,15 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.screenWidth = screenWidth;
 		input.screenHeight = screenHeight;
 
-		gl.glViewport( 0, 0, screenWidth, screenHeight );
+		gl.glViewport(0, 0, screenWidth, screenHeight);
+
 
 		// Set the new projection matrix.
-		gl.glMatrixMode( GL.GL_PROJECTION );
+		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
-		glu.gluPerspective( 60, screenWidth/screenHeight, .1, 200 );
-		gl.glMatrixMode( GL.GL_MODELVIEW );
+		glu.gluPerspective(60, screenWidth / screenHeight, .1, 200);
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+
 
 	}
 
@@ -531,15 +567,15 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * updateMovement(int) updates the position of all objects that need moving.
 	 * This includes rudimentary collision checking and collision reaction.
 	 */
-	private void updateMovement(int deltaTime)
-	{
+	private void updateMovement(int deltaTime) {
 		player.update(deltaTime, maze);
 		/*
-		 * Update position of the objects to next Steps. ObjectPositions is given to the objects, so that they can look for
-		 * other objects, and avoid them. The one that is first called, 'wins'.
+		 * Update position of the objects to next Steps. ObjectPositions is
+		 * given to the objects, so that they can look for other objects, and
+		 * avoid them. The one that is first called, 'wins'.
 		 */
 
-		for(int i = 0; i<visibleObjects.size(); i++){
+		for (int i = 0; i < visibleObjects.size(); i++) {
 
 			visibleObjects.get(i).update(deltaTime, maze, visibleObjects ,player);
 
@@ -550,11 +586,46 @@ public class MazeRunner extends Frame implements GLEventListener {
 				}else if(!SM.open){
 					maze.maze[SM.x][SM.z]= 7; 
 				}
-
-
+			}
+			
+			if(visibleObjects.get(i) instanceof Trap){
+				Trap tr = (Trap)visibleObjects.get(i);
+				if(tr.transport){
+					if (maze.convertToGridX(player.getLocationZ())>22){
+						coordTo[2] = (int) maze.convertToGridX(player.getLocationX());
+						coordTo[3] = (int) maze.convertToGridZ(player.getLocationZ());
+						player.setLocationX(maze.convertFromGridX(coordTa[0])+0.5*maze.SQUARE_SIZE);
+						player.setLocationZ(maze.convertFromGridZ(coordTa[1])+0.5*maze.SQUARE_SIZE);
+						tr.transport = false;
+					}
+					else{
+						coordTo[0] = (int) maze.convertToGridX(player.getLocationX());
+						coordTo[1] = (int) maze.convertToGridZ(player.getLocationZ());
+						player.setLocationX(maze.convertFromGridX(coordTa[2])+0.5*maze.SQUARE_SIZE);
+						player.setLocationZ(maze.convertFromGridZ(coordTa[3])+0.5*maze.SQUARE_SIZE);
+						tr.transport = false;
+						}
+				}
+			}
+			
+			if(visibleObjects.get(i) instanceof Trapaf){
+				Trapaf tra = (Trapaf) visibleObjects.get(i);
+				if(tra.transport){
+					if (maze.convertToGridX(player.getLocationZ())>22){
+						player.setLocationX(maze.convertFromGridX(coordTo[0])+0.5*maze.SQUARE_SIZE);
+						player.setLocationZ(maze.convertFromGridZ(coordTo[1])+0.5*maze.SQUARE_SIZE);
+						tra.transport = false;
+					}
+					else{
+						player.setLocationX(maze.convertFromGridX(coordTo[2])+0.5*maze.SQUARE_SIZE);
+						player.setLocationZ(maze.convertFromGridZ(coordTo[3])+0.5*maze.SQUARE_SIZE);
+						tra.transport = false;
+						}
+				}
 			}
 
 			if(visibleObjects.get(i) instanceof Smart){
+
 				Smart so = (Smart) visibleObjects.get(i);
 				if(so.destroy){
 					visibleObjects.remove(i);
@@ -567,6 +638,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 
 		for(int i = 0; i < projectiles.size(); i ++){
+
 			projectiles.get(i).update(deltaTime, maze);
 
 			for(int j = 0; j < lifeforms.size(); j++){
@@ -576,10 +648,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 			}
 
 			if(projectiles.get(i).getDestroy()){
+
 				projectiles.remove(i);
 			}
 		}
-		for(int i = 0; i < lifeforms.size(); i++){
+		for (int i = 0; i < lifeforms.size(); i++) {
 			lifeforms.get(i).update(deltaTime, maze, player);
 
 			boolean collide = false;
@@ -630,25 +703,22 @@ public class MazeRunner extends Frame implements GLEventListener {
 		//			visibleObjects.set(0, maze);
 		//		}
 
-
 	}
 
 	/**
 	 * updateCamera() updates the camera position and orientation.
 	 * <p>
-	 * This is done by copying the locations from the Player, since MazeRunner runs on a first person view.
+	 * This is done by copying the locations from the Player, since MazeRunner
+	 * runs on a first person view.
 	 */
 	private void updateCamera() {
-		camera.setLocationX( player.getLocationX() );
-		camera.setLocationY( player.getLocationY() );  
-		camera.setLocationZ( player.getLocationZ() );
-		camera.setHorAngle( player.getHorAngle() );
-		camera.setVerAngle( player.getVerAngle() );
+		camera.setLocationX(player.getLocationX());
+		camera.setLocationY(player.getLocationY());
+		camera.setLocationZ(player.getLocationZ());
+		camera.setHorAngle(player.getHorAngle());
+		camera.setVerAngle(player.getVerAngle());
 		camera.calculateVRP();
 	}
-
-
-
 
 	private void rectOnScreen(GL gl, float x, float y, float height, float width){
 		height = height / 2.0f;
@@ -658,8 +728,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		gl.glVertex2f(x - width,y + height);
 		gl.glVertex2f(x - width,y - height);
+
 		gl.glVertex2f(x + width, y - height);
-		gl.glVertex2f(x + width,y + height);
+		gl.glVertex2f(x + width, y + height);
 		gl.glEnd();
 	}
 
@@ -679,18 +750,22 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight, (float)0.95*screenWidth);
 
-		if(true/*!loading*/){
-			Button button = new Button(gl, screenWidth, screenHeight, 5, "Continue");
+
+		rectOnScreen(gl, screenWidth / 2.0f, screenHeight / 2.0f, (float) 0.95
+				* screenHeight / 1.5f, (float) 0.95 * screenWidth / 1.5f);
+
+		if (true/* !loading */) {
+			Button button = new Button(gl, screenWidth, screenHeight, 5,
+					"Continue");
 			button.NegIfIn(input.CurrentX, input.CurrentY);
 			button.PresIfIn(input.PressedX, input.PressedY);
 
-			if(button.CursorInButton(input.ReleaseX, input.ReleaseY) && button.CursorInButton(input.WasPressedX, input.WasPressedY)){
+		if(button.CursorInButton(input.ReleaseX, input.ReleaseY) && button.CursorInButton(input.WasPressedX, input.WasPressedY)){
 				start = false;
 				input.pauze = false;
 				init = true;
 			}
 		}
-
 
 		switchTo3D(drawable);  
 
@@ -772,7 +847,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 			}
 			input.mouseReleasedUsed();
 		}
-
 	}
 
 	private void ViewHighScores(GLAutoDrawable drawable){
@@ -805,12 +879,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 		GLU glu = new GLU();
 
 		// Calculating time since last frame.
-		Calendar now = Calendar.getInstance();		
+		Calendar now = Calendar.getInstance();
 		long currentTime = now.getTimeInMillis();
 
 		int deltaTime = (int)(currentTime - previousTime);
 
 		if(deltaTime > 1000){
+
 			deltaTime = 16;
 		}
 
@@ -847,27 +922,27 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT );
 		gl.glLoadIdentity();
-		glu.gluLookAt( camera.getLocationX(), camera.getLocationY(), camera.getLocationZ(), 
-				camera.getVrpX(), camera.getVrpY(), camera.getVrpZ(),
-				camera.getVuvX(), camera.getVuvY(), camera.getVuvZ() );
+
+		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
+				camera.getLocationZ(), camera.getVrpX(), camera.getVrpY(),
+				camera.getVrpZ(), camera.getVuvX(), camera.getVuvY(),
+				camera.getVuvZ());
 
 		// Display all the visible objects of MazeRunner.
-		for( Iterator<VisibleObject> it = visibleObjects.iterator(); it.hasNext(); ) {
+		for (Iterator<VisibleObject> it = visibleObjects.iterator(); it
+				.hasNext();) {
 			it.next().display(gl);
 		}
-		for( Iterator<Projectile> it = projectiles.iterator(); it.hasNext();) {
+		for (Iterator<Projectile> it = projectiles.iterator(); it.hasNext();) {
 			it.next().display(gl);
 		}
-		for( Iterator<Lifeform> it = lifeforms.iterator(); it.hasNext();) {
+		for (Iterator<Lifeform> it = lifeforms.iterator(); it.hasNext();) {
 			it.next().display(gl);
 		}
-
 
 		gl.glLoadIdentity();
 		// Flush the OpenGL buffer.
 		gl.glFlush();
-
-
 
 		if(!loading)
 			init = false;
@@ -875,7 +950,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 			loading = false;
 
 	}
-	private void Pauzemenu(GLAutoDrawable drawable){
+
+	private void Pauzemenu(GLAutoDrawable drawable) {
 		GL gl = drawable.getGL();
 
 		switchTo2D(drawable);
@@ -926,25 +1002,24 @@ public class MazeRunner extends Frame implements GLEventListener {
 		switchTo3D(drawable);  
 
 		// Checking if button is pressed
+
 		if(knopResume.inKnop(input.ReleaseX, input.ReleaseY) && knopResume.inKnop(input.WasPressedX, input.WasPressedY)){
 			ButtonResume();
 		}else if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
+
 			ButtonExit();
 		}
 
 		input.mouseReleasedUsed();
 	}
 
-	private void HUD(GLAutoDrawable drawable){
+	private void HUD(GLAutoDrawable drawable) {
 		GL gl = drawable.getGL();
-
 
 		switchTo2D(drawable);
 
+		HealthBar bar = new HealthBar(screenHeight, player.hp);
 
-
-
-		HealthBar bar = new HealthBar(screenHeight,player.hp);
 		bar.display(gl);
 
 		clock.display(gl, screenWidth, screenHeight);
@@ -959,20 +1034,35 @@ public class MazeRunner extends Frame implements GLEventListener {
 					drawE = true;
 			}
 		}
-
+		
+		for(int i = 0; i < visibleObjects.size(); i++){
+			if(visibleObjects.get(i) instanceof Trap){
+				Trap tr = (Trap)visibleObjects.get(i);
+				
+				if(tr.inrange)
+					drawE = true;
+			}
+		}
+		
+		for(int i = 0; i < visibleObjects.size(); i++){
+			if(visibleObjects.get(i) instanceof Trapaf){
+				Trapaf traf = (Trapaf)visibleObjects.get(i);
+				
+				if(traf.inrange)
+					drawE = true;
+			}
+		}
+		
 		if(drawE)
 			Image.drawImage(gl, screenWidth/2 - 127/2, screenHeight/2 - 119/2, 127, 119, E);
+		
 
 		switchTo3D(drawable);
 
-
 	}
 
+	private void switchTo2D(GLAutoDrawable drawable) {
 
-
-
-	private void switchTo2D(GLAutoDrawable drawable)
-	{
 		GL gl = drawable.getGL();
 
 		gl.glDisable(GL.GL_DEPTH_TEST);
@@ -1000,10 +1090,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 	}
 
-
-	private void ButtonResume(){
+	private void ButtonResume() {
 		input.SwitchPauze();
 	}
+
 	private void ButtonExit(){
 		dispose();   // exit MazeRunner
 
@@ -1014,26 +1104,27 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		if(player.getGodMode()){
 
-
 			player.locationX = 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
 			player.locationY = maze.SQUARE_SIZE / 2;
 			player.locationZ = 1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2;
 			player.setVerAngle(0);
 			player.setHorAngle(90);
 
-
 			player.setGodMode(false);
-		}else if(!player.getGodMode()){
-
-			player.setGodMode(true);
 		}
+
 	}
 
+	/*
+	 * **********************************************
+	 * * Main * **********************************************
+=======
 
 	/*
 	 * **********************************************
 	 * *				  Main						*
 	 * **********************************************
+>>>>>>> cfd49c3c9a9e32f8d7e9ef9205e67e234446947f
 	 */
 	/**
 	 * Program entry point
