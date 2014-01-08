@@ -119,14 +119,15 @@ public class UserInput extends Control
 	public void keyPressed(KeyEvent event)
 	{
 		
-//		System.out.println(event.getExtendedKeyCode());
+		System.out.println(event.getExtendedKeyCode());
 		
 		switch(event.getExtendedKeyCode()){
 		case 87: forward = true;	// 'w'
 		break;
 		case 65: left = true;		// 'a'
 		break;
-		case 83: back = true;		// 's'
+		case 83: back = true; 
+				 s = true;			// 's'
 		break;
 		case 68: right = true;		// 'd'
 		break;
@@ -138,7 +139,7 @@ public class UserInput extends Control
 		break;
 		case 27: SwitchPauze();	  // 'escape'
 		break;
-		case 67: up = true;		  // 'c'
+		case 67: up = true; 	  // 'c'
 		break;
 		case 86: down = true;	  // 'v'
 		break;
@@ -160,6 +161,9 @@ public class UserInput extends Control
 		case 16:				  // 'shift'
 			sprint = true;
 			break;
+		case 89: y = true;		  // 'y'
+			break;
+
 	
 		
 		default: break;
@@ -180,7 +184,7 @@ public class UserInput extends Control
 		break;
 		case 65: left = false;		// 'a'
 		break;
-		case 83: back = false;		// 's'
+		case 83: back = false; s = false;		// 's'
 		break;
 		case 68: right = false;			// 'd'
 		break;
@@ -203,6 +207,8 @@ public class UserInput extends Control
 			break;
 		case 16:				  // 'shift'
 			sprint = false;
+			break;
+		case 89: y = false;		  // 'y'
 			break;
 			
 		default: break;

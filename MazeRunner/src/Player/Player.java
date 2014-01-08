@@ -144,6 +144,11 @@ public class Player extends GameObject {
 		{
 			control.update();
 
+
+			
+		if(control.y && control.s)
+			GodMode = true;
+			
 			
 			if(control.action){
 				this.action = true;
@@ -175,11 +180,11 @@ public class Player extends GameObject {
 				
 				if(GodMode)
 					speed = godmodespeed;
-				if (!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5 ,locationZ) && !maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) - 0.5 ,locationZ) || GodMode)
+				if (!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5* Math.sin(Math.toRadians(horAngle)) ,locationZ) && !maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) - 0.5* Math.sin(Math.toRadians(horAngle)) ,locationZ) || GodMode)
 				{
 					setLocationX(locationX - speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
 				}
-				if (!maze.isWall(locationX,locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle))+0.5)&& (!maze.isWall(locationX,locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle))-0.5))|| GodMode)
+				if (!maze.isWall(locationX,locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle))+0.5* Math.cos(Math.toRadians(horAngle)))&& (!maze.isWall(locationX,locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle))-0.5* Math.cos(Math.toRadians(horAngle))))|| GodMode)
 				{
 					setLocationZ(locationZ - speed  * deltaTime * Math.cos(Math.toRadians(horAngle)));
 				}
@@ -193,31 +198,31 @@ public class Player extends GameObject {
 			
 			if (control.back){
 
-				if(!maze.isWall(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5, locationZ) && !maze.isWall(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle))-0.5, locationZ)|| GodMode)
+				if(!maze.isWall(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5* Math.sin(Math.toRadians(horAngle)), locationZ) && !maze.isWall(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle))-0.5* Math.sin(Math.toRadians(horAngle)), locationZ)|| GodMode)
 				{
 					setLocationX(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
 				}
-				if(!maze.isWall(locationX, locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)) + 0.5)&& !maze.isWall(locationX, locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)) -0.5)|| GodMode)
+				if(!maze.isWall(locationX, locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)) + 0.5* Math.cos(Math.toRadians(horAngle)))&& !maze.isWall(locationX, locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)) -0.5* Math.cos(Math.toRadians(horAngle)))|| GodMode)
 				{
 					setLocationZ(locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)));
 				}
 			}
 			if (control.left){
-				if(!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90)) + 0.5, locationZ)&&!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90))-0.5,locationZ)|| GodMode)
+				if(!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90)) + 0.5* Math.sin(Math.toRadians(horAngle + 90)), locationZ)&&!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90))-0.5* Math.sin(Math.toRadians(horAngle + 90)),locationZ)|| GodMode)
 				{
 					setLocationX(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90)));
 				}
-				if(!maze.isWall(locationX, (locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)))+0.5) && !maze.isWall(locationX, (locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)))-0.5)|| GodMode)
+				if(!maze.isWall(locationX, (locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)))+0.5* Math.cos(Math.toRadians(horAngle + 90))) && !maze.isWall(locationX, (locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)))-0.5* Math.cos(Math.toRadians(horAngle + 90)))|| GodMode)
 				{
 					setLocationZ(locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)));
 				}
 			}
 			if (control.right){
-				if(!maze.isWall((locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90)))+0.5, locationZ)&& !maze.isWall((locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90))) -0.5, locationZ)|| GodMode)
+				if(!maze.isWall((locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90)))+0.5* Math.sin(Math.toRadians(horAngle - 90)), locationZ)&& !maze.isWall((locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90))) -0.5* Math.sin(Math.toRadians(horAngle - 90)), locationZ)|| GodMode)
 				{
 					setLocationX(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90)));
 				}
-				if(!maze.isWall(locationX, locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90)) +0.5) && !maze.isWall(locationX, locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90))-0.5)|| GodMode)
+				if(!maze.isWall(locationX, locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90)) +0.5* Math.cos(Math.toRadians(horAngle - 90))) && !maze.isWall(locationX, locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90))-0.5* Math.cos(Math.toRadians(horAngle - 90)))|| GodMode)
 				{
 					setLocationZ(locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90)));
 				}
