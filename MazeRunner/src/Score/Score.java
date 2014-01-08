@@ -49,13 +49,13 @@ public class Score
 	public void drawHighScores(GL gl, int screenWidth, int screenHeight)
 	{
 		getHighScore();
-		int x = (int)(0.25*screenWidth);
-		int y = (int)(0.1*screenWidth);
+		int x = (int)(0.4*screenWidth);
+		int y = (int)(0.9*screenHeight);
 		//TODO: Drawing score on the endscreen, but first make an endscreen
 		for(int i =0; i <divided.length; i++)
 		{
-			y = y + 20;
-			String row = i + ": " + divided[i];
+			y = y - 20;
+			String row = (i+1) + ": " + divided[i];
 			drawText(gl, row, x,y);
 		}
 	}
