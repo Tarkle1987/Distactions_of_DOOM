@@ -590,7 +590,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 7:
 //					gl.glColor3f(0.5f, 0.0f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, deur18);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,18,18, deur18);
 					break;
 				}
 			}
