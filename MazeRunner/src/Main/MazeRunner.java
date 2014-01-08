@@ -10,6 +10,7 @@ import javax.media.opengl.glu.*;
 import javax.swing.JFrame;
 
 import MenuButtons.Button;
+import MenuButtons.Knop;
 import movingobjects.Beer;
 import movingobjects.CompanionCube;
 import movingobjects.CustomMazeObject;
@@ -71,12 +72,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	/*
 	 * **********************************************
-<<<<<<< HEAD
-	 * * Local variables * **********************************************
-=======
 	 * *			Local variables					*
 	 * **********************************************
->>>>>>> cfd49c3c9a9e32f8d7e9ef9205e67e234446947f
 	 */
 	private GLCanvas canvas;
 
@@ -96,9 +93,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 																			// elapsed
 																			// time
 
+	private int endx = 23;
+	private int endz = 20;
 	// startup hulp booleans
 	private boolean start = true;
 	private boolean end = false;
+	private boolean submit = false;
 	private boolean init = true;
 	private boolean loading = true;
 
@@ -121,6 +121,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * **********************************************
 	 * * Initialization methods * **********************************************
 =======
+=======
+	
+	private byte[] PauzeImage = Image.loadImage("Pauze.png");
+	private byte[] PauzeResumeClick = Image.loadImage("ResumeClick.png");
+	private byte[] PauzeResumeHover = Image.loadImage("Resumehover.png");
+	private byte[] PauzeExitClick = Image.loadImage("ExitClick.png");
+	private byte[] PauzeExitHover = Image.loadImage("PauzeExitHover.png");
+>>>>>>> 95f4c13ba35f0033c56e0d7da24ef84483d2d8eb
 
 
 
@@ -253,35 +261,35 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		player = new Player( 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
 
-							 maze.SQUARE_SIZE / 2,							// y-position
-							 1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// z-position
-							 90, 0 );										// horizontal and vertical angle
+				maze.SQUARE_SIZE / 2,							// y-position
+				1 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// z-position
+				90, 0 );										// horizontal and vertical angle
 
-	    camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
-		             player.getHorAngle(), player.getVerAngle() );
-			
-	
-			    /*
-	     * Start positions for the game objects. Be aware: for the player the start position must two times be set..
-
-	  */  
+		camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
+				player.getHorAngle(), player.getVerAngle() );
 
 
-//	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-//		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
-//	    lifeforms.add(c1);
-//	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
-//		lifeforms.add(c2);
-//		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
-//		lifeforms.add(c3);
-		
-	    SchuifMuur SM = new SchuifMuur(5,5,maze);
-	    visibleObjects.add(SM);
-	    
+		/*
+		 * Start positions for the game objects. Be aware: for the player the start position must two times be set..
+
+		 */  
+
+
+		//	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
+		//		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
+		//	    lifeforms.add(c1);
+		//	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
+		//		lifeforms.add(c2);
+		//		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
+		//		lifeforms.add(c3);
+
+		SchuifMuur SM = new SchuifMuur(5,5,maze);
+		visibleObjects.add(SM);
+
 		CompanionCube(1,1.5);
-	    
-//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
-//	    lifeforms.add(peter);
+
+		//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
+		//	    lifeforms.add(peter);
 
 		coordT = Maze.CoordTrap(Maze.maze);
 		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
@@ -448,8 +456,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	public void display(GLAutoDrawable drawable) {
 		input.thisX = this.getX();
 		input.thisY = this.getY();
-
-		end = false;
+		
 		// StartScherm
 		if(start && !end){
 			this.setCursor(Cursor.getDefaultCursor());
@@ -470,10 +477,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.getHorAngle(), player.getVerAngle());
 				projectiles.add(book);
 
-				
+
 				Sound bookthrow = new Sound("BookThrow.wav");
 				bookthrow.play();
 				bookthrow.setGain(-10);
+
 				input.schiet = false;
 			}
 
@@ -483,7 +491,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 		// Pauzing te game progress
 
-		if(input.getPauze() && !start){
+		if(input.getPauze() && !start && !end){
 
 			this.setCursor(Cursor.getDefaultCursor());
 
@@ -493,10 +501,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 			input.waspauzed = true;
 
 		}
-		
+
 		//Is player at endpoint?
 		if(end)
 		{
+			this.setCursor(Cursor.getDefaultCursor());
 			input.pauze = true;
 			EindScherm(drawable);
 		}
@@ -564,14 +573,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private void updateMovement(int deltaTime) {
 		player.update(deltaTime, maze);
 		/*
-<<<<<<< HEAD
 		 * Update position of the objects to next Steps. ObjectPositions is
 		 * given to the objects, so that they can look for other objects, and
 		 * avoid them. The one that is first called, 'wins'.
-=======
-		 * Update position of the objects to next Steps. ObjectPositions is given to the objects, so that they can look for
-		 * other objects, and avoid them. The one that is first called, 'wins'.
->>>>>>> cfd49c3c9a9e32f8d7e9ef9205e67e234446947f
 		 */
 
 		for (int i = 0; i < visibleObjects.size(); i++) {
@@ -680,9 +684,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 				}
 			}	
 		}
-
+		
+		if(maze.convertToGridX(player.locationX) == endx && maze.convertToGridZ(player.locationZ) == endz){
+			end = true;
+		}
+		
 		//		if(input.action){
-			//			for(int i = 0; i < maze.maze.length; i ++){
+		//			for(int i = 0; i < maze.maze.length; i ++){
 		//				for(int j = 0; j < maze.maze.length; j++){
 		//					if(maze.maze[i][j] == 1){
 		//						maze.maze[i][j] = 0;
@@ -778,61 +786,63 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight, (float)0.95*screenWidth);
 
-		int TimeInSeconds = clock.minutes*60 + clock.seconds;
-		Score score = new Score();
-		score.calculateNewScore(player.hp, TimeInSeconds);
-		score.drawScore(gl, screenWidth, screenHeight);
-		
-		Button buttonSubmit = new Button(gl, screenWidth, screenHeight, 3, "Submit");
-		buttonSubmit.NegIfIn(input.CurrentX, input.CurrentY);
-		buttonSubmit.PresIfIn(input.PressedX, input.PressedY);
-		
-		Button buttonHighScore = new Button(gl, screenWidth, screenHeight, 4, "View Highscores");
-		buttonHighScore.NegIfIn(input.CurrentX, input.CurrentY);
-		buttonHighScore.PresIfIn(input.PressedX, input.PressedY);
-		
-		Button buttonExit = new Button(gl, screenWidth, screenHeight, 5, "Exit to main menu");
-		buttonExit.NegIfIn(input.CurrentX, input.CurrentY);
-		buttonExit.PresIfIn(input.PressedX, input.PressedY);
-		
-		switchTo3D(drawable);
-		
-		if(buttonSubmit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonSubmit.CursorInButton(input.WasPressedX,input.WasPressedY)){
-			SubmitScore(score);
+		if(submit)
+		{
+			ViewHighScores(drawable);
 		}
-		
-		if(buttonHighScore.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonHighScore.CursorInButton(input.WasPressedX, input.WasPressedY)){
-			ViewHighscores(gl, drawable);
+		else
+		{		
+			int TimeInSeconds = clock.minutes*60 + clock.seconds;
+			Score score = new Score();
+			score.calculateNewScore(player.hp, TimeInSeconds);
+			score.drawScore(gl, screenWidth, screenHeight);
+
+			Button buttonSubmit = new Button(gl, screenWidth, screenHeight, 4, "Submit");
+			buttonSubmit.NegIfIn(input.CurrentX, input.CurrentY);
+			buttonSubmit.PresIfIn(input.PressedX, input.PressedY);
+
+			Button buttonExit = new Button(gl, screenWidth, screenHeight, 5, "Exit to main menu");
+			buttonExit.NegIfIn(input.CurrentX, input.CurrentY);
+			buttonExit.PresIfIn(input.PressedX, input.PressedY);
+
+			switchTo3D(drawable);
+
+			if(buttonSubmit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonSubmit.CursorInButton(input.WasPressedX,input.WasPressedY)){
+				SubmitWindow YS = new SubmitWindow(score);
+				SubmitScore(YS, drawable);
+				submit = true;
+			}	
+
+			if(buttonExit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonExit.CursorInButton(input.WasPressedX, input.WasPressedY)){
+				ButtonExit();
+			}
+			input.mouseReleasedUsed();
 		}
-		
-		if(buttonExit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonExit.CursorInButton(input.WasPressedX, input.WasPressedY)){
-			ButtonExit();
-		}
-  
-		input.mouseReleasedUsed();
 	}
 
-	private void SubmitScore(Score score) {
-		SubmitWindow YS = new SubmitWindow(score);
+	private void ViewHighScores(GLAutoDrawable drawable){
+		System.out.println("Highscores");
+		GL gl = drawable.getGL();
+		Score score = new Score();
+
+		score.drawHighScores(gl, screenWidth, screenHeight);
+		Button buttonBack = new Button(gl, screenWidth, screenHeight, 3, "Back");
+		buttonBack.NegIfIn(input.CurrentX, input.CurrentY);
+		buttonBack.PresIfIn(input.PressedX, input.PressedY);
+
+		switchTo3D(drawable);
+		if(buttonBack.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonBack.CursorInButton(input.WasPressedX, input.WasPressedY)){
+			dispose();
+			new Menu();
+		}
+
+	}
+
+	private void SubmitScore(SubmitWindow YS, GLAutoDrawable drawable) {
 		YS.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		YS.setSize(150,250);
 		YS.setVisible(true);
 		YS.setTitle("Submit");
-		dispose();
-	}
-
-	private void ViewHighscores(GL gl, GLAutoDrawable drawable) 
-	{
-		Score score = new Score();
-		
-		score.drawHighScores(gl, screenWidth, screenHeight);
-		Button buttonBack = new Button(gl, screenWidth, screenHeight, 5, "Back");
-		buttonBack.NegIfIn(input.CurrentX, input.CurrentY);
-		buttonBack.PresIfIn(input.PressedX, input.PressedY);
-		
-		if(buttonBack.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonBack.CursorInButton(input.WasPressedX, input.WasPressedY)){
-			EindScherm(drawable);
-		}
 	}
 
 	private void Ingame(GLAutoDrawable drawable) {
@@ -881,7 +891,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		updateCamera();
 
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT );
 		gl.glLoadIdentity();
 
 		glu.gluLookAt(camera.getLocationX(), camera.getLocationY(),
@@ -918,42 +928,56 @@ public class MazeRunner extends Frame implements GLEventListener {
 		switchTo2D(drawable);
 
 		// Draw PauzeMenu
-		gl.glColor3f(1f, 0f, 0f);
+//		gl.glColor3f(1f, 0f, 0f);
+//
+//		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, screenHeight/1.5f, screenWidth/1.5f);
+//
+//		gl.glColor3f(0.35f, 0.35f, 0.35f);
+//
+//		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight/1.5f, (float)0.95*screenWidth/1.5f);
 
-		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, screenHeight/1.5f, screenWidth/1.5f);
-
-		gl.glColor3f(0.35f, 0.35f, 0.35f);
-
-		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight/1.5f, (float)0.95*screenWidth/1.5f);
-
+		Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeImage);
+		
 		// Draw PauzeMenuButtons
-		Button button1 = new Button(gl, screenWidth, screenHeight, 1, "Resume");
-		Button button2 = new Button(gl, screenWidth, screenHeight, 2, "Not implemented");
-		Button button3 = new Button(gl, screenWidth, screenHeight, 3, "Switch GodMode");
-		Button button4 = new Button(gl, screenWidth, screenHeight, 4, "Exit to main menu");
 
-		button1.NegIfIn(input.CurrentX, input.CurrentY);
-		button2.NegIfIn(input.CurrentX, input.CurrentY);
-		button3.NegIfIn(input.CurrentX, input.CurrentY);
-		button4.NegIfIn(input.CurrentX, input.CurrentY);
-
-		button1.PresIfIn(input.PressedX, input.PressedY);
-		button2.PresIfIn(input.PressedX, input.PressedY);
-		button3.PresIfIn(input.PressedX, input.PressedY);
-		button4.PresIfIn(input.PressedX, input.PressedY);
+		Knop knopResume = new Knop(screenWidth/2 - 295 + 152, screenHeight/2 - 295 + 162, screenWidth/2 - 295 + 269, screenHeight/2 - 295 + 134);
+		Knop knopExit = new Knop(screenWidth/2 - 295 + 173, screenHeight/2 - 295 + 256, screenWidth/2 - 295 + 234, screenHeight/2 - 295 + 226);
+		
+		if(knopResume.inKnop(input.CurrentX, input.CurrentY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeResumeHover);
+		}else if(knopExit.inKnop(input.CurrentX, input.CurrentY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeExitHover);
+		}
+			
+		if(knopResume.inKnop(input.PressedX, input.PressedY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeResumeClick);
+		}else if(knopExit.inKnop(input.PressedX, input.PressedY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, PauzeExitClick);
+		}
+		
+//		Button button1 = new Button(gl, screenWidth, screenHeight, 1, "Resume");
+//		Button button2 = new Button(gl, screenWidth, screenHeight, 2, "Not implemented");
+//		Button button3 = new Button(gl, screenWidth, screenHeight, 3, "Switch GodMode");
+//		Button button4 = new Button(gl, screenWidth, screenHeight, 4, "Exit to main menu");
+//
+//		button1.NegIfIn(input.CurrentX, input.CurrentY);
+//		button2.NegIfIn(input.CurrentX,  input.CurrentY);
+//		button3.NegIfIn(input.CurrentX,  input.CurrentY);
+//		button4.NegIfIn(input.CurrentX, input.CurrentY);
+//
+//		button1.PresIfIn(input.PressedX, input.PressedY);
+//		button2.PresIfIn(input.PressedX, input.PressedY);
+//		button3.PresIfIn(input.PressedX, input.PressedY);
+//		button4.PresIfIn(input.PressedX, input.PressedY);
 
 		switchTo3D(drawable);  
 
 		// Checking if button is pressed
-		if (button1.CursorInButton(input.ReleaseX, input.ReleaseY)
-				&& button1.CursorInButton(input.WasPressedX, input.WasPressedY)) {
-			ButtonResume();
-		}else if(button2.CursorInButton(input.ReleaseX, input.ReleaseY) && button2.CursorInButton(input.WasPressedX, input.WasPressedY)){
 
-		}else if(button3.CursorInButton(input.ReleaseX, input.ReleaseY) && button3.CursorInButton(input.WasPressedX, input.WasPressedY)){
-			ButtonGodMode();
-		} else if (button4.CursorInButton(input.ReleaseX, input.ReleaseY)
-				&& button4.CursorInButton(input.WasPressedX, input.WasPressedY)) {
+		if(knopResume.inKnop(input.ReleaseX, input.ReleaseY) && knopResume.inKnop(input.WasPressedX, input.WasPressedY)){
+			ButtonResume();
+		}else if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
+
 			ButtonExit();
 		}
 
