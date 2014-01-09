@@ -79,8 +79,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private int screenWidth = 1000, screenHeight = 1000; // Screen size.
 	private ArrayList<VisibleObject> visibleObjects; // A list of objects that
-														// will be displayed on
-														// screen.
+	// will be displayed on
+	// screen.
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Lifeform> lifeforms;
 	private Player player; // The player object.
@@ -88,10 +88,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private UserInput input; // The user input object that controls the player.
 	private Maze maze; // The maze.
 	private long previousTime = Calendar.getInstance().getTimeInMillis(); // Used
-																			// to
-																			// calculate
-																			// elapsed
-																			// time
+	// to
+	// calculate
+	// elapsed
+	// time
 
 	private int endx = 23;
 	private int endz = 20;
@@ -106,7 +106,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private boolean textrue = true;
 	private CompanionCube c1;
 	private MazeObject Trap, Smart, Smarto,
-			Smartw;
+	Smartw;
 	private Beer b1, b2, b3, b4, b5;
 
 	// Ingame seconden tellen
@@ -117,7 +117,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private byte[] E = Image.loadImage("E.png");
 
 	private int[] coordT,coordTa,coordTo = new int[4];
-	
+
 	private byte[] PauzeImage = Image.loadImage("Pauze.png");
 	private byte[] PauzeResumeClick = Image.loadImage("ResumeClick.png");
 	private byte[] PauzeResumeHover = Image.loadImage("Resumehover.png");
@@ -274,7 +274,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		SchuifMuur SM = new SchuifMuur(5,5,maze);
 		visibleObjects.add(SM);
 
-		CompanionCube(1,1.5);
+		CompanionCube(4,1.5);
 
 		//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
 		//	    lifeforms.add(peter);
@@ -313,15 +313,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	/*
 	 * **********************************************
-	 * * OpenGL event handlers * **********************************************
-=======
-
-	}
-	/*
-	 * **********************************************
 	 * *		OpenGL event handlers				*
 	 * **********************************************
->>>>>>> cfd49c3c9a9e32f8d7e9ef9205e67e234446947f
 	 */
 
 	/**
@@ -336,43 +329,52 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 
 	public void CompanionCube(int num, double size) {
-		for (int i = 0; i < num; i++) {
+		for(int j=0; j<2; j++)
+		{
+			for(int k=0; k<2; k++)
+			{
+				if(j!=1 || k !=1)
+				{
+					for (int i = 0; i < num; i++) {
 
-			double X = player.locationX;
-			double Z = player.locationZ;
+						double X = player.locationX;
+						double Z = player.locationZ;
 
-			boolean GO = true;
+						boolean GO = true;
 
-			while (GO) {
-				X = Math.random() * 21 * maze.SQUARE_SIZE;
-				Z = Math.random() * 21 * maze.SQUARE_SIZE;
+						while (GO) {
+							X = (Math.random()+k) * 22 * maze.SQUARE_SIZE;
+							Z = (Math.random()+j) * 22 * maze.SQUARE_SIZE;
 
-				if (!(maze.isWall(X + (size * Math.sqrt(2)) / 2, Z)
-						|| maze.isWall(X - (size * Math.sqrt(2)) / 2, Z)
-						|| maze.isWall(X, Z + (size * Math.sqrt(2)) / 2)
-						|| maze.isWall(X, Z - (size * Math.sqrt(2)) / 2)
-						|| maze.isWall(X + (size * Math.sqrt(2)) / 2, Z
-								+ (size * Math.sqrt(2)) / 2)
-						|| maze.isWall(X + (size * Math.sqrt(2)) / 2, Z
-								- (size * Math.sqrt(2)) / 2)
-						|| maze.isWall(X - (size * Math.sqrt(2)) / 2, Z
-								+ (size * Math.sqrt(2)) / 2) || maze.isWall(X
-						- (size * Math.sqrt(2)) / 2, Z - (size * Math.sqrt(2))
-						/ 2))) {
-					GO = false;
+							if (!(maze.isWall(X + (size * Math.sqrt(2)) / 2, Z)
+									|| maze.isWall(X - (size * Math.sqrt(2)) / 2, Z)
+									|| maze.isWall(X, Z + (size * Math.sqrt(2)) / 2)
+									|| maze.isWall(X, Z - (size * Math.sqrt(2)) / 2)
+									|| maze.isWall(X + (size * Math.sqrt(2)) / 2, Z
+											+ (size * Math.sqrt(2)) / 2)
+											|| maze.isWall(X + (size * Math.sqrt(2)) / 2, Z
+													- (size * Math.sqrt(2)) / 2)
+													|| maze.isWall(X - (size * Math.sqrt(2)) / 2, Z
+															+ (size * Math.sqrt(2)) / 2) || maze.isWall(X
+																	- (size * Math.sqrt(2)) / 2, Z - (size * Math.sqrt(2))
+																	/ 2))) {
+								GO = false;
+							}
+						}
+
+
+						CompanionCube CC = new CompanionCube(X, 0, Z, size);
+						lifeforms.add(CC);
+					}
 				}
 			}
-
-
-			CompanionCube CC = new CompanionCube(X, 0, Z, size);
-			lifeforms.add(CC);
 		}
 	}
 
 	public void init(GLAutoDrawable drawable) {
 		drawable.setGL(new DebugGL(drawable.getGL())); // We set the OpenGL
-														// pipeline to Debugging
-														// mode.
+		// pipeline to Debugging
+		// mode.
 
 		GL gl = drawable.getGL();
 		GLU glu = new GLU();
@@ -425,8 +427,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 				tr.Kaft2.addTexture(maze.Groen);
 				tr.Kaft3.addTexture(maze.Rood);
 				tr.Papier.addTexture(maze.Wit);
-				
-				
+
+
 			}
 		}
 	}
@@ -482,9 +484,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 			this.setCursor(Cursor.getDefaultCursor());
 
-			
+
 			ButtonGodMode();
-			
+
 			// Start PauzeMenu
 			Pauzemenu(drawable);
 
@@ -587,7 +589,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 					maze.maze[SM.x][SM.z]= 7; 
 				}
 			}
-			
+
 			if(visibleObjects.get(i) instanceof Trap){
 				Trap tr = (Trap)visibleObjects.get(i);
 				if(tr.transport){
@@ -604,10 +606,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.setLocationX(maze.convertFromGridX(coordTa[2])+0.5*maze.SQUARE_SIZE);
 						player.setLocationZ(maze.convertFromGridZ(coordTa[3])+0.5*maze.SQUARE_SIZE);
 						tr.transport = false;
-						}
+					}
 				}
 			}
-			
+
 			if(visibleObjects.get(i) instanceof Trapaf){
 				Trapaf tra = (Trapaf) visibleObjects.get(i);
 				if(tra.transport){
@@ -620,7 +622,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.setLocationX(maze.convertFromGridX(coordTo[2])+0.5*maze.SQUARE_SIZE);
 						player.setLocationZ(maze.convertFromGridZ(coordTo[3])+0.5*maze.SQUARE_SIZE);
 						tra.transport = false;
-						}
+					}
 				}
 			}
 
@@ -760,7 +762,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			button.NegIfIn(input.CurrentX, input.CurrentY);
 			button.PresIfIn(input.PressedX, input.PressedY);
 
-		if(button.CursorInButton(input.ReleaseX, input.ReleaseY) && button.CursorInButton(input.WasPressedX, input.WasPressedY)){
+			if(button.CursorInButton(input.ReleaseX, input.ReleaseY) && button.CursorInButton(input.WasPressedX, input.WasPressedY)){
 				start = false;
 				input.pauze = false;
 				init = true;
@@ -793,7 +795,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		buttonExit.PresIfIn(input.PressedX, input.PressedY);
 
 		switchTo3D(drawable);
-
+		input.waspauzed = true;
 		if(buttonExit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonExit.CursorInButton(input.WasPressedX, input.WasPressedY)){
 			ButtonExit();
 		}
@@ -835,7 +837,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			buttonExit.PresIfIn(input.PressedX, input.PressedY);
 
 			switchTo3D(drawable);
-
+			input.waspauzed = true;
 			if(buttonSubmit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonSubmit.CursorInButton(input.WasPressedX,input.WasPressedY)){
 				SubmitWindow YS = new SubmitWindow(score);
 				SubmitScore(YS, drawable);
@@ -860,6 +862,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		buttonBack.PresIfIn(input.PressedX, input.PressedY);
 
 		switchTo3D(drawable);
+		input.waspauzed = true;
 		if(buttonBack.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonBack.CursorInButton(input.WasPressedX, input.WasPressedY)){
 			dispose();
 			new Menu();
@@ -1034,28 +1037,28 @@ public class MazeRunner extends Frame implements GLEventListener {
 					drawE = true;
 			}
 		}
-		
+
 		for(int i = 0; i < visibleObjects.size(); i++){
 			if(visibleObjects.get(i) instanceof Trap){
 				Trap tr = (Trap)visibleObjects.get(i);
-				
+
 				if(tr.inrange)
 					drawE = true;
 			}
 		}
-		
+
 		for(int i = 0; i < visibleObjects.size(); i++){
 			if(visibleObjects.get(i) instanceof Trapaf){
 				Trapaf traf = (Trapaf)visibleObjects.get(i);
-				
+
 				if(traf.inrange)
 					drawE = true;
 			}
 		}
-		
+
 		if(drawE)
 			Image.drawImage(gl, screenWidth/2 - 127/2, screenHeight/2 - 119/2, 127, 119, E);
-		
+
 
 		switchTo3D(drawable);
 

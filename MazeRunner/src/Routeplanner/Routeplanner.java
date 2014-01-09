@@ -19,33 +19,33 @@ public class Routeplanner
 	Vertex[] vertices;
 	double size;
 	double range;
-	
+
 	public Routeplanner(double size) 
 	{
 		this.size = size;
 		this.range = size/2 + 0.35;
 	}
 
-/**
- * This method has to be called to calculate the next direction, according to the right route.
- * First, we check if the player and the object are in the same maze, if not, return 0;
- * If true, the right sector of the maze is loaded, such that we do only the needed calculations.
- * 
- * Then method init() creates a set of crosspoints and their connections.
- * After the initializations are done, the closest crosspoints for both the player and the object are
- * calculated.
- * 
- *For all the possible combinations the Dijkstra Algorithm is called(computepaths)
- *The shortest combination is selected, and the nextcrosspoint is determined by method
- *getNextVertexTo().
- *According to that vertex, and the vertex of the object is a new direction determined.
- *This direction is returned.
- * 
- * @param maze the maze, read from mazes.txt
- * @param objectTile the combined x and z position from the object
- * @param targetTile the combined x and z position from the player
- * @return the next direction for the object to come nearer to the player.
- */
+	/**
+	 * This method has to be called to calculate the next direction, according to the right route.
+	 * First, we check if the player and the object are in the same maze, if not, return 0;
+	 * If true, the right sector of the maze is loaded, such that we do only the needed calculations.
+	 * 
+	 * Then method init() creates a set of crosspoints and their connections.
+	 * After the initializations are done, the closest crosspoints for both the player and the object are
+	 * calculated.
+	 * 
+	 *For all the possible combinations the Dijkstra Algorithm is called(computepaths)
+	 *The shortest combination is selected, and the nextcrosspoint is determined by method
+	 *getNextVertexTo().
+	 *According to that vertex, and the vertex of the object is a new direction determined.
+	 *This direction is returned.
+	 * 
+	 * @param maze the maze, read from mazes.txt
+	 * @param objectTile the combined x and z position from the object
+	 * @param targetTile the combined x and z position from the player
+	 * @return the next direction for the object to come nearer to the player.
+	 */
 	public int getRoute(Maze maze, Tile objectTile, Tile targetTile)
 	{
 		if(inTheSameMaze(maze, objectTile,targetTile))
@@ -117,12 +117,12 @@ public class Routeplanner
 		}
 		return 0;
 	}
-	
-/**
- * This is the function that finds for each vertex in the maze the shortest combination of vertices
- * to the given vertex source.
- * @param source the vertex from which the paths are determined
- */
+
+	/**
+	 * This is the function that finds for each vertex in the maze the shortest combination of vertices
+	 * to the given vertex source.
+	 * @param source the vertex from which the paths are determined
+	 */
 	public void computePaths(Vertex source)
 	{
 		source.minDistance = 0.;
@@ -132,26 +132,28 @@ public class Routeplanner
 		while (!vertexQueue.isEmpty()) {
 			Vertex u = vertexQueue.poll();
 			// Visit each edge exiting u
-			for (int k =0; k< u.adjacencies.length; k++)
+			if(u.adjacencies != null)
 			{
-				Edge e = u.adjacencies[k];
-				Vertex v = e.target;
-				double weight = e.weight;
-				double distanceThroughU = u.minDistance + weight;
-				if (distanceThroughU < v.minDistance) {
-					vertexQueue.remove(v);
-					v.minDistance = distanceThroughU ;
-					v.previous = u;
-					vertexQueue.add(v);
+				for (Edge e: u.adjacencies)
+				{
+					Vertex v = e.target;
+					double weight = e.weight;
+					double distanceThroughU = u.minDistance + weight;
+					if (distanceThroughU < v.minDistance) {
+						vertexQueue.remove(v);
+						v.minDistance = distanceThroughU ;
+						v.previous = u;
+						vertexQueue.add(v);
+					}
 				}
 			}
 		}
 	}
-/**
- * This method returns the path from the source given to method computepaths to the given parameter target
- * @param target 
- * @return the path from the source given to method computepaths to the given parameter target
- */
+	/**
+	 * This method returns the path from the source given to method computepaths to the given parameter target
+	 * @param target 
+	 * @return the path from the source given to method computepaths to the given parameter target
+	 */
 	public static List<Vertex> getShortestPathTo(Vertex target)
 	{
 		List<Vertex> path = new ArrayList<Vertex>();
@@ -162,12 +164,12 @@ public class Routeplanner
 		Collections.reverse(path);
 		return path;
 	}
-/**
- * This method returns the next crosspoint(vertex) to which the object has to travel
- * @param target 
- * @param ownTile boolean value that gives the right next crosspoint when the object is at a crosspoint
- * @return the next crosspoint(vertex) to which the object has to travel
- */
+	/**
+	 * This method returns the next crosspoint(vertex) to which the object has to travel
+	 * @param target 
+	 * @param ownTile boolean value that gives the right next crosspoint when the object is at a crosspoint
+	 * @return the next crosspoint(vertex) to which the object has to travel
+	 */
 	private static Vertex getNextVertexTo(Vertex target, Boolean ownTile) 
 	{
 		Vertex res = null;
@@ -188,11 +190,11 @@ public class Routeplanner
 
 		return res;
 	}
-/**
- * This method calls a patterncheck to find all crosspoints, and after that link them 
- * with separated functions
- * @param currentMaze the maze in which the player and the object are.
- */
+	/**
+	 * This method calls a patterncheck to find all crosspoints, and after that link them 
+	 * with separated functions
+	 * @param currentMaze the maze in which the player and the object are.
+	 */
 	public void init(int[][] currentMaze)
 	{
 		PatternCheck patterns = new PatternCheck(currentMaze);

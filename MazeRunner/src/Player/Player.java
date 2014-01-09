@@ -180,11 +180,17 @@ public class Player extends GameObject {
 				
 				if(GodMode)
 					speed = godmodespeed;
-				if (!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5* Math.sin(Math.toRadians(horAngle)) ,locationZ) && !maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle)) - 0.5* Math.sin(Math.toRadians(horAngle)) ,locationZ) || GodMode)
+		
+				if(nextStepForward(maze,deltaTime)||GodMode)
+				{
+					setLocationZ(locationZ - speed  * deltaTime * Math.cos(Math.toRadians(horAngle)));
+					setLocationX(locationX - speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
+				}
+				else if (nextXStepForward(maze, deltaTime))
 				{
 					setLocationX(locationX - speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
 				}
-				if (!maze.isWall(locationX,locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle))+0.5* Math.cos(Math.toRadians(horAngle)))&& (!maze.isWall(locationX,locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle))-0.5* Math.cos(Math.toRadians(horAngle))))|| GodMode)
+				else if (nextZStepForward(maze, deltaTime))
 				{
 					setLocationZ(locationZ - speed  * deltaTime * Math.cos(Math.toRadians(horAngle)));
 				}
@@ -198,31 +204,46 @@ public class Player extends GameObject {
 			
 			if (control.back){
 
-				if(!maze.isWall(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)) + 0.5* Math.sin(Math.toRadians(horAngle)), locationZ) && !maze.isWall(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle))-0.5* Math.sin(Math.toRadians(horAngle)), locationZ)|| GodMode)
+				if(nextStepBack(maze,deltaTime)||GodMode)
+				{
+					setLocationX(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
+					setLocationZ(locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)));
+				}
+				else if(nextXStepBack(maze, deltaTime))
 				{
 					setLocationX(locationX + speed  * deltaTime * Math.sin(Math.toRadians(horAngle)));
 				}
-				if(!maze.isWall(locationX, locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)) + 0.5* Math.cos(Math.toRadians(horAngle)))&& !maze.isWall(locationX, locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)) -0.5* Math.cos(Math.toRadians(horAngle)))|| GodMode)
+				else if(nextZStepBack(maze, deltaTime))
 				{
 					setLocationZ(locationZ + speed  * deltaTime * Math.cos(Math.toRadians(horAngle)));
 				}
 			}
 			if (control.left){
-				if(!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90)) + 0.5* Math.sin(Math.toRadians(horAngle + 90)), locationZ)&&!maze.isWall(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90))-0.5* Math.sin(Math.toRadians(horAngle + 90)),locationZ)|| GodMode)
+				if(nextStepLeft(maze, deltaTime)||GodMode)
+				{
+					setLocationX(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90)));
+					setLocationZ(locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)));
+				}
+				else if(nextXStepLeft(maze, deltaTime))
 				{
 					setLocationX(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle + 90)));
 				}
-				if(!maze.isWall(locationX, (locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)))+0.5* Math.cos(Math.toRadians(horAngle + 90))) && !maze.isWall(locationX, (locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)))-0.5* Math.cos(Math.toRadians(horAngle + 90)))|| GodMode)
+				else if(nextZStepLeft(maze, deltaTime))
 				{
 					setLocationZ(locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle + 90)));
 				}
 			}
 			if (control.right){
-				if(!maze.isWall((locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90)))+0.5* Math.sin(Math.toRadians(horAngle - 90)), locationZ)&& !maze.isWall((locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90))) -0.5* Math.sin(Math.toRadians(horAngle - 90)), locationZ)|| GodMode)
+				if(nextStepRight(maze, deltaTime)||GodMode)
+				{
+					setLocationX(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90)));
+					setLocationZ(locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90)));
+				}
+				else if(nextXStepRight(maze, deltaTime))
 				{
 					setLocationX(locationX - speed * deltaTime * Math.sin(Math.toRadians(horAngle - 90)));
 				}
-				if(!maze.isWall(locationX, locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90)) +0.5* Math.cos(Math.toRadians(horAngle - 90))) && !maze.isWall(locationX, locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90))-0.5* Math.cos(Math.toRadians(horAngle - 90)))|| GodMode)
+				else if(nextZStepRight(maze, deltaTime))
 				{
 					setLocationZ(locationZ - speed * deltaTime * Math.cos(Math.toRadians(horAngle - 90)));
 				}
@@ -265,6 +286,8 @@ public class Player extends GameObject {
 
 	}
 
+
+
 	public void setGodMode(boolean G){
 		GodMode = G;
 	}
@@ -274,7 +297,7 @@ public class Player extends GameObject {
 
 	public void Hit(){
 
-		if(hittimer <= 0){
+		if(hittimer <= 0 && !GodMode){
 			if(hp > 0){
 				hp = hp - 1;
 				hittimer = hittimeInterval*1000;
@@ -282,5 +305,179 @@ public class Player extends GameObject {
 		}
 
 
+	}
+	
+	private boolean nextStepForward(Maze maze, int deltaTime)
+	{
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX-speed*deltaTime*Math.sin(Math.toRadians(horAngle)) + 0.5*i , locationZ - speed *deltaTime *Math.cos(Math.toRadians(horAngle))+0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		
+		return true;
+	}
+	private boolean nextXStepForward(Maze maze, int deltaTime)
+	{
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX-speed*deltaTime*Math.sin(Math.toRadians(horAngle)) + 0.5*i , locationZ +0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		
+		return true;
+	}
+	private boolean nextZStepForward(Maze maze, int deltaTime)
+	{
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX+ 0.5*i , locationZ - speed *deltaTime *Math.cos(Math.toRadians(horAngle))+0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		return true;
+	}
+	private boolean nextStepBack(Maze maze, int deltaTime) {
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX+speed*deltaTime*Math.sin(Math.toRadians(horAngle)) + 0.5*i , locationZ + speed *deltaTime *Math.cos(Math.toRadians(horAngle))+0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		return true;
+	}
+	private boolean nextXStepBack(Maze maze, int deltaTime) {
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX+speed*deltaTime*Math.sin(Math.toRadians(horAngle)) + 0.5*i , locationZ+0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		return true;
+	}
+	private boolean nextZStepBack(Maze maze, int deltaTime) {
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX+0.5*i , locationZ + speed *deltaTime *Math.cos(Math.toRadians(horAngle))+0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		return true;
+	}
+	private boolean nextStepRight(Maze maze, int deltaTime)
+	{
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX-speed*deltaTime*Math.sin(Math.toRadians(horAngle-90)) + 0.5*i , locationZ - speed *deltaTime *Math.cos(Math.toRadians(horAngle-90))+0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		return true;
+	}
+	private boolean nextXStepRight(Maze maze, int deltaTime)
+	{
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX-speed*deltaTime*Math.sin(Math.toRadians(horAngle-90)) + 0.5*i , locationZ +0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		return true;
+	}
+	private boolean nextZStepRight(Maze maze, int deltaTime)
+	{
+		for(int i =-1; i<2; i++)
+		{
+			for(int k=-1; k<2; k++)
+			{
+				if(maze.isWall(locationX + 0.5*i , locationZ - speed *deltaTime *Math.cos(Math.toRadians(horAngle-90))+0.5*k))
+						{
+							return false;
+						}
+			}
+		}
+		return true;
+	}
+	private boolean nextStepLeft(Maze maze, int deltaTime)
+	{
+		{
+			for(int i =-1; i<2; i++)
+			{
+				for(int k=-1; k<2; k++)
+				{
+					if(maze.isWall(locationX-speed*deltaTime*Math.sin(Math.toRadians(horAngle+90)) + 0.5*i , locationZ - speed *deltaTime *Math.cos(Math.toRadians(horAngle+90))+0.5*k))
+							{
+								return false;
+							}
+				}
+			}
+			return true;
+		}
+	}
+	private boolean nextXStepLeft(Maze maze, int deltaTime)
+	{
+		{
+			for(int i =-1; i<2; i++)
+			{
+				for(int k=-1; k<2; k++)
+				{
+					if(maze.isWall(locationX-speed*deltaTime*Math.sin(Math.toRadians(horAngle+90)) + 0.5*i , locationZ +0.5*k))
+							{
+								return false;
+							}
+				}
+			}
+			return true;
+		}
+	}	
+	private boolean nextZStepLeft(Maze maze, int deltaTime)
+	{
+		{
+			for(int i =-1; i<2; i++)
+			{
+				for(int k=-1; k<2; k++)
+				{
+					if(maze.isWall(locationX+ 0.5*i , locationZ - speed *deltaTime *Math.cos(Math.toRadians(horAngle+90))+0.5*k))
+							{
+								return false;
+							}
+				}
+			}
+			return true;
+		}
 	}
 }

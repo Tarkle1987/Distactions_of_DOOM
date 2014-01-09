@@ -25,7 +25,7 @@ public class Score
 		{
 			this.bonus = 0;
 		}
-		this.newScore = hp*50 + bonus;
+		this.newScore = hp*500 + bonus;
 	}
 	
 	public void submitScore(String name)
