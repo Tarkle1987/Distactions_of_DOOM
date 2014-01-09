@@ -395,7 +395,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 		int i = maze.convertToGridX(this.locationX);
 		int j = maze.convertToGridZ(this.locationZ);
 
-		if(i > 0 && i < 44 && j > 0 && j < 44){
+		if(i > 0 && i < 43 && j > 0 && j < 43){
 			Surround[0] = maze.maze[i-1][j];	// Left (X-1)
 			Surround[1] = maze.maze[i][j - 1];	// Down (Y-1)
 			Surround[2] = maze.maze[i+1][j];	// Right (X+1)

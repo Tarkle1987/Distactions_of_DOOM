@@ -82,6 +82,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	private byte[] trapop36 = Image.loadImage("trapop36.jpg");
 	private byte[] deur18 = Image.loadImage("deur18.jpg");
 	private byte[] deur36 = Image.loadImage("deur36.jpg");
+	private byte[] background = Image.loadImage("achtergrond.png");
 	
 	protected Texture muurText, floorText, smartText, trapText, trapopText;
 	// A GLCanvas is a component that can be added to a frame. The drawing
@@ -124,7 +125,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		drawHorizontal2();
 		drawVertical3();
 		drawHorizontal3();
-		System.out.println(unit);
 		for (int i = 0; i<Mazeconf.length;i++){
 			Mazeconf[0][i]=1;
 			Mazeconf[Mazeconf.length-1][i]= 1;
@@ -475,10 +475,11 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	public void display(GLAutoDrawable drawable) {
 		GL gl = drawable.getGL();
 
-		// Set the clear color and clear the screen.
-		gl.glClearColor(0.85f, 0.85f, 0.85f, 1);
+		// clear the screen.
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
+		//Draw the background image
+		Image.drawImage(gl, 0, 0, 1210, 474, background);
 		// Draw the buttons.
 		drawButtons(gl);
 
@@ -492,7 +493,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		//		boxOnScreen(gl, 10*unit, 10*unit+1, unit);
 		// Flush the OpenGL buffer, outputting the result to the screen.
 		gl.glFlush();
-		
 
 	}
 
@@ -592,7 +592,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 7:
 //					gl.glColor3f(0.5f, 0.0f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, deur18);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,18,18, deur18);
 					break;
 				}
 			}
@@ -716,7 +716,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 //		gl.glColor3f(0.5f, 0.0f, 0.5f);
 //		boxOnScreen(gl, 3*buttonSize+600, buttonpos-buttonSize, buttonSize);
 		Image.drawImage(gl, (int) (4*buttonSize+400),(int)(buttonpos-buttonSize),36,36, smart36);
-		drawText(gl,"Add Smartdrug", (int) (5*buttonSize+410),(int) (buttonpos-0.5*buttonSize));
+		drawText(gl,"Add Pill", (int) (5*buttonSize+410),(int) (buttonpos-0.5*buttonSize));
 		// Save
 		gl.glColor3f(0f, 1.0f, 0.5f);
 		boxOnScreen(gl, 5*buttonSize+500, buttonpos-buttonSize, buttonSize);
@@ -990,26 +990,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			points.clear();
 			break;
 		case DM_SMART:
-//			if (points.size() >= 1) {
-//				if (points.get(0).x<=rastwidth){
-//					if (bevat(3)[0]==1){
-//						Mazeconf[bevat(3)[1]][bevat(3)[2]]=0;
-//					}
-//					p1 = points.get(0);
-//					int rastXs = (((int) p1.x)/(unit));
-//					int rastYs = (((int) p1.y)/(unit));
-//					if (!isBed(rastXs,rastYs)&&!isEind(rastXs,rastYs)){
-//						Mazeconf[Mazeconf.length-rastYs-2][Mazeconf.length-rastXs-2]=3;
-					
-					//					System.out.println(unit);
-					//					System.out.println(rastXs + " " + rastYs);
-					//					System.out.println(Mazeconf[Mazeconf.length-rastYs-2][rast-rastXs]);
-					//					drawMaze(gl);
-					//					drawRaster(gl);
-//				}
-//			}
-//			points.clear();
-//			break;
 			if (points.size() >= 1)	{
 				if (points.get(0).y<rastwidth){
 					if (points.get(0).x<=rastwidth){
@@ -1198,7 +1178,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 
 			// Add a new point to the points list.
 			points.add(new Point2D.Float(me.getX(), screenHeight - me.getY()));
-//			System.out.println(points.get(0).getX() + ", "+ points.get(0).getY());
 			String Mazeres = "";
 			for (int i = 0; i<Mazeconf.length; i++){
 				for (int j = 0; j<Mazeconf.length; j++){
@@ -1209,7 +1188,6 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				}
 			}
 
-//			System.out.println(Mazeres);
 		}
 	}
 
