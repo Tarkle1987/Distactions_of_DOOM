@@ -3,11 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
 import javax.swing.JFrame;
-
 import MenuButtons.Button;
 import MenuButtons.Knop;
 import movingobjects.Beer;
@@ -33,16 +31,13 @@ import Player.Player;
 import Player.UserInput;
 import Score.Score;
 import Score.SubmitWindow;
-
 import com.sun.opengl.util.*;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
@@ -109,7 +104,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private byte[] PauzeResumeHover = Image.loadImage("Resumehover.png");
 	private byte[] PauzeExitClick = Image.loadImage("ExitClick.png");
 	private byte[] PauzeExitHover = Image.loadImage("PauzeExitHover.png");
-
+	private byte[] gameOver = Image.loadImage("GameOver.png");
+	private byte[] gameOverHover = Image.loadImage("GameOverHover.png");
+	private byte[] gameOverClick = Image.loadImage("GameOverClick.png");
+	private byte[] gameComplete = Image.loadImage("GameComplete.png");
+	private byte[] gameSubmitHover = Image.loadImage("SubmitHover.png");
+	private byte[] gameSubmitClick = Image.loadImage("SubmitClick.png");
+	private byte[] gameBackClick = Image.loadImage("BackClick.png");
+	private byte[] gameBackHover = Image.loadImage("BackHover.png");
 
 
 
@@ -578,9 +580,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 				}
 			}
 
+
+			
 			if(projectiles.get(i).getDestroy()){
 				projectiles.remove(i);
 			}
+			
+		
 		}
 		for(int i = 0; i < lifeforms.size(); i++){
 			lifeforms.get(i).update(deltaTime, maze, player);
@@ -706,23 +712,24 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		switchTo2D(drawable);
 
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameOver);
 
-		gl.glColor3f(1f, 0f, 0f);
+		// Draw PauzeMenuButtons
 
-		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, screenHeight, screenWidth);
+		Knop knopExit = new Knop(screenWidth/2 - 950/2 + 255, screenHeight/2 - 950/2 + 636, screenWidth/2 - 950/2 + 775, screenHeight/2 - 950/2 + 592);
+		
 
-		gl.glColor3f(0.35f, 0.35f, 0.35f);
+		if(knopExit.inKnop(input.CurrentX, input.CurrentY)){
+			Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameOverHover);
+		}
 
-		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight, (float)0.95*screenWidth);
-
-		Button buttonExit = new Button(gl, screenWidth, screenHeight, 5, "Exit to main menu");
-		buttonExit.NegIfIn(input.CurrentX, input.CurrentY);
-		buttonExit.PresIfIn(input.PressedX, input.PressedY);
+		if(knopExit.inKnop(input.PressedX, input.PressedY)){
+			Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameOverClick);
+		}
 
 		switchTo3D(drawable);
 
-		if(buttonExit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonExit.CursorInButton(input.WasPressedX, input.WasPressedY)){
+		if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
 			ButtonExit();
 		}
 		input.mouseReleasedUsed();
@@ -733,15 +740,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		switchTo2D(drawable);
 
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-
-		gl.glColor3f(1f, 0f, 0f);
-
-		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, screenHeight, screenWidth);
-
-		gl.glColor3f(0.35f, 0.35f, 0.35f);
-
-		rectOnScreen(gl,screenWidth/2.0f,screenHeight/2.0f, (float)0.95*screenHeight, (float)0.95*screenWidth);
+		Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameComplete);
 
 		if(submit)
 		{
@@ -754,23 +753,29 @@ public class MazeRunner extends Frame implements GLEventListener {
 			score.calculateNewScore(player.hp, TimeInSeconds);
 			score.drawScore(gl, screenWidth, screenHeight);
 
-			Button buttonSubmit = new Button(gl, screenWidth, screenHeight, 4, "Submit");
-			buttonSubmit.NegIfIn(input.CurrentX, input.CurrentY);
-			buttonSubmit.PresIfIn(input.PressedX, input.PressedY);
+			Knop knopSubmit = new Knop(screenWidth/2 - 950/2 + 283, screenHeight/2 - 950/2 + 551, screenWidth/2 - 950/2 + 751, screenHeight/2 - 950/2 + 495);
+			Knop knopExit = new Knop(screenWidth/2 - 950/2 + 255, screenHeight/2 - 950/2 + 636, screenWidth/2 - 950/2 + 775, screenHeight/2 - 950/2 + 592);
+			
 
-			Button buttonExit = new Button(gl, screenWidth, screenHeight, 5, "Exit to main menu");
-			buttonExit.NegIfIn(input.CurrentX, input.CurrentY);
-			buttonExit.PresIfIn(input.PressedX, input.PressedY);
+			if(knopExit.inKnop(input.CurrentX, input.CurrentY)){
+				Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameBackHover);
+			}else if(knopSubmit.inKnop(input.CurrentX, input.CurrentY)){
+				Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameSubmitHover);
+			}
+
+			if(knopExit.inKnop(input.PressedX, input.PressedY)){
+				Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameBackClick);
+			}else if(knopSubmit.inKnop(input.PressedX, input.PressedY)){
+				Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameSubmitClick);
+			}
 
 			switchTo3D(drawable);
 
-			if(buttonSubmit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonSubmit.CursorInButton(input.WasPressedX,input.WasPressedY)){
+			if(knopSubmit.inKnop(input.ReleaseX, input.ReleaseY) && knopSubmit.inKnop(input.WasPressedX, input.WasPressedY)){
 				SubmitWindow YS = new SubmitWindow(score);
 				SubmitScore(YS, drawable);
 				submit = true;
-			}	
-
-			if(buttonExit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonExit.CursorInButton(input.WasPressedX, input.WasPressedY)){
+			}else if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
 				ButtonExit();
 			}
 			input.mouseReleasedUsed();
@@ -964,7 +969,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 
 		if(drawE)
-			Image.drawImage(gl, screenWidth/2 - 127/2, screenHeight/2 - 119/2, 127, 119, E);
+			Image.drawImage(gl, screenWidth/2 - 100/2, screenHeight/2 - 100/2, 100, 1002, E);
 
 		switchTo3D(drawable);
 
