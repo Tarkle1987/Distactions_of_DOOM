@@ -118,7 +118,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private byte[] PauzeResumeHover = Image.loadImage("Resumehover.png");
 	private byte[] PauzeExitClick = Image.loadImage("ExitClick.png");
 	private byte[] PauzeExitHover = Image.loadImage("PauzeExitHover.png");
-<<<<<<< HEAD
 	private byte[] gameOver = Image.loadImage("GameOver.png");
 	private byte[] gameOverHover = Image.loadImage("GameOverHover.png");
 	private byte[] gameOverClick = Image.loadImage("GameOverClick.png");
@@ -130,8 +129,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 
 
-=======
->>>>>>> 8ed45580d8f91600962baae06090b3aec70ba0ad
+
 	/*
 	 * **********************************************
 	 * * Initialization methods * **********************************************
@@ -506,8 +504,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 		//Is player at endpoint?
 		if(end)
 		{
+			
 			this.setCursor(Cursor.getDefaultCursor());
 			input.pauze = true;
+			input.waspauzed = true;
 			EindScherm(drawable);
 		}
 
@@ -809,13 +809,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 
 		switchTo3D(drawable);
-<<<<<<< HEAD
+
 
 		if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
-=======
-		input.waspauzed = true;
-		if(buttonExit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonExit.CursorInButton(input.WasPressedX, input.WasPressedY)){
->>>>>>> 8ed45580d8f91600962baae06090b3aec70ba0ad
 			ButtonExit();
 		}
 		input.mouseReleasedUsed();
@@ -824,6 +820,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private void EindScherm(GLAutoDrawable drawable){
 		GL gl = drawable.getGL();
 
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+		
 		switchTo2D(drawable);
 
 		Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameComplete);
@@ -834,10 +832,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 		else
 		{		
-			int TimeInSeconds = clock.minutes*60 + clock.seconds;
-			Score score = new Score();
-			score.calculateNewScore(player.hp, TimeInSeconds);
-			score.drawScore(gl, screenWidth, screenHeight);
+//			int TimeInSeconds = clock.minutes*60 + clock.seconds;
+//			Score score = new Score();
+//			score.calculateNewScore(player.hp, TimeInSeconds);
+//			score.drawScore(gl, screenWidth, screenHeight);
 
 			Knop knopSubmit = new Knop(screenWidth/2 - 950/2 + 283, screenHeight/2 - 950/2 + 551, screenWidth/2 - 950/2 + 751, screenHeight/2 - 950/2 + 495);
 			Knop knopExit = new Knop(screenWidth/2 - 950/2 + 255, screenHeight/2 - 950/2 + 636, screenWidth/2 - 950/2 + 775, screenHeight/2 - 950/2 + 592);
@@ -856,15 +854,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 			}
 
 			switchTo3D(drawable);
-<<<<<<< HEAD
+
 
 			if(knopSubmit.inKnop(input.ReleaseX, input.ReleaseY) && knopSubmit.inKnop(input.WasPressedX, input.WasPressedY)){
-=======
 			input.waspauzed = true;
-			if(buttonSubmit.CursorInButton(input.ReleaseX, input.ReleaseY) && buttonSubmit.CursorInButton(input.WasPressedX,input.WasPressedY)){
->>>>>>> 8ed45580d8f91600962baae06090b3aec70ba0ad
-				SubmitWindow YS = new SubmitWindow(score);
-				SubmitScore(YS, drawable);
+//				SubmitWindow YS = new SubmitWindow(score);
+//				SubmitScore(YS, drawable);
 				submit = true;
 			}else if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
 				ButtonExit();
@@ -1079,7 +1074,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 
 		if(drawE)
-			Image.drawImage(gl, screenWidth/2 - 100/2, screenHeight/2 - 100/2, 100, 1002, E);
+			Image.drawImage(gl, screenWidth/2 - 100/2, screenHeight/2 - 100/2, 100, 100, E);
 
 
 		switchTo3D(drawable);
