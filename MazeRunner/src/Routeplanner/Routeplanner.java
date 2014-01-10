@@ -360,18 +360,18 @@ public class Routeplanner
 		int Z = maze.convertToGridZ(objectTile.getZ());
 		ArrayList<Vertex> closestCrosspointsObject = new ArrayList<Vertex>();
 
-		if(X >21)
-			if(X < 42)
-				X = X -21;
+		if(X >22)
+			if(X < 44)
+				X = X -22;
 			else
 			{
 				closestCrosspointsObject.add(closestCrosspoint);
 				return closestCrosspointsObject;
 			}
 
-		if(Z>21)
-			if(Z<42)
-				Z = Z-21;
+		if(Z>22)
+			if(Z<44)
+				Z = Z-22;
 			else
 			{
 				closestCrosspointsObject.add(closestCrosspoint);
