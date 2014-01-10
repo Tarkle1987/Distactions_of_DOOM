@@ -13,7 +13,7 @@ public class Projectile extends GameObject {
 
 	private double horAngle;
 	private double verAngle;
-	private double speed;
+	public double speed;
 	private double size;
 	private double width;
 	private double height;
@@ -23,9 +23,17 @@ public class Projectile extends GameObject {
 	protected double dY;
 	protected double dZ;
 	protected boolean destroy = false;
+	public double lastX;
+	public double lastY;
+	public double lastZ;
 	
 	public Projectile(double x, double y, double z, double horAngle, double verAngle){
 		super(x, y, z);	
+		
+		lastX = x;
+		lastY = y;
+		lastZ = z;
+		
 		this.horAngle = horAngle;
 		this.verAngle = verAngle;
 		
@@ -47,6 +55,10 @@ public class Projectile extends GameObject {
 	
 	public void update(int deltaTime, Maze maze)
 	{
+		
+		lastX = getLocationX();
+		lastY = getLocationY();
+		lastZ = getLocationZ();
 		
 		setLocationX(getLocationX() - speed * deltaTime * dX);
 		setLocationZ(getLocationZ() - speed * deltaTime * dY);

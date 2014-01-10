@@ -82,6 +82,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	private byte[] trapop36 = Image.loadImage("trapop36.jpg");
 	private byte[] deur18 = Image.loadImage("deur18.jpg");
 	private byte[] deur36 = Image.loadImage("deur36.jpg");
+	private byte[] background = Image.loadImage("achtergrond.png");
 	
 	protected Texture muurText, floorText, smartText, trapText, trapopText;
 	// A GLCanvas is a component that can be added to a frame. The drawing
@@ -474,10 +475,11 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	public void display(GLAutoDrawable drawable) {
 		GL gl = drawable.getGL();
 
-		// Set the clear color and clear the screen.
-		gl.glClearColor(0.85f, 0.85f, 0.85f, 1);
+		// clear the screen.
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
+		//Draw the background image
+		Image.drawImage(gl, 0, 0, 1210, 474, background);
 		// Draw the buttons.
 		drawButtons(gl);
 
@@ -590,7 +592,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 				case 7:
 //					gl.glColor3f(0.5f, 0.0f, 0.5f);
 //					boxOnScreen(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit, unit);
-					Image.drawImage(gl, (rast-i)*unit,(rast-j)*unit,18,18, deur18);
+					Image.drawImage(gl, (rast-i)*unit+rastwidth+rastspace,(rast-j)*unit,18,18, deur18);
 					break;
 				}
 			}
@@ -714,7 +716,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 //		gl.glColor3f(0.5f, 0.0f, 0.5f);
 //		boxOnScreen(gl, 3*buttonSize+600, buttonpos-buttonSize, buttonSize);
 		Image.drawImage(gl, (int) (4*buttonSize+400),(int)(buttonpos-buttonSize),36,36, smart36);
-		drawText(gl,"Add Smartdrug", (int) (5*buttonSize+410),(int) (buttonpos-0.5*buttonSize));
+		drawText(gl,"Add Pill", (int) (5*buttonSize+410),(int) (buttonpos-0.5*buttonSize));
 		// Save
 		gl.glColor3f(0f, 1.0f, 0.5f);
 		boxOnScreen(gl, 5*buttonSize+500, buttonpos-buttonSize, buttonSize);

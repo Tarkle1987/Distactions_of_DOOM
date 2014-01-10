@@ -395,7 +395,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 		int i = maze.convertToGridX(this.locationX);
 		int j = maze.convertToGridZ(this.locationZ);
 
-		if(i > 0 && i < 44 && j > 0 && j < 44){
+		if(i > 0 && i < 43 && j > 0 && j < 43){
 			Surround[0] = maze.maze[i-1][j];	// Left (X-1)
 			Surround[1] = maze.maze[i][j - 1];	// Down (Y-1)
 			Surround[2] = maze.maze[i+1][j];	// Right (X+1)
@@ -476,12 +476,41 @@ public class CompanionCube extends GameObject implements Lifeform {
 		double x = p.locationX;
 		double y = p.locationY;
 		double z = p.locationZ;
+		
+		double x2 = p.lastX;
+		double y2 = p.lastY;
+		double z2 = p.lastZ;
 
+		double dX = (x - x2)/10;
+		double dY = (y - y2)/10;
+		double dZ = (z - z2)/10;
+		
+		
+		
+		for(int i = 0; i < 10; i++){
+			if((x2 > locationX - 0.75*size) && (x2 < locationX + 0.75*size) 
+					&& (y2 < locationY + 1.75*size) 
+					&& (z2 > locationZ - 0.75*size) && (z2 < locationZ + 0.75*size)){
+				hit = true;
+			}
+			
+			x2 = x2 + dX;
+			y2 = y2 + dY;
+			z2 = z2 + dZ;
+			
+		}
 		if((x > locationX - 0.75*size) && (x < locationX + 0.75*size) 
 				&& (y < locationY + 1.75*size) 
 				&& (z > locationZ - 0.75*size) && (z < locationZ + 0.75*size)){
 			hit = true;
 		}
+		
+		if((x2 > locationX - 0.75*size) && (x2 < locationX + 0.75*size) 
+				&& (y2 < locationY + 1.75*size) 
+				&& (z2 > locationZ - 0.75*size) && (z2 < locationZ + 0.75*size)){
+			hit = true;
+		}
+
 
 		if(hit){
 			stun = true;
