@@ -99,11 +99,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private boolean loading = true;
 
 	private boolean textrue = true;
-	private CompanionCube c1;
-	private MazeObject Trap, Smart, Smarto,
-	Smartw;
-	private Beer b1, b2, b3, b4, b5;
 
+
+	private Score score;
+	private boolean calculatescore = false;
+	
 	// Ingame seconden tellen
 	private int miliseconds = 0;
 
@@ -705,6 +705,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		// If the player is at the endpoint, the games stops, in display wordt bepaald wat er getoon wordt.
 		if(maze.convertToGridX(player.locationX) == endx && maze.convertToGridZ(player.locationZ) == endz){
 			end = true;
+			calculatescore = true;
 		}
 		// If the player has no healthpoints left, the game-over screen is displayed in display
 		if(player.hp < 1)
@@ -834,10 +835,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 			ViewHighScores(drawable);
 		}
 		else
-		{		
+		{	
+			
+			if(calculatescore){
 			int TimeInSeconds = clock.minutes*60 + clock.seconds;
-			Score score = new Score();
+			score = new Score();
 			score.calculateNewScore(player.hp, TimeInSeconds);
+			calculatescore = false;
+			}
 			score.drawScore(gl, screenWidth, screenHeight);
 
 			Knop knopSubmit = new Knop(screenWidth/2 - 950/2 + 283, screenHeight/2 - 950/2 + 551, screenWidth/2 - 950/2 + 751, screenHeight/2 - 950/2 + 495);
@@ -864,6 +869,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				SubmitWindow YS = new SubmitWindow(score);
 				SubmitScore(YS, drawable);
 				submit = true;
+				calculatescore = true;
 			}else if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
 				ButtonExit();
 			}
@@ -874,7 +880,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private void ViewHighScores(GLAutoDrawable drawable){
 		System.out.println("Highscores");
 		GL gl = drawable.getGL();
-		Score score = new Score();
+		
+		if(calculatescore){
+			score = new Score();
+			calculatescore = false;
+		}
 
 		Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, HighScore);
 
