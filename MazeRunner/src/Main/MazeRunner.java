@@ -377,7 +377,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 							}
 						}
 
-
 						CompanionCube CC = new CompanionCube(X, 0, Z, size);
 						lifeforms.add(CC);
 					}
@@ -442,11 +441,26 @@ public class MazeRunner extends Frame implements GLEventListener {
 				tr.Kaft2.addTexture(maze.Groen);
 				tr.Kaft3.addTexture(maze.Rood);
 				tr.Papier.addTexture(maze.Wit);
-
-
 			}
 		}
+		for (int i = 0; i < lifeforms.size();i++){
+			if(lifeforms.get(i) instanceof Peter){
+				Peter pet = (Peter)lifeforms.get(i);
+				pet.Lichaam.addTexture(maze.lichaam);
+				pet.Haar.addTexture(maze.haar);
+				pet.Frame.addTexture(maze.frame);
+				pet.Ogen.addTexture(maze.Wit);
+				pet.Shirt.addTexture(maze.Wit);
+				pet.Riem.addTexture(maze.frame);
+				pet.Broek.addTexture(maze.Groen);
+				pet.Schoenen.addTexture(maze.schoenen);
+				pet.Bier.addTexture(maze.bier);
+				pet.Glas.addTexture(maze.glas);
+			}
+		}
+
 	}
+	
 
 	/**
 	 * display(GLAutoDrawable) is called upon whenever OpenGL is ready to draw a
@@ -726,7 +740,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		//			
 		//			visibleObjects.set(0, maze);
 		//		}
-
+	
 	}
 
 	/**
@@ -880,7 +894,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	}
 
 	private void ViewHighScores(GLAutoDrawable drawable){
-		System.out.println("Highscores");
+
 		GL gl = drawable.getGL();
 		
 		if(calculatescore){
