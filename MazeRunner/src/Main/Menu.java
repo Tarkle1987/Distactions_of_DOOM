@@ -293,7 +293,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		radio1.addButton(2, "Hard");
 		Difficulty = radio1.drawGroup(CurrentX,CurrentY,PressedX,PressedY, Difficulty);
 		
-		
+		System.out.println(Difficulty);
 		
 		button1.NegIfIn(CurrentX,CurrentY);
 		
@@ -362,6 +362,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		gl.glVertex2f(x - width,y + height);
 		gl.glEnd();
 	}
+
 
 	@Override
 	/**

@@ -878,7 +878,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	}
 
 	private void ViewHighScores(GLAutoDrawable drawable){
-		System.out.println("Highscores");
+
 		GL gl = drawable.getGL();
 		
 		if(calculatescore){
