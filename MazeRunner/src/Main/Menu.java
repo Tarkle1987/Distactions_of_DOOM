@@ -60,7 +60,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	private int WasPressedX = 0;
 	private int WasPressedY = 0;
 	
-	private int Difficulty = 0;
+	private int Difficulty = 1;
 	
 	private Sound bird = new Sound("bird.wav");
 	
@@ -533,7 +533,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 							Maze.setMaze(temp.getMazes(i));
 							dispose();
 							status = true;
-							new MazeRunner();
+							new MazeRunner(Difficulty);
 							
 						}
 					}

@@ -90,6 +90,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private int endx = 23;
 	private int endz = 20;
+	private int difficulty;
 	// startup hulp booleans
 	private boolean start = true;
 	private boolean end = false;
@@ -150,10 +151,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * as the OpenGL event listener, to be able to function as the view
 	 * controller.
 	 */
-	public MazeRunner() {
+	public MazeRunner(int difficulty) {
 		// Make a new window.
 		super("MazeRunner");
-
+		System.out.println("Difficulty: "+ difficulty);
+		this.difficulty = difficulty;
 		// Let's change the window to our liking.
 		setSize(screenWidth, screenHeight);
 		setBackground(Color.white);
@@ -287,7 +289,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		SchuifMuur SM = new SchuifMuur(5,5,maze);
 		visibleObjects.add(SM);
 
-		CompanionCube(4,1.5);
+		CompanionCube((1+3*difficulty),1.5);
 
 		//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
 		//	    lifeforms.add(peter);
@@ -1174,6 +1176,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	public static void main(String[] args) {
 		// Create and run MazeRunner.
-		new MazeRunner();
+		new MazeRunner(1);	//easy
 	}
 }
