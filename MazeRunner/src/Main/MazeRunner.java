@@ -4,9 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+
 import javax.media.opengl.*;
 import javax.media.opengl.glu.*;
 import javax.swing.JFrame;
+
 import MenuButtons.Button;
 import MenuButtons.Knop;
 import movingobjects.Beer;
@@ -32,13 +34,16 @@ import Player.Player;
 import Player.UserInput;
 import Score.Score;
 import Score.SubmitWindow;
+
 import com.sun.opengl.util.*;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
@@ -78,6 +83,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	// screen.
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Lifeform> lifeforms;
+	private ArrayList<Sound> SoundPeter = new ArrayList<Sound>();
 	private Player player; // The player object.
 	private Camera camera; // The camera object.
 	private UserInput input; // The user input object that controls the player.
@@ -287,7 +293,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		SchuifMuur SM = new SchuifMuur(5,5,maze);
 		visibleObjects.add(SM);
 
-		CompanionCube(4,1.5);
+		CompanionCube(1,1.5);
 
 		//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
 		//	    lifeforms.add(peter);
@@ -342,6 +348,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 
 	public void CompanionCube(int num, double size) {
+		int count = 0;
 		for(int j=0; j<2; j++)
 		{
 			for(int k=0; k<2; k++)
@@ -375,8 +382,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 							}
 						}
 
-						CompanionCube CC = new CompanionCube(X, 0, Z, size);
-						lifeforms.add(CC);
+						Peter P = new Peter(X, 0, Z);
+						lifeforms.add(P);
+						Sound Ps = new Sound("bird1.wav");
+						SoundPeter.add(Ps);
+						SoundPeter.get(count).playloop();
+						SoundPeter.get(count).setGain(-70);
+						count = count + 1;
+						
 					}
 				}
 			}
@@ -454,6 +467,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				pet.Schoenen.addTexture(maze.schoenen);
 				pet.Bier.addTexture(maze.bier);
 				pet.Glas.addTexture(maze.glas);
+				pet.Buckle.addTexture(maze.frame);
 			}
 		}
 
@@ -714,7 +728,19 @@ public class MazeRunner extends Frame implements GLEventListener {
 						lifeforms.get(k).SetPlayerLocation(lifeforms.get(i).getPlayerLocation());
 					}
 				}
-			}	
+			}
+		}
+		int soundint = 0;
+		for(int i = 0; i<lifeforms.size();i++){
+			if(lifeforms.get(i) instanceof Peter){
+				Peter pet = (Peter)lifeforms.get(i);
+				double dX = pet.locationX - player.locationX;
+				double dZ = pet.locationZ - player.locationZ;
+				double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+				SoundPeter.get(soundint).setGain((float)(-2*dLength));
+				soundint = soundint+1;
+			}
+				
 		}
 		// If the player is at the endpoint, the games stops, in display wordt bepaald wat er getoon wordt.
 		if(maze.convertToGridX(player.locationX) == endx && maze.convertToGridZ(player.locationZ) == endz){
