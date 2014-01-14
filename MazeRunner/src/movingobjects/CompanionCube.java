@@ -17,7 +17,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 	// Cube properties
 	public double size;
 	private double speed;
-	private double angle;
+	protected double angle;
 	protected double newangle;
 	private double anglespeed;
 
