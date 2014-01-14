@@ -53,7 +53,7 @@ public class Maze implements VisibleObject {
 
 	public Texture DeurTexture,trapopTexture, trapafTexture,muurTexture, floorTexture, plafondTexture, bLinksTexture, bRechtsTexture,kRechtsTexture, kLinksTexture, portret1,portret2,portret3,portret4,portret5,portret6;
 
-	public Texture Oranje, Rood, Blauw, Groen, Wit, Smarttex;
+	public Texture Oranje, Rood, Blauw, Groen, Wit, Smarttex,lichaam,haar,frame,ogen,shirt,riem,broek,schoenen,bier,glas;
 	private boolean initie = true;
 	private int textswitch;
 	public static int[][] maze = new int[44][44];
@@ -333,6 +333,54 @@ public class Maze implements VisibleObject {
 			InputStream stream = getClass().getResourceAsStream("TrapOp.jpg");
 			TextureData data = TextureIO.newTextureData(stream, false, "TrapOp.jpg"); 
 			this.trapopTexture = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Roze.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Roze.jpg"); 
+			this.lichaam = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Bruin.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Bruin.jpg"); 
+			this.schoenen = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Bier.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Bier.jpg"); 
+			this.bier = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Glas.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Glas.jpg"); 
+			this.glas = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Haar.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Haar.jpg"); 
+			this.haar = TextureIO.newTexture(data);
+		} catch(Exception e){
+			e.printStackTrace();
+			System.exit(0);
+		}
+		try{
+			InputStream stream = getClass().getResourceAsStream("Zwart.jpg");
+			TextureData data = TextureIO.newTextureData(stream, false, "Zwart.jpg"); 
+			this.frame = TextureIO.newTexture(data);
 		} catch(Exception e){
 			e.printStackTrace();
 			System.exit(0);

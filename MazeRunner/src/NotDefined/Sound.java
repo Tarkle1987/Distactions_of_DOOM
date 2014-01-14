@@ -60,7 +60,9 @@ public class Sound {
 		FloatControl gainControl = 
 			    (FloatControl) this.thisClip().getControl(FloatControl.Type.MASTER_GAIN);
 		float gain = gainControl.getValue();	
-		gainControl.setValue(Gain);
+		if(Gain<6&&Gain>-80){
+			gainControl.setValue(Gain);
+		}
 	}
 	public void IncreaseGain(){
 		FloatControl gainControl = 
