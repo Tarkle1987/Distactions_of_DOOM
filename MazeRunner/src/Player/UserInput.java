@@ -119,7 +119,7 @@ public class UserInput extends Control
 	public void keyPressed(KeyEvent event)
 	{
 		
-		System.out.println(event.getExtendedKeyCode());
+//		System.out.println(event.getExtendedKeyCode());
 		
 		switch(event.getExtendedKeyCode()){
 		case 87: forward = true;	// 'w'
