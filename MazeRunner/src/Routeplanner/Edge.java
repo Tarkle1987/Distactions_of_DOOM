@@ -1,8 +1,9 @@
 package Routeplanner;
-
-
-
-
+/**
+ * This class is used to set connections between crosspoints(vertices)
+ * @author Paul de Goffau
+ *
+ */
 class Edge
 {
 	public final Vertex target;

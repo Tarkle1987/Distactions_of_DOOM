@@ -66,7 +66,7 @@ public class Trapaf implements VisibleObject{
 		
 		double dLength =  Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
 		
-		if(dLength < 1.5*dLmax&&dLength > 0.5*dLmax)
+		if(dLength < 1*dLmax&&dLength > 0.5*dLmax)
 			inrange = true;
 		else
 			inrange = false;
