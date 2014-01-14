@@ -51,10 +51,12 @@ public class Routeplanner
 		if(inTheSameMaze(maze, objectTile,targetTile))
 		{
 			int[][] currentMaze = new int[22][22];
+			//Opdelen van de 'grote' maze:
 			currentMaze = createMaze(maze,objectTile);
-
+			//Zoek alle kruispunten in de nieuwe maze, en verbindt deze aan elkaar:
 			init(currentMaze);
 
+			//Zoek de dichtsbijzijnde kruispunten op voor het object en de speler
 			ArrayList<Vertex> closestCrosspointsObject = new ArrayList<Vertex>();
 			ArrayList<Double> DistancesObject = new ArrayList<Double>();
 			ArrayList<Vertex> closestCrosspointsPlayer = new ArrayList<Vertex>();
@@ -81,6 +83,9 @@ public class Routeplanner
 				closestCrosspointsPlayer = closestCrosspoint(maze,currentMaze ,vertices,targetTile);
 				DistancesPlayer = distanceToCrosspoints(maze,currentMaze ,vertices,targetTile);
 			}
+			
+			//Bereken voor alle aangrenzende kruispunten de routes en hun afstanden, sla het 
+			// eerstvolgende kruispunt dat genomen moet worden op in next.
 			if(vertices.length >0 && closestCrosspointsObject.size() > 0 && closestCrosspointsPlayer.size() > 0)
 			{
 				double min = Double.MAX_VALUE;
@@ -109,8 +114,8 @@ public class Routeplanner
 				}
 				//System.out.println("Distance from [" +closestCrosspointsObject.get(bestObj) + "] to [" + closestCrosspointsPlayer.get(bestTar) + "]: " + totalDistance);
 				//System.out.println("Path: " + path);
+				// Bereken volgende stap richting volgende kruispunt, en return deze naar het object
 				int nextdir = getNextDirection(maze, next, objectTile);
-				//System.out.println(nextdir);
 				return nextdir;
 			}
 
@@ -233,7 +238,17 @@ public class Routeplanner
 		}
 	}
 
-
+/**
+ * This method determines the next step to the right crosspoint
+ * @param maze This class is needed for the convertToGid functions
+ * @param next The next crosspoint
+ * @param objectTile The position of the object
+ * @return the next direction the object has to move(as seen from mazes.txt): 
+ * 		down = 1(X negative, Z neutral)
+		right = 2 (Z positive, X neutral)
+		up = 3 (X positive, Z neutral)
+		left = 4 (Z negative, X neutral)
+ */
 	private static int getNextDirection(Maze maze, Vertex next, Tile objectTile) {
 		// As seen from mazes.txt:
 		// down = 1(X negatief, Z neutraal)
@@ -246,6 +261,16 @@ public class Routeplanner
 			int Xt = (int) next.getX();
 			int Zs = maze.convertToGridZ(objectTile.getZ());
 			int Zt = (int) next.getZ();
+			
+			if(Xs>22)
+			{
+				Xs = Xs-22;
+			}
+			if(Zs >22)
+			{
+				Zs = Zs-22;
+			}
+			
 			if((Xt-Xs > 0) && Zs == Zt)
 				return 3;
 			if((Xt-Xs < 0) && Zs == Zt)
@@ -257,13 +282,18 @@ public class Routeplanner
 		}
 		return 0;
 	}
-
+/**
+ * Method to split the bigger maze in submazes
+ * @param maze
+ * @param objectTile
+ * @return
+ */
 	private static int[][] createMaze(Maze maze, Tile objectTile) {
 		int[][] currentMaze = new int[22][22];
 		if(maze.convertToGridX(objectTile.getX())>= 0 && 
-				maze.convertToGridX(objectTile.getX()) < 22 
+				maze.convertToGridX(objectTile.getX()) < 23 
 				&& maze.convertToGridZ(objectTile.getZ()) > 0 &&
-				maze.convertToGridZ(objectTile.getZ()) < 22)
+				maze.convertToGridZ(objectTile.getZ()) < 23)
 		{
 			for(int i =0; i < 22; i++)
 				for(int j =0; j < 22; j++)
@@ -272,34 +302,34 @@ public class Routeplanner
 				}
 		}
 		else
-			if(maze.convertToGridX(objectTile.getX())>= 0 && maze.convertToGridX(objectTile.getX()) < 22 
-			&& maze.convertToGridZ(objectTile.getZ()) >= 22 &&
+			if(maze.convertToGridX(objectTile.getX())> 0 && maze.convertToGridX(objectTile.getX()) < 23 
+			&& maze.convertToGridZ(objectTile.getZ()) > 22 &&
 			maze.convertToGridZ(objectTile.getZ()) < 44)
 			{
 				for(int i =0; i < 22; i++)
 					for(int j =0; j < 22; j++)
 					{
-						currentMaze[i][j] = maze.maze[i][j+21];
+						currentMaze[i][j] = maze.maze[i][j+22];
 					}
 			}
 			else
-				if(maze.convertToGridX(objectTile.getX())>= 22 && maze.convertToGridX(objectTile.getX()) < 44
+				if(maze.convertToGridX(objectTile.getX())> 22 && maze.convertToGridX(objectTile.getX()) < 45
 				&& maze.convertToGridZ(objectTile.getZ()) > 0 &&
-				maze.convertToGridZ(objectTile.getZ()) < 22)
+				maze.convertToGridZ(objectTile.getZ()) < 23)
 				{
 					for(int i =0; i < 22; i++)
 						for(int j =0; j < 22; j++)
 						{
-							currentMaze[i][j] = maze.maze[i+21][j];
+							currentMaze[i][j] = maze.maze[i+22][j];
 						}
 				}else
-					if(maze.convertToGridX(objectTile.getX())>= 22 && maze.convertToGridX(objectTile.getX()) < 44 && 
-					maze.convertToGridZ(objectTile.getZ()) >= 22 && maze.convertToGridZ(objectTile.getZ()) < 44)
+					if(maze.convertToGridX(objectTile.getX())> 22 && maze.convertToGridX(objectTile.getX()) < 45 && 
+					maze.convertToGridZ(objectTile.getZ()) > 22 && maze.convertToGridZ(objectTile.getZ()) < 45)
 					{
 						for(int i =0; i < 22; i++)
 							for(int j =0; j < 22; j++)
 							{
-								currentMaze[i][j] = maze.maze[i+21][j+21];
+								currentMaze[i][j] = maze.maze[i+22][j+22];
 							}
 					}
 					else
@@ -312,6 +342,15 @@ public class Routeplanner
 					}
 		return currentMaze;
 	}
+	
+	/**
+	 * Returns the crosspoint where the object is. This method is called when the object is at
+	 * a crosspoint. This method is needed to go to the next crosspoint.
+	 * @param maze This class is needed for the convertToGrid methods
+	 * @param vertices the list of crosspoints
+	 * @param objectTile the position of the object
+	 * @return the index of the crosspoint where the object is
+	 */
 	private static int getCross(Maze maze, Vertex[] vertices,Tile objectTile)
 	{
 		int Xs = maze.convertToGridX(objectTile.getX());
@@ -324,6 +363,14 @@ public class Routeplanner
 		}
 		return 0;
 	}
+	
+	/**
+	 * This method checks if the object is at a crosspoint.
+	 * @param maze This class is needed for the convertToGrid methods
+	 * @param vertices the list of crosspoints
+	 * @param objectTile the position of the object
+	 * @return true if the object is at a crosspoint
+	 */
 	private boolean atCrosspoint(Maze maze, Vertex[] vertices,Tile objectTile)
 	{
 		int Xs = maze.convertToGridX(objectTile.getX());
@@ -345,6 +392,10 @@ public class Routeplanner
 		}
 		return false;
 	}
+	/**
+	 * This method clears the connections, to calculate multiple connections(between multiple closest crosspoints)
+	 * @param vertices
+	 */
 	private static void clear(Vertex[] vertices) 
 	{
 		for(Vertex v:vertices)
@@ -353,6 +404,14 @@ public class Routeplanner
 			v.minDistance = Double.POSITIVE_INFINITY;
 		}
 	}
+	/**
+	 * This method determines the list of crosspoints in the environment of the object.
+	 * @param maze This class is needed for the convertToGrid methods
+	 * @param currentMaze the submaze(verdieping) of the object
+	 * @param vertices the total list of crosspoints
+	 * @param objectTile the position of the object
+	 * @return the list of crosspoints
+	 */
 	private static ArrayList<Vertex> closestCrosspoint(Maze maze, int[][] currentMaze ,Vertex[] vertices,Tile objectTile) {
 
 		Vertex closestCrosspoint = new Vertex(new Tile(100,100), "not existing");
@@ -368,7 +427,6 @@ public class Routeplanner
 				closestCrosspointsObject.add(closestCrosspoint);
 				return closestCrosspointsObject;
 			}
-
 		if(Z>22)
 			if(Z<44)
 				Z = Z-22;
@@ -396,12 +454,11 @@ public class Routeplanner
 						break up;
 					}
 				}
-
 			}
 			else
 				break up;
 		}
-		down: for(int m = X; m < 22; m++)
+		down: for(int m = X; m < 23; m++)
 		{
 			if(currentMaze[m][Z] != 1)
 			{
@@ -413,7 +470,6 @@ public class Routeplanner
 						break down;
 					}
 				}
-
 			}
 			else
 				break down;
@@ -430,12 +486,11 @@ public class Routeplanner
 						break left;
 					}
 				}
-
 			}
 			else
 				break left;
 		}
-		right :for(int m = Z; m <22; m++)
+		right :for(int m = Z; m <23; m++)
 		{
 			if(currentMaze[X][m] != 1)
 			{
@@ -447,7 +502,6 @@ public class Routeplanner
 						break right;
 					}
 				}
-
 			}
 			else
 				break right;
@@ -455,24 +509,33 @@ public class Routeplanner
 
 		return closestCrosspointsObject;
 	}
+	
+	/**
+	 * This method calculates the distances from the object to the player. (Must be used together with the closestCrosspoints method)
+	 * @param maze This class is needed for the convertToGrid methods
+	 * @param currentMaze the submaze(verdieping)
+	 * @param vertices the list of crosspoints
+	 * @param objectTile the position of the object
+	 * @return A list of distances from the object to the crosspoints
+	 */
 	private static ArrayList<Double> distanceToCrosspoints(Maze maze, int[][] currentMaze, Vertex[] vertices, Tile objectTile)
 	{
 		int X = maze.convertToGridX(objectTile.getX());
 		int Z = maze.convertToGridZ(objectTile.getZ());
 		ArrayList<Double> distanceToCrosspointsObject = new ArrayList<Double>();
 		double max = Double.MAX_VALUE;
-		if(X >21)
-			if(X < 42)
-				X = X -21;
+		if(X >22)
+			if(X < 44)
+				X = X -22;
 			else
 			{
 				distanceToCrosspointsObject.add(max);
 				return distanceToCrosspointsObject;
 			}
 
-		if(Z>21)
-			if(Z<42)
-				Z = Z-21;
+		if(Z>22)
+			if(Z<44)
+				Z = Z-22;
 			else
 			{
 				distanceToCrosspointsObject.add(max);
@@ -499,12 +562,11 @@ public class Routeplanner
 						break up;
 					}
 				}
-
 			}
 			else
 				break up;
 		}
-		down: for(int m = X; m < 22; m++)
+		down: for(int m = X; m < 23; m++)
 		{
 			if(currentMaze[m][Z] != 1)
 			{
@@ -519,7 +581,6 @@ public class Routeplanner
 						break down;
 					}
 				}
-
 			}
 			else
 				break down;
@@ -539,12 +600,11 @@ public class Routeplanner
 						break left;
 					}
 				}
-
 			}
 			else
 				break left;
 		}
-		right :for(int m = Z; m <22; m++)
+		right :for(int m = Z; m <23; m++)
 		{
 			if(currentMaze[X][m] != 1)
 			{
@@ -559,7 +619,6 @@ public class Routeplanner
 						break right;
 					}
 				}
-
 			}
 			else
 				break right;
@@ -567,14 +626,27 @@ public class Routeplanner
 
 		return distanceToCrosspointsObject;
 	}
+	/**
+	 * Method to determine if the player is at the same submaze as the object
+	 * @param maze
+	 * @param objectTile
+	 * @param targetTile
+	 * @return true if in the same maze
+	 */
 	private boolean inTheSameMaze(Maze maze, Tile objectTile, Tile targetTile) {
 		int Xs = maze.convertToGridX(objectTile.getX());
 		int Xt = maze.convertToGridX(targetTile.getX());
 		int Zs = maze.convertToGridZ(objectTile.getZ());
 		int Zt = maze.convertToGridZ(targetTile.getZ());
-		return(((Xs > 0 && Xs<22 && Xt > 0 && Xt <22)||(Xs >21 && Xs < 44 && Xt >21 && Xs <44))&&
-				((Zs > 0 && Zs<22 && Zt > 0 && Zt <22)||(Zs >21 && Zs < 44 && Zt >21 && Zs <44)));
+		return(((Xs > 0 && Xs<22 && Xt > 0 && Xt <23)||(Xs >22 && Xs < 45 && Xt >22 && Xs <45))&&
+				((Zs > 0 && Zs<23 && Zt > 0 && Zt <23)||(Zs >22 && Zs < 45 && Zt >22 && Zs <45)));
 	}
+	/**
+	 * Method to validate a new connection between two crosspoints. 
+	 * @param adjacencies
+	 * @param edge
+	 * @return An Edge[] that contains valid connections
+	 */
 	public static Edge[] addExtraAdjacencie(Edge[] adjacencies, Edge edge)
 	{
 		Edge[] newAdjacencies;
@@ -597,6 +669,12 @@ public class Routeplanner
 		}
 		return adjacencies;
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesA(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// 101 
 		// 000
@@ -607,6 +685,12 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies, LookRight(crosspoints,k,currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies, LookLeft(crosspoints,k, currentMaze));
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesB(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// X1X 
 		// 100
@@ -614,6 +698,12 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookDown(crosspoints,k,currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookRight(crosspoints,k,currentMaze));
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesC(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// X1X 
 		// 001
@@ -621,6 +711,12 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies, LookDown(crosspoints,k,currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,	LookLeft(crosspoints,k, currentMaze));
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesD(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// 10X 
 		// 001
@@ -628,6 +724,12 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookUp(crosspoints,k, currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookLeft(crosspoints,k, currentMaze));
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesE(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// X01 
 		// 100
@@ -635,6 +737,12 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookUp(crosspoints,k, currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookRight(crosspoints,k,currentMaze));
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesF(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// X01 
 		// 100
@@ -643,6 +751,12 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookDown(crosspoints,k,currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,	LookRight(crosspoints,k,currentMaze));
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesG(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// 10X 
 		// 001
@@ -651,6 +765,12 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookDown(crosspoints,k,currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookLeft(crosspoints,k, currentMaze));
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesH(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// X1X 
 		// 000
@@ -659,6 +779,12 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookRight(crosspoints,k,currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookLeft(crosspoints,k, currentMaze));
 	}
+	/**
+	 * Setting the connections for this pattern
+	 * @param crosspoints List of all crosspoints
+	 * @param k Index of the current crosspoint
+	 * @param currentMaze The submaze(verdieping)
+	 */
 	private static void SetAdjacensiesI(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		// 101 
 		// 000
@@ -667,6 +793,14 @@ public class Routeplanner
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookRight(crosspoints,k,currentMaze));
 		crosspoints.get(k).adjacencies = addExtraAdjacencie(crosspoints.get(k).adjacencies,LookLeft(crosspoints,k, currentMaze));
 	}
+	/**
+	 * Method the looks in one direction for a next crosspoint. When there is no crosspoint found,
+	 * an empty crosspoint is returned
+	 * @param crosspoints The list of all crosspoints
+	 * @param k the index of the current crosspoints
+	 * @param currentMaze The submaze(verdieping)
+	 * @return the next crosspoint in this direction
+	 */
 	private static Edge LookLeft(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		int X = (int)crosspoints.get(k).getX();
 		int Z = (int) crosspoints.get(k).getZ();
@@ -689,6 +823,14 @@ public class Routeplanner
 		Vertex res = new Vertex(notExist, "Not exist");
 		return new Edge(res,Integer.MAX_VALUE);
 	}
+	/**
+	 * Method the looks in one direction for a next crosspoint. When there is no crosspoint found,
+	 * an empty crosspoint is returned
+	 * @param crosspoints The list of all crosspoints
+	 * @param k the index of the current crosspoints
+	 * @param currentMaze The submaze(verdieping)
+	 * @return the next crosspoint in this direction
+	 */
 	private static Edge LookRight(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		int X = (int)crosspoints.get(k).getX();
 		int Z = (int) crosspoints.get(k).getZ();
@@ -712,6 +854,14 @@ public class Routeplanner
 		Vertex res = new Vertex(notExist, "Not exist");
 		return new Edge(res,Integer.MAX_VALUE);
 	}
+	/**
+	 * Method the looks in one direction for a next crosspoint. When there is no crosspoint found,
+	 * an empty crosspoint is returned
+	 * @param crosspoints The list of all crosspoints
+	 * @param k the index of the current crosspoints
+	 * @param currentMaze The submaze(verdieping)
+	 * @return the next crosspoint in this direction
+	 */
 	private static Edge LookDown(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		int X = (int)crosspoints.get(k).getX();
 		int Z = (int) crosspoints.get(k).getZ();
@@ -734,6 +884,14 @@ public class Routeplanner
 		Vertex res = new Vertex(notExist, "Not exist");
 		return new Edge(res,Integer.MAX_VALUE);
 	}
+	/**
+	 * Method the looks in one direction for a next crosspoint. When there is no crosspoint found,
+	 * an empty crosspoint is returned
+	 * @param crosspoints The list of all crosspoints
+	 * @param k the index of the current crosspoints
+	 * @param currentMaze The submaze(verdieping)
+	 * @return the next crosspoint in this direction
+	 */
 	private static Edge LookUp(ArrayList<Vertex> crosspoints, int k, int[][] currentMaze) {
 		int X = (int)crosspoints.get(k).getX();
 		int Z = (int) crosspoints.get(k).getZ();
