@@ -276,21 +276,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 		 */  
 
 
-		//	    CompanionCube c1 = new CompanionCube(player.locationX,  0,  player.locationZ, 1.5);
-		//		CompanionCube c1 = new CompanionCube(103,  0,  53, 1.5);
-		//	    lifeforms.add(c1);
-		//	    CompanionCube c2 = new CompanionCube(103,  0,  72, 1.5);
-		//		lifeforms.add(c2);
-		//		 CompanionCube c3 = new CompanionCube(83,  0,  72, 1.5);
-		//		lifeforms.add(c3);
-
 		SchuifMuur SM = new SchuifMuur(5,5,maze);
 		visibleObjects.add(SM);
 
 		CompanionCube(4,1.5);
 
-		//	    Peter peter = new Peter(player.locationX, 0, player.locationZ);
-		//	    lifeforms.add(peter);
+//			    Peter peter = new Peter(player.locationX, 0, player.locationZ);
+//			    lifeforms.add(peter);
 
 		coordT = Maze.CoordTrap(Maze.maze);
 		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
