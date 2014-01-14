@@ -11,7 +11,6 @@ import javax.swing.JFrame;
 
 import MenuButtons.Button;
 import MenuButtons.Knop;
-import movingobjects.Beer;
 import movingobjects.CompanionCube;
 import movingobjects.CustomMazeObject;
 import movingobjects.Lifeform;
