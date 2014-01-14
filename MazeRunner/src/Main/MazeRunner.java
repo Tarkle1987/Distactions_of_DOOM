@@ -18,6 +18,7 @@ import movingobjects.Lifeform;
 import movingobjects.MazeObject;
 import movingobjects.Peter;
 import movingobjects.Projectile;
+import movingobjects.Randy;
 import movingobjects.Smart;
 import movingobjects.Smarto;
 import movingobjects.Smartw;
@@ -84,6 +85,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private ArrayList<Projectile> projectiles;
 	private ArrayList<Lifeform> lifeforms;
 	private ArrayList<Sound> SoundPeter = new ArrayList<Sound>();
+	private ArrayList<Sound> SoundRandy = new ArrayList<Sound>();
 	private Player player; // The player object.
 	private Camera camera; // The camera object.
 	private UserInput input; // The user input object that controls the player.
@@ -106,7 +108,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private boolean loading = true;
 
 	private boolean textrue = true;
-
+	private boolean GOtrue = true;
+	private boolean Eindtrue = true;
 
 	private Score score;
 	private boolean calculatescore = false;
@@ -139,6 +142,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private byte[] HighScore = Image.loadImage("HighScore.png");
 	private byte[] HighScoreClick = Image.loadImage("HighScoreClick.png");
 	private byte[] HighScoreHover = Image.loadImage("HighScoreHover.png");
+	
+	private Sound GameOverSound = new Sound("birddood.wav");
+	private Sound GameWonSound = new Sound("win.wav");
 
 
 
@@ -384,12 +390,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 							}
 						}
 
-						Peter P = new Peter(X, 0, Z);
-						lifeforms.add(P);
-						Sound Ps = new Sound("bird1.wav");
-						SoundPeter.add(Ps);
-						SoundPeter.get(count).playloop();
-						SoundPeter.get(count).setGain(-70);
+						Randy R = new Randy(X, 0, Z);
+						lifeforms.add(R);
+						Sound Rs = new Sound("randy.wav");
+						SoundRandy.add(Rs);
+						SoundRandy.get(count).playloop();
+						SoundRandy.get(count).setGain(-70);
 						count = count + 1;
 						
 					}
@@ -472,6 +478,21 @@ public class MazeRunner extends Frame implements GLEventListener {
 				pet.Buckle.addTexture(maze.frame);
 			}
 		}
+		
+		for (int i = 0; i < lifeforms.size();i++){
+			if(lifeforms.get(i) instanceof Randy){
+				Randy ran = (Randy)lifeforms.get(i);
+				ran.Lichaam.addTexture(maze.lichaam);
+				ran.Haar.addTexture(maze.rhaar);
+				ran.Gitaar.addTexture(maze.guitar);
+				ran.Ogen.addTexture(maze.Wit);
+				ran.Onderbroek.addTexture(maze.onderbroek);
+				ran.Band.addTexture(maze.frame);
+				ran.Binnenkant.addTexture(maze.binnenkant);
+				ran.Schoenen.addTexture(maze.rschoenen);
+				ran.Pupil.addTexture(maze.frame);
+			}
+		}
 
 	}
 	
@@ -540,7 +561,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 		//Is player at endpoint?
 		if(end)
 		{
-			
+			if (Eindtrue){
+				StopPeterRandySound();
+				GameWonSound.playloop();
+				Eindtrue = false;
+			}
 			this.setCursor(Cursor.getDefaultCursor());
 			input.pauze = true;
 			input.waspauzed = true;
@@ -549,6 +574,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		if(GameOver)
 		{
+			if(GOtrue){
+				GameOverSound.playloop();
+				GOtrue = false;
+			}
 			this.setCursor(Cursor.getDefaultCursor());
 			input.pauze = true;
 			GameOverScherm(drawable);
@@ -614,6 +643,24 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * updateMovement(int) updates the position of all objects that need moving.
 	 * This includes rudimentary collision checking and collision reaction.
 	 */
+	private void StopPeterRandySound(){
+		for(int i = 0; i<SoundPeter.size();i++){
+			SoundPeter.get(i).stop();
+		}
+		for(int i = 0; i<SoundRandy.size();i++){
+			SoundRandy.get(i).stop();
+		}
+	}
+	
+	private void StartPeterRandySound(){
+		for(int i = 0; i<SoundPeter.size();i++){
+			SoundPeter.get(i).playloop();
+		}
+		for(int i = 0; i<SoundRandy.size();i++){
+			SoundRandy.get(i).playloop();
+		}
+	}
+	
 	private void updateMovement(int deltaTime) {
 		player.update(deltaTime, maze);
 		/*
@@ -732,17 +779,28 @@ public class MazeRunner extends Frame implements GLEventListener {
 				}
 			}
 		}
-		int soundint = 0;
+		int soundintp = 0;
 		for(int i = 0; i<lifeforms.size();i++){
 			if(lifeforms.get(i) instanceof Peter){
 				Peter pet = (Peter)lifeforms.get(i);
 				double dX = pet.locationX - player.locationX;
 				double dZ = pet.locationZ - player.locationZ;
 				double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
-				SoundPeter.get(soundint).setGain((float)(-2*dLength));
-				soundint = soundint+1;
+				SoundPeter.get(soundintp).setGain((float)(-2*dLength));
+				soundintp = soundintp+1;
 			}
-				
+		}
+		
+		int soundintr = 0;
+		for(int i = 0; i<lifeforms.size();i++){
+			if(lifeforms.get(i) instanceof Randy){
+				Randy ran = (Randy)lifeforms.get(i);
+				double dX = ran.locationX - player.locationX;
+				double dZ = ran.locationZ - player.locationZ;
+				double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
+				SoundRandy.get(soundintr).setGain((float)(-2*dLength));
+				soundintr = soundintp+1;
+			}
 		}
 		// If the player is at the endpoint, the games stops, in display wordt bepaald wat er getoon wordt.
 		if(maze.convertToGridX(player.locationX) == endx && maze.convertToGridZ(player.locationZ) == endz){
@@ -836,7 +894,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private void GameOverScherm(GLAutoDrawable drawable){
 		GL gl = drawable.getGL();
-
+		StopPeterRandySound();
 		switchTo2D(drawable);
 
 		Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, gameOver);
@@ -945,6 +1003,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.waspauzed = true;
 		if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
 			dispose();
+			GameWonSound.stop();
 			new Menu();
 		}
 
@@ -1179,7 +1238,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private void ButtonExit(){
 		dispose();   // exit MazeRunner
-
+		GameOverSound.stop();
 		new Menu();  // start Menu
 	}
 
