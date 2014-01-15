@@ -2,10 +2,18 @@ package Routeplanner;
 
 import java.util.ArrayList;
 
-
+/**
+ * This class recognizes all crosspoints in the maze, with their pattern.
+ * @author Paul de Goffau
+ *
+ */
 public class PatternCheck 
 {
 	ArrayList<Vertex> crosspoints = new ArrayList<Vertex>();
+	/**
+	 * Constructs a list of crosspoints, with the right pattern
+	 * @param maze the currentmaze, submaze(verdieping)
+	 */
 	public PatternCheck(int[][] maze)
 	{
 		for(int x = 1; x < maze.length; x++)
@@ -58,13 +66,22 @@ public class PatternCheck
 				}
 			}
 	}
-	
+	/**
+	 * Getter for the list of crosspoints
+	 * @return a list of crosspoints(List of Vertices)
+	 */
 	public ArrayList<Vertex> getCrossPoints()
 	{
 		return this.crosspoints;
 	}
-
-	private boolean patternA(int x, int z, int[][] maze) {
+/**
+ * Recognizes a crosspoint with his specific pattern.
+ * @param x X-index of the currentmaze
+ * @param z Z-index of the currentmaze
+ * @param maze the currentmaze(verdieping)
+ * @return true if this position is a crosspoint, with this specific pattern.
+ */
+	protected boolean patternA(int x, int z, int[][] maze) {
 		// 101 
 		// 000
 		// 101
@@ -84,8 +101,14 @@ public class PatternCheck
 		else
 			return false;
 	}	
-
-	private boolean patternB(int x, int z, int[][] maze)
+	/**
+	 * Recognizes a crosspoint with his specific pattern.
+	 * @param x X-index of the currentmaze
+	 * @param z Z-index of the currentmaze
+	 * @param maze the currentmaze(verdieping)
+	 * @return true if this position is a crosspoint, with this specific pattern.
+	 */
+	protected boolean patternB(int x, int z, int[][] maze)
 	{
 		// X1X 
 		// 100
@@ -102,7 +125,14 @@ public class PatternCheck
 		else
 			return false;
 	}
-	private boolean patternC(int x, int z, int[][] maze)
+	/**
+	 * Recognizes a crosspoint with his specific pattern.
+	 * @param x X-index of the currentmaze
+	 * @param z Z-index of the currentmaze
+	 * @param maze the currentmaze(verdieping)
+	 * @return true if this position is a crosspoint, with this specific pattern.
+	 */
+	protected boolean patternC(int x, int z, int[][] maze)
 	{
 		// X1X 
 		// 001
@@ -118,7 +148,14 @@ public class PatternCheck
 		else
 			return false;
 	}
-	private boolean patternD(int x, int z, int[][] maze)
+	/**
+	 * Recognizes a crosspoint with his specific pattern.
+	 * @param x X-index of the currentmaze
+	 * @param z Z-index of the currentmaze
+	 * @param maze the currentmaze(verdieping)
+	 * @return true if this position is a crosspoint, with this specific pattern.
+	 */
+	protected boolean patternD(int x, int z, int[][] maze)
 	{
 		// X0X 
 		// 001
@@ -135,7 +172,14 @@ public class PatternCheck
 		else
 			return false;
 	}
-	private boolean patternE(int x, int z,int[][] maze)
+	/**
+	 * Recognizes a crosspoint with his specific pattern.
+	 * @param x X-index of the currentmaze
+	 * @param z Z-index of the currentmaze
+	 * @param maze the currentmaze(verdieping)
+	 * @return true if this position is a crosspoint, with this specific pattern.
+	 */
+	protected boolean patternE(int x, int z,int[][] maze)
 	{
 		// X0X 
 		// 100
@@ -151,7 +195,14 @@ public class PatternCheck
 		else
 			return false;
 	}
-	private boolean patternF(int x, int z, int[][] maze)
+	/**
+	 * Recognizes a crosspoint with his specific pattern.
+	 * @param x X-index of the currentmaze
+	 * @param z Z-index of the currentmaze
+	 * @param maze the currentmaze(verdieping)
+	 * @return true if this position is a crosspoint, with this specific pattern.
+	 */
+	protected boolean patternF(int x, int z, int[][] maze)
 	{
 		// X0X 
 		// 100
@@ -168,7 +219,14 @@ public class PatternCheck
 		else
 			return false;
 	}
-	private boolean patternG(int x, int z, int[][] maze)
+	/**
+	 * Recognizes a crosspoint with his specific pattern.
+	 * @param x X-index of the currentmaze
+	 * @param z Z-index of the currentmaze
+	 * @param maze the currentmaze(verdieping)
+	 * @return true if this position is a crosspoint, with this specific pattern.
+	 */
+	protected boolean patternG(int x, int z, int[][] maze)
 	{
 		// X0X 
 		// 001
@@ -184,7 +242,14 @@ public class PatternCheck
 		else
 			return false;
 	}
-	private boolean patternH(int x, int z, int[][] maze)
+	/**
+	 * Recognizes a crosspoint with his specific pattern.
+	 * @param x X-index of the currentmaze
+	 * @param z Z-index of the currentmaze
+	 * @param maze the currentmaze(verdieping)
+	 * @return true if this position is a crosspoint, with this specific pattern.
+	 */
+	protected boolean patternH(int x, int z, int[][] maze)
 	{
 		// X1X 
 		// 000
@@ -201,7 +266,14 @@ public class PatternCheck
 		else
 			return false;
 	}
-	private boolean patternI(int x, int z, int[][] maze)
+	/**
+	 * Recognizes a crosspoint with his specific pattern.
+	 * @param x X-index of the currentmaze
+	 * @param z Z-index of the currentmaze
+	 * @param maze the currentmaze(verdieping)
+	 * @return true if this position is a crosspoint, with this specific pattern.
+	 */
+	protected boolean patternI(int x, int z, int[][] maze)
 	{
 		// X0X 
 		// 000

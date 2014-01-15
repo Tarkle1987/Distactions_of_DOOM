@@ -1,6 +1,10 @@
 package Routeplanner;
 
-
+/**
+ * This class represents a position(in 2D)
+ * @author Paul de Goffau
+ *
+ */
 public class Tile 
 {
 	private double xpos;
