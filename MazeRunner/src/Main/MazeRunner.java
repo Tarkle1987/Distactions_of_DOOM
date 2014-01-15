@@ -150,11 +150,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 
 
-
 	/*
 	 * **********************************************
 	 * * Initialization methods * **********************************************
 	/*
+	 * 
+	 */
 	/**
 	 * Initializes the complete MazeRunner game.
 	 * <p>
@@ -164,6 +165,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * proper settings to accurately display MazeRunner. Finally, it adds itself
 	 * as the OpenGL event listener, to be able to function as the view
 	 * controller.
+	 * 
+	 * @param difficulty setting for how hard the game is
 	 */
 	public MazeRunner(int difficulty) {
 		// Make a new window.
@@ -297,9 +300,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		CompanionCube(numberOfEnemies,1.5, 1);
 
-//			    Peter peter = new Peter(player.locationX, 0, player.locationZ);
-//			    lifeforms.add(peter);
-
 		coordT = Maze.CoordTrap(Maze.maze);
 		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
 		Trap tr2 = new Trap((float) coordT[2], (float) coordT[3]);
@@ -348,7 +348,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * It is <b>very important</b> to realize that there should be no drawing at
 	 * all in this method.
 	 */
-
+	/**
+	 * Creates and places enemies on the current level
+	 * 
+	 * @param num amount of enemies
+	 * @param size size of enemies
+	 * @param level level to place enemies
+	 */
 	public void CompanionCube(int num, double size, int level) {
 		System.out.println("enemies op level: " + level);
 		
@@ -455,7 +461,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 
 	}
-
+	/**
+	 * Adds textures to objects and enemies in maze
+	 * @param gl GL to load textures to
+	 */
 	private void textureAdd(GL gl) {
 		for (int i = 0; i < visibleObjects.size(); i++) {
 
@@ -511,6 +520,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * visibleObject, this method calls the object's display(GL) function, which
 	 * specifies how that object should be drawn. The object is passed a
 	 * reference of the GL context, so it knows where to draw.
+	 * also determines if a projectile (book) is thrown and displays it and displays the appropriate screen when at the end of the game or dead
 	 */
 	public void display(GLAutoDrawable drawable) {
 		input.thisX = this.getX();
@@ -645,8 +655,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 
 	/**
-	 * updateMovement(int) updates the position of all objects that need moving.
-	 * This includes rudimentary collision checking and collision reaction.
+	 * Stops the enemies sounds
 	 */
 	private void StopPeterRandySound(){
 		for(int i = 0; i<SoundPeter.size();i++){
@@ -656,7 +665,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 			SoundRandy.get(i).stop();
 		}
 	}
-	
+	/**
+	 * Starts the enemies sounds
+	 */
 	private void StartPeterRandySound(){
 		for(int i = 0; i<SoundPeter.size();i++){
 			SoundPeter.get(i).playloop();
@@ -665,7 +676,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 			SoundRandy.get(i).playloop();
 		}
 	}
-	
+	/**
+	 * updateMovement(int) updates the position of all objects that need moving.
+	 * This includes rudimentary collision checking and collision reaction.
+	 */
 	private void updateMovement(int deltaTime) {
 		player.update(deltaTime, maze);
 		/*

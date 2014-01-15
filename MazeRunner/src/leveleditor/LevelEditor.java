@@ -45,15 +45,15 @@ import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
 
 /**
- * A frame for us to draw on using OpenGL.
+ *
  * 
- * @author 
+ * @author Lennard 
  * 
  */
 public class LevelEditor implements GLEventListener, MouseListener {
 	static final long serialVersionUID = 1;
 
-	// Screen size.
+
 	public  int screenWidth = 1210;
 	public int Width = 1210;
 
@@ -85,8 +85,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	private byte[] background = Image.loadImage("achtergrond.png");
 
 	protected Texture muurText, floorText, smartText, trapText, trapopText;
-	// A GLCanvas is a component that can be added to a frame. The drawing
-	// happens on this component.
+	
 	private GLCanvas canvas;
 
 	private static final byte DM_VLOER = 0;
@@ -104,8 +103,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	public boolean dispose = false;
 
 	/**
-	 * When instantiating, a GLCanvas is added for us to play with. An animator
-	 * is created to continuously render the canvas.
+	 * Constructor for the leveleditor that also makes default mazes
+	 * 
+	 * @param that menu from which the leveleditor is drawn
 	 */
 	public LevelEditor(final Menu that) {
 		//		super("MinorProject");
@@ -144,48 +144,19 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		Mazeconf[20][1]=4;
 		points = new ArrayList<Point2D.Float>();
 
-		// Set the desired size and background color of the frame
 		that.setSize(screenWidth, screenHeight);
-		//setBackground(Color.white);
 		that.setBackground(new Color(0.95f, 0.95f, 0.95f));
 
-		// When the "X" close button is called, the application should exit.
+	
 		that.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				that.dispose();
 			}
 		});
-
-		// The OpenGL capabilities should be set before initializing the
-		// GLCanvas. We use double buffering and hardware acceleration.
-		//		GLCapabilities caps = new GLCapabilities();
-		//		caps.setDoubleBuffered(true);
-		//		caps.setHardwareAccelerated(true);
-		//
-		//		// Create a GLCanvas with the specified capabilities and add it to this
-		//		// frame. Now, we have a canvas to draw on using JOGL.
-		//		canvas = new GLCanvas(caps);
-		//		add(canvas);
-		//
-		//		// Set the canvas' GL event listener to be this class. Doing so gives
-		//		// this class control over what is rendered on the GL canvas.
-		//		canvas.addGLEventListener(this);
-		//
-		//		// Also add this class as mouse listener, allowing this class to react
-		//		// to mouse events that happen inside the GLCanvas.
-		//		canvas.addMouseListener(this);
-		//
-		//		// An Animator is a JOGL help class that can be used to make sure our
-		//		// GLCanvas is continuously being re-rendered. The animator is run on a
-		//		// separate thread from the main thread.
-		//		Animator anim = new Animator(canvas);
-		//		anim.start();
-		//
-		//		// With everything set up, the frame can now be displayed to the user.
-		//		setVisible(true);
-
 	}
-
+	/**
+	 * Drawing vertical lines of default maze
+	 */
 	private void drawVertical1(){
 		for (int k = 2; k<Mazeconf.length-2;k++){
 			Mazeconf[k][2]=1;
@@ -219,7 +190,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			Mazeconf[k][19]=1;
 		}
 	}
-
+	/**
+	 * Drawing horizontal lines of default maze
+	 */
 	private void drawHorizontal1(){
 		for (int j = 3;j<Mazeconf.length-2;j++){
 			Mazeconf[19][j]=1;
@@ -266,7 +239,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		Mazeconf[4][19]=1;
 
 	}
-
+	/**
+	 * Drawing vertical lines of default maze2
+	 */
 	private void drawVertical2(){
 		for (int k = 2; k<Mazeconf2.length-2;k++){
 			Mazeconf2[k][2]=1;
@@ -300,7 +275,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			Mazeconf2[k][19]=1;
 		}
 	}
-
+	/**
+	 * Drawing horizontal lines of default maze2
+	 */
 	private void drawHorizontal2(){
 		for (int j = 3;j<Mazeconf2.length-2;j++){
 			Mazeconf2[19][j]=1;
@@ -347,7 +324,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		Mazeconf2[4][19]=1;
 
 	}
-
+	/**
+	 * Drawing vertical lines of default maze3
+	 */
 	private void drawVertical3(){
 		for (int k = 2; k<Mazeconf3.length-2;k++){
 			Mazeconf3[k][2]=1;
@@ -381,7 +360,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			Mazeconf3[k][19]=1;
 		}
 	}
-
+	/**
+	 * Drawing horizontal lines of default maze3
+	 */
 	private void drawHorizontal3(){
 		for (int j = 3;j<Mazeconf3.length-2;j++){
 			Mazeconf3[19][j]=1;
@@ -495,7 +476,14 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		gl.glFlush();
 
 	}
-
+	/**
+	 * Function to draw text on GL canvas
+	 * 
+	 * @param gl Graphics Library
+	 * @param text text to be printed
+	 * @param x x position of the text
+	 * @param y y position of the text
+	 */
 	private void drawText(GL gl, String text, int x, int y)
 	{
 		int length = text.length();
@@ -507,7 +495,11 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_12, text.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
 		}
 	}
-
+	/**
+	 * Draws the maze arrays on the canvas using images
+	 * 
+	 * @param gl Graphics Library
+	 */
 	private void drawMaze(GL gl){
 		for (int i = 1; i<Mazeconf.length-1;i++){
 			for (int j = 1;j<Mazeconf.length-1;j++){
@@ -643,7 +635,11 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		//		boxOnScreen(gl, (10)*unit, (10)*unit+1, unit);
 	}
 
-
+	/**
+	 * Draws a raster over the images of the mazes
+	 * 
+	 * @param gl Graphics Library
+	 */
 	private void drawRaster(GL gl){
 		gl.glColor3f(0f, 0f, 0f);
 		gl.glLineWidth(1);
@@ -667,9 +663,9 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		}
 	}
 	/**
-	 * A method that draws the top left buttons on the screen.
+	 * Draws all the buttons for the different content and options
 	 * 
-	 * @param gl
+	 * @param gl Graphic Library
 	 */
 	private void drawButtons(GL gl) {
 		// Editor boxes
@@ -735,35 +731,74 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		//				2*buttonSize + 0.5f*buttonSize, screenHeight - 8.0f);
 	}
 
-
+	/**
+	 * Determines of certain position in maze is the beginning of game
+	 * 
+	 * @param X x coordinate of position to check
+	 * @param Y y coordinate of position to check
+	 * @return
+	 */
 	private boolean isBegin(int X, int Y){
 		return (Mazeconf[Mazeconf.length-Y-2][Mazeconf.length-X-2]==4);
 	}
-
+	/**
+	 * Determines of certain position in maze is the end of game
+	 * 
+	 * @param X x coordinate of position to check
+	 * @param Y y coordinate of position to check
+	 * @return
+	 */
 	private boolean isEind(int X, int Y){
 		return (Mazeconf3[Mazeconf3.length-Y-2][Mazeconf3.length-X-2]==5);
 	}
-
-	private boolean isEindTrap(int X, int Y){
-		return (Mazeconf[Mazeconf.length-Y-2][Mazeconf3.length-X-2]==6);
-	}
+	/**
+	 * Determines of certain position in maze2 is a stairs down
+	 * 
+	 * @param X x coordinate of position to check
+	 * @param Y y coordinate of position to check
+	 * @return
+	 */
 
 	private boolean isEindTrap2(int X, int Y){
 		return (Mazeconf2[Mazeconf2.length-Y-2][Mazeconf2.length-X-2]==6);
 	}
-
+	/**
+	 * Determines of certain position in maze3 is a stairs down
+	 * 
+	 * @param X x coordinate of position to check
+	 * @param Y y coordinate of position to check
+	 * @return
+	 */
 	private boolean isEindTrap3(int X, int Y){
 		return (Mazeconf3[Mazeconf3.length-Y-2][Mazeconf3.length-X-2]==6);
 	}
-
+	/**
+	 * Determines of certain position in maze is a stairs up
+	 * 
+	 * @param X x coordinate of position to check
+	 * @param Y y coordinate of position to check
+	 * @return
+	 */
 	private boolean isTrap(int X, int Y){
 		return (Mazeconf[Mazeconf.length-Y-2][Mazeconf3.length-X-2]==2);
 	}
-
+	/**
+	 * Determines of certain position in maze2 is a stairs up
+	 * 
+	 * @param X x coordinate of position to check
+	 * @param Y y coordinate of position to check
+	 * @return
+	 */
 	private boolean isTrap2(int X, int Y){
 		return (Mazeconf2[Mazeconf2.length-Y-2][Mazeconf2.length-X-2]==2);
 	}
-
+	/**
+	 * determines if certain integer is in maze and returns if so
+	 * an integer array with [1,x pos, y pos] or [0,0,0] if not
+	 * 
+	 * @param v integer to check
+	 * @return integer array with [1,x pos, y pos] or zeros of not in maze
+	 */
 	private int[] bevat(int v){
 
 		int contains = 0, i1 = 0, j1 = 0;
@@ -776,7 +811,13 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		}
 		return new int[] {contains, i1, j1};
 	}
-
+	/**
+	 * determines if certain integer is in maze2 and returns if so
+	 * an integer array with [1,x pos, y pos] or [0,0,0] if not
+	 * 
+	 * @param v integer to check
+	 * @return integer array with [1,x pos, y pos] or zeros of not in maze
+	 */
 	private int[] bevat2(int v){
 
 		int contains = 0, i1 = 0, j1 = 0;
@@ -789,7 +830,14 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		}
 		return new int[] {contains, i1, j1};
 	}
-
+	
+	/**
+	 * determines if certain integer is in maze3 and returns if so
+	 * an integer array with [1,x pos, y pos] or [0,0,0] if not
+	 * 
+	 * @param v integer to check
+	 * @return integer array with [1,x pos, y pos] or zeros of not in maze
+	 */
 	private int[] bevat3(int v){
 
 		int contains = 0, i1 = 0, j1 = 0;
@@ -803,10 +851,10 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		return new int[] {contains, i1, j1};
 	}
 	/**
-	 * A method that draws a figure, when the user has inputted enough points
-	 * for the current draw mode.
+	 * Depending on the Drawmode active, this method fills one of the spaces in the
+	 * maze array with the integer corresponding to this DrawMode
 	 * 
-	 * @param gl
+	 * @param gl Graphics Library
 	 */
 	private void drawFigure(GL gl) {
 		// Set line and point size, and set color to black.
@@ -1082,7 +1130,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 
 	@Override
 	/**
-	 * A function defined in MouseListener. Is called when the pointer is in the GLCanvas, and a mouse button is released.
+	 * Function that determines what happens when a button is pressed with the mouse
 	 */
 	public void mouseReleased(MouseEvent me) {
 		// Check if the coordinates correspond to any of the top left buttons
@@ -1196,12 +1244,20 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		// Not needed.
 
 	}
-	//JFrame for Saving
+	
+	/**
+	 * JFrame class for saving the constructed maze
+	 * 
+	 * @author Tark
+	 *
+	 */
 	public class SaveWin extends JFrame{
 		private JButton submit1;
 		private JTextField Savename;
 		private JLabel SN;
-
+		/**
+		 * constructor for Jframe
+		 */
 		public SaveWin(){
 			Container pane = this.getContentPane();
 			BoxLayout layout = new BoxLayout(pane,BoxLayout.Y_AXIS);
@@ -1216,6 +1272,11 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			eventsub1 s1 = new eventsub1();
 			submit1.addActionListener(s1);
 		}
+		/**
+		 * Class that determines what happens when the submit button is pressed (saving the maze into file)
+		 * @author Tark
+		 *
+		 */
 		public class eventsub1 implements ActionListener {
 			public void actionPerformed(ActionEvent s1){
 				String naamtemp = Savename.getText();

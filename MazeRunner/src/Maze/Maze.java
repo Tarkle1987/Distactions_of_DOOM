@@ -85,7 +85,7 @@ public class Maze implements VisibleObject {
 	/**
 	 * isWall(int x, int z) checks for a wall.
 	 * <p>
-	 * It returns whether maze[x][z] contains a 1.
+	 * It returns whether maze[x][z] contains a 1,7 or 2.
 	 * 
 	 * @param x		the x-coordinate of the location to check
 	 * @param z		the z-coordinate of the location to check
@@ -105,7 +105,15 @@ public class Maze implements VisibleObject {
 		return iswall;
 		
 	}
-	
+	/**
+	 * setWall(int x, int z) checks for a wall.
+	 * <p>
+	 * It returns whether maze[x][z] contains a 1.
+	 * 
+	 * @param x		the x-coordinate of the location to check
+	 * @param z		the z-coordinate of the location to check
+	 * @return		whether there is a wall at maze[x][z]
+	 */
 	public boolean setWall( int x, int z){
 		boolean iswall = false;
 		
@@ -119,21 +127,35 @@ public class Maze implements VisibleObject {
 		return iswall;
 	}
 	
-	
+	/**
+	 * Determines if maze[x][z] contains a 5
+	 * 
+	 * @param x the x-coordinate of the location to check
+	 * @param z the z-coordinate of the location to check
+	 * @return whether there is an end at maze[x][z]
+	 */
 	public boolean isEind(int x, int z){
 		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE )
 			return maze[x][z] == 5;
 		else
 			return false;
 	}
-	
+	/**
+	 * Determines if maze[x][z] contains a 4
+	 * 
+	 * @param x the x-coordinate of the location to check
+	 * @param z the z-coordinate of the location to check
+	 * @return whether there is an begin at maze[x][z]
+	 */
 	public boolean isBegin(int x, int z){
 		if( x >= 0 && x < MAZE_SIZE && z >= 0 && z < MAZE_SIZE )
 			return maze[x][z] == 4;
 		else
 			return false;
 	}
-	
+	/**
+	 * Fills a 2d array with random numbers between 0 and 14 for applying walltextures randomly
+	 */
 	public static void fillTextMuur(){
 		for (int i =0;i<44;i++){
 			for (int j = 0; j<44; j++){
@@ -157,7 +179,9 @@ public class Maze implements VisibleObject {
 		return 15;
 	}
 	
-	
+	/**
+	 * Method that loads all textures from image files
+	 */
 	public void textures(){
 		try{
 			InputStream stream = getClass().getResourceAsStream("Deur.jpg");
@@ -427,7 +451,10 @@ public class Maze implements VisibleObject {
 			System.exit(0);
 		}
 	}
-	
+	/**
+	 * Sets maze arrays from container temp to active level
+	 * @param temp Mazes class containing maze arrays
+	 */
 	public static void setMaze(Mazes temp) {
 		for (int i = 0; i<22;i++){
 			for (int j = 0;j<22;j++){
@@ -468,27 +495,58 @@ public class Maze implements VisibleObject {
 		int gZ = convertToGridZ( z );
 		return isWall( gX, gZ );
 	}
-	
+	/**
+	 * setWall(double x, double z) checks for a wall by converting the double values to integer coordinates.
+	 * <p>
+	 * This method first converts the x and z to values that correspond with the grid 
+	 * defined by maze[][]. Then it calls upon isWall(int, int) to check for a wall.
+	 * 
+	 * @param x		the x-coordinate of the location to check
+	 * @param z		the z-coordinate of the location to check
+	 * @return		whether there is a wall at maze[x][z]
+	 */
 	public boolean setWall(double x, double z){
 		int gX = convertToGridX(x);
 		int gZ = convertToGridZ(z);
 		return setWall(gX,gZ);
 	}
-	
+	/**
+	 * isEind(double x, double z) checks for an end by converting the double values to integer coordinates.
+	 * <p>
+	 * This method first converts the x and z to values that correspond with the grid 
+	 * defined by maze[][]. Then it calls upon isEind(int, int) to check for an end.
+	 * 
+	 * @param x		the x-coordinate of the location to check
+	 * @param z		the z-coordinate of the location to check
+	 * @return		whether there is a wall at maze[x][z]
+	 */
 	public boolean isEind( double x, double z )
 	{
 		int gX = convertToGridX( x );
 		int gZ = convertToGridZ( z );
 		return isEind( gX, gZ );
 	}
-	
+	/**
+	 * isBegin(double x, double z) checks for an end by converting the double values to integer coordinates.
+	 * <p>
+	 * This method first converts the x and z to values that correspond with the grid 
+	 * defined by maze[][]. Then it calls upon isBegin(int, int) to check for a Begin.
+	 * 
+	 * @param x		the x-coordinate of the location to check
+	 * @param z		the z-coordinate of the location to check
+	 * @return		whether there is a wall at maze[x][z]
+	 */
 	public boolean isBegin( double x, double z )
 	{
 		int gX = convertToGridX( x );
 		int gZ = convertToGridZ( z );
 		return isBegin( gX, gZ );
 	}
-	
+	/**
+	 * Searches for the x and z coordinates of stairs in Maze array and returns them in an array
+	 * @param Maze Int Array to check
+	 * @return Int array with [x1,z1,x2,z2]
+	 */
 	public static int[] CoordTrap(int[][] Maze){
 		int[] res = new int[4];
 		int count = 0;
@@ -503,7 +561,11 @@ public class Maze implements VisibleObject {
 		}
 		return res;
 	}
-	
+	/**
+	 * Searches for the x and z coordinates of stairs down in Maze array and returns them in an array
+	 * @param Maze Int Array to check
+	 * @return Int array with [x1,z1,x2,z2]
+	 */
 	public static int[] CoordTrapaf(int[][] Maze){
 		int[] res = new int[4];
 		int count = 0;
@@ -518,7 +580,11 @@ public class Maze implements VisibleObject {
 		}
 		return res;
 	}
-	
+	/**
+	 * Searches for the x and z coordinates of smartdrugs in Maze array and returns them in an array
+	 * @param Maze Int Array to check
+	 * @return Int array with [x1,z1,x2,z2,.....]
+	 */
 	public static int[] CoordSmart(int[][] Maze){
 		int aantal = 0;
 		for (int i = 0; i<Maze.length; i++){
@@ -542,6 +608,12 @@ public class Maze implements VisibleObject {
 		}
 		return res;
 	}
+	
+	/**
+	 * Searches for the x and z coordinates of Sliding door in Maze array and returns them in an array
+	 * @param Maze Int Array to check
+	 * @return Int array with [x1,z1,x2,z2,.....]
+	 */
 	public static int[] CoordSchuifMuur(int[][] Maze){
 		int aantal = 0;
 		for (int i = 0; i<Maze.length; i++){
@@ -575,6 +647,11 @@ public class Maze implements VisibleObject {
 	{
 		return (int)Math.floor( x / SQUARE_SIZE );
 	}
+	/**
+	 * Converts the integer x-coordinate to its correspondent double coordinate.
+	 * @param x		the integer x-coordinate
+	 * @return		the double x-coordinate
+	 */
 	public double convertFromGridX( int x ){
 		return x * SQUARE_SIZE;
 	}
@@ -588,10 +665,17 @@ public class Maze implements VisibleObject {
 	{
 		return (int)Math.floor( z / SQUARE_SIZE );
 	}
+	/**
+	 * Converts the integer Z-coordinate to its correspondent double coordinate.
+	 * @param z		the integer Z-coordinate
+	 * @return		the double Z-coordinate
+	 */
 	public double convertFromGridZ( int z ){
 		return z*SQUARE_SIZE;
 	}
-	
+	/**
+	 * FUnction that displays the maze
+	 */
 	public void display(GL gl) {
 		
 		GLUT glut = new GLUT();
@@ -609,10 +693,9 @@ public class Maze implements VisibleObject {
 	}
 	
 	/**
-	 * paintSingleFloorTile(GL, double) paints a single floor tile, to represent the floor of the entire maze.
+	 * paintWall places and randomly texturizes the walls in the maze
 	 * 
 	 * @param gl	the GL context in which should be drawn
-	 * @param size	the size of the tile
 	 */
 	private void paintWall(GL gl)
 	{
@@ -834,7 +917,7 @@ public class Maze implements VisibleObject {
 		}
 	}
 	/**
-	 * paintSingleFloorTile(GL, double) paints a single floor tile, to represent the floor of the entire maze.
+	 * paintSingleFloorTile(GL, double) paints a floor with texturized tiles.
 	 * 
 	 * @param gl	the GL context in which should be drawn
 	 * @param size	the size of the tile
@@ -877,17 +960,14 @@ public class Maze implements VisibleObject {
 			}
 		}
 	}
+	/**
+	 * paintSingleRoofTile(GL, double) paints a Roof with texturized tiles.
+	 * 
+	 * @param gl	the GL context in which should be drawn
+	 * @param size	the size of the Rooftile
+	 */
 	private void paintSingleRoofTile(GL gl, double size,double height)
 	{
-        // Setting the floor color and material.
-       
-//        gl.glNormal3d(0, 1, 0);
-//		gl.glBegin(GL.GL_QUADS);
-//	        gl.glVertex3d(size, height, 0);	
-//	        gl.glVertex3d(size, height, size);
-//	        gl.glVertex3d(0, height, size);
-//	        gl.glVertex3d(0, height, 0);
-//		gl.glEnd();	
 		
 		float wallColour[] = { 0.0f, 0.0f, 0.0f, 0.0f };				// The floor is blue.
 	    gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, wallColour, 0);	// Set the materials used by the floor.

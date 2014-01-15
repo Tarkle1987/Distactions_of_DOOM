@@ -11,7 +11,11 @@ import Maze.Maze;
 import NotDefined.Sound;
 import Player.Player;
 import Routeplanner.Tile;
-
+/**
+ * Class to load and display Stairs up
+ * @author Tark
+ *
+ */
 
 public class Trap implements VisibleObject{
 	public MazeObject Kaft1,Kaft2,Kaft3,Papier;
@@ -23,7 +27,11 @@ public class Trap implements VisibleObject{
 	
 	private double dLmax;
 	public boolean inrange = false;
-	
+	/**
+	 * Constructor that places a stairs at x,z
+	 * @param x x position to place stairs
+	 * @param z z position to place stairs
+	 */
 	public Trap(float x, float z) {
 		
 		locationX = (double) x;
@@ -75,15 +83,23 @@ public class Trap implements VisibleObject{
 //		bron.setReferenceDistance(20);
 	
 	}
-	
+	/**
+	 * 
+	 * @return returns x location of stairs
+	 */
 	public double getLocationX(){
 		return locationX;
 	}
-	
+	/**
+	 * 
+	 * @return returns z location of stairs
+	 */
 	public double getLocationZ(){
 		return locationZ;
 	}
-	
+	/**
+	 * Displays objects creating stairs
+	 */
 	@Override
 	public void display(GL gl) {
 		// TODO Auto-generated method stu
@@ -98,7 +114,9 @@ public class Trap implements VisibleObject{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/**
+	 * Update function which determines if a player is transported or not 
+	 */
 	@Override
 	public void update(int deltaTime, Maze maze,
 			ArrayList<VisibleObject> visibleObjects, Player player) {

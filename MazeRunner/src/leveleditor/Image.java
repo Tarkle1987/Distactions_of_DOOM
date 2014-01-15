@@ -15,9 +15,20 @@ import java.nio.ByteBuffer;
 import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
 
+/**
+ * 
+ * @author Lennard
+ *
+ */
 
 public class Image 
 {
+	/**
+	 * Saves image file as Byte Array
+	 * 
+	 * @param filename Full name of the file to be loaded ad byte Array
+	 * @return returns a byte array of the chosen image
+	 */
 	public static byte[] loadImage(String filename){
 		BufferedImage image = null;
 		byte[] imgRGBA = null;
@@ -57,7 +68,16 @@ public class Image
         g.dispose();
         return imgRGBA;
 	}
-	
+	/**
+	 * Draws image on OpenGL canvas
+	 * 
+	 * @param gl OpenGL Graphics library
+	 * @param posx X-position to draw image
+	 * @param posy	y-position to draw image
+	 * @param width width of the image in pixels
+	 * @param height height of the image in pixels
+	 * @param img Byte array to be drawn as image
+	 */
 	public static void drawImage(GL gl, int posx, int posy, int width,int height, byte[] img){
 		gl.glRasterPos2i(posx, posy );
     	gl.glDrawPixels(width, height, 

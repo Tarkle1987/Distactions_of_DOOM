@@ -13,7 +13,11 @@ import Maze.Maze;
 import Player.Player;
 import Routeplanner.Tile;
 import movingobjects.VisibleObject;
-
+/**
+ * Class to load and display Stairs down
+ * @author Tark
+ *
+ */
 
 public class Trapaf implements VisibleObject{
 	public boolean transport = false;
@@ -23,17 +27,27 @@ public class Trapaf implements VisibleObject{
 	
 	private double dLmax;
 	public boolean inrange = false;
-	
+	/**
+	 * Constructor that places a stairs down at x,z
+	 * @param x x position to place stairs
+	 * @param z z position to place stairs
+	 */
 	public Trapaf(float x, float z) {
 		dLmax = (double) size;
 		locationX = (double) x;
 		locationZ = (double) z;
 	}
-	
+	/**
+	 * 
+	 * @return returns x location of stairs down
+	 */
 	public double getLocationX(){
 		return locationX;
 	}
-	
+	/**
+	 * 
+	 * @return returns z location of stairs down
+	 */
 	public double getLocationZ(){
 		return locationZ;
 	}
@@ -46,7 +60,9 @@ public class Trapaf implements VisibleObject{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/**
+	 * Update function which determines if a player is transported or not 
+	 */
 	@Override
 	public void update(int deltaTime, Maze maze,
 			ArrayList<VisibleObject> visibleObjects, Player player) {
