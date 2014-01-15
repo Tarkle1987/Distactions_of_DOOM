@@ -356,6 +356,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		System.out.println("enemies op level: " + level);
 		
 		lifeforms = new ArrayList<Lifeform>();
+		
 		SoundPeter.clear();
 		SoundRandy.clear();
 		

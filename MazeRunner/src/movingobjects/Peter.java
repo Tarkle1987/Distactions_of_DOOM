@@ -151,7 +151,7 @@ public class Peter extends CompanionCube {
 		Glas.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
 		Buckle.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
 		
-		float dRotate = (float)dR;
+		float dRotate = -(float)dR;
 		
 		Lichaam.rotateVerticesZ( dRotate, 1, 1);
 		Haar.rotateVerticesZ( dRotate, 1, 1);
