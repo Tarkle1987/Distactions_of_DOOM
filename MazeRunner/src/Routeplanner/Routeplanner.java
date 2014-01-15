@@ -50,7 +50,7 @@ public class Routeplanner
 	{
 		if(inTheSameMaze(maze, objectTile,targetTile))
 		{
-			int[][] currentMaze = new int[22][22];
+			int[][] currentMaze = new int[23][23];
 			//Opdelen van de 'grote' maze:
 			currentMaze = createMaze(maze,objectTile);
 			//Zoek alle kruispunten in de nieuwe maze, en verbindt deze aan elkaar:
@@ -289,7 +289,7 @@ public class Routeplanner
  * @return
  */
 	private static int[][] createMaze(Maze maze, Tile objectTile) {
-		int[][] currentMaze = new int[22][22];
+		int[][] currentMaze = new int[23][23];
 		if(maze.convertToGridX(objectTile.getX())>= 0 && 
 				maze.convertToGridX(objectTile.getX()) < 23 
 				&& maze.convertToGridZ(objectTile.getZ()) > 0 &&
@@ -458,7 +458,7 @@ public class Routeplanner
 			else
 				break up;
 		}
-		down: for(int m = X; m < 23; m++)
+		down: for(int m = X; m < 22; m++)
 		{
 			if(currentMaze[m][Z] != 1)
 			{
@@ -490,7 +490,7 @@ public class Routeplanner
 			else
 				break left;
 		}
-		right :for(int m = Z; m <23; m++)
+		right :for(int m = Z; m <22; m++)
 		{
 			if(currentMaze[X][m] != 1)
 			{
@@ -566,7 +566,7 @@ public class Routeplanner
 			else
 				break up;
 		}
-		down: for(int m = X; m < 23; m++)
+		down: for(int m = X; m < 22; m++)
 		{
 			if(currentMaze[m][Z] != 1)
 			{
@@ -604,7 +604,7 @@ public class Routeplanner
 			else
 				break left;
 		}
-		right :for(int m = Z; m <23; m++)
+		right :for(int m = Z; m <22; m++)
 		{
 			if(currentMaze[X][m] != 1)
 			{

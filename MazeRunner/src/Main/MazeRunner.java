@@ -247,6 +247,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * <ul>
 	 * <li>the default Maze
 	 * <li>the Player
+	 * <li>the Enemies(Peter)
 	 * <li>the Camera
 	 * <li>the User input
 	 * </ul>
@@ -293,10 +294,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		 * Start positions for the game objects. Be aware: for the player the start position must two times be set..
 
 		 */  
-
-
-		SchuifMuur SM = new SchuifMuur(5,5,maze);
-		visibleObjects.add(SM);
 
 		CompanionCube(numberOfEnemies,1.5, 1);
 

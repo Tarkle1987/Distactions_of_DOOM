@@ -81,7 +81,7 @@ public class PatternCheck
  * @param maze the currentmaze(verdieping)
  * @return true if this position is a crosspoint, with this specific pattern.
  */
-	private boolean patternA(int x, int z, int[][] maze) {
+	protected boolean patternA(int x, int z, int[][] maze) {
 		// 101 
 		// 000
 		// 101
@@ -108,7 +108,7 @@ public class PatternCheck
 	 * @param maze the currentmaze(verdieping)
 	 * @return true if this position is a crosspoint, with this specific pattern.
 	 */
-	private boolean patternB(int x, int z, int[][] maze)
+	protected boolean patternB(int x, int z, int[][] maze)
 	{
 		// X1X 
 		// 100
@@ -132,7 +132,7 @@ public class PatternCheck
 	 * @param maze the currentmaze(verdieping)
 	 * @return true if this position is a crosspoint, with this specific pattern.
 	 */
-	private boolean patternC(int x, int z, int[][] maze)
+	protected boolean patternC(int x, int z, int[][] maze)
 	{
 		// X1X 
 		// 001
@@ -155,7 +155,7 @@ public class PatternCheck
 	 * @param maze the currentmaze(verdieping)
 	 * @return true if this position is a crosspoint, with this specific pattern.
 	 */
-	private boolean patternD(int x, int z, int[][] maze)
+	protected boolean patternD(int x, int z, int[][] maze)
 	{
 		// X0X 
 		// 001
@@ -179,7 +179,7 @@ public class PatternCheck
 	 * @param maze the currentmaze(verdieping)
 	 * @return true if this position is a crosspoint, with this specific pattern.
 	 */
-	private boolean patternE(int x, int z,int[][] maze)
+	protected boolean patternE(int x, int z,int[][] maze)
 	{
 		// X0X 
 		// 100
@@ -202,7 +202,7 @@ public class PatternCheck
 	 * @param maze the currentmaze(verdieping)
 	 * @return true if this position is a crosspoint, with this specific pattern.
 	 */
-	private boolean patternF(int x, int z, int[][] maze)
+	protected boolean patternF(int x, int z, int[][] maze)
 	{
 		// X0X 
 		// 100
@@ -226,7 +226,7 @@ public class PatternCheck
 	 * @param maze the currentmaze(verdieping)
 	 * @return true if this position is a crosspoint, with this specific pattern.
 	 */
-	private boolean patternG(int x, int z, int[][] maze)
+	protected boolean patternG(int x, int z, int[][] maze)
 	{
 		// X0X 
 		// 001
@@ -249,7 +249,7 @@ public class PatternCheck
 	 * @param maze the currentmaze(verdieping)
 	 * @return true if this position is a crosspoint, with this specific pattern.
 	 */
-	private boolean patternH(int x, int z, int[][] maze)
+	protected boolean patternH(int x, int z, int[][] maze)
 	{
 		// X1X 
 		// 000
@@ -273,7 +273,7 @@ public class PatternCheck
 	 * @param maze the currentmaze(verdieping)
 	 * @return true if this position is a crosspoint, with this specific pattern.
 	 */
-	private boolean patternI(int x, int z, int[][] maze)
+	protected boolean patternI(int x, int z, int[][] maze)
 	{
 		// X0X 
 		// 000
