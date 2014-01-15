@@ -62,7 +62,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	
 	private int Difficulty = 1;
 	
-	private Sound bird = new Sound("bird.wav");
+	private Sound intro = new Sound("intro.wav");
 	
 
 	// A GLCanvas is a component that can be added to a frame. The drawing
@@ -94,7 +94,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	public Menu() {
 		super("Menu");
 
-
+		intro.playloop();
 
 		// Set the desired size and background color of the frame
 		setSize(screenWidth, screenHeight);
@@ -532,6 +532,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 					for (int i = 0; i<temp.getArray().size(); i++){
 						if (temp.getMazes(i).getNaam().equals(stemp)){
 							Maze.setMaze(temp.getMazes(i));
+							intro.stop();
 							dispose();
 							status = true;
 							new MazeRunner(Difficulty);

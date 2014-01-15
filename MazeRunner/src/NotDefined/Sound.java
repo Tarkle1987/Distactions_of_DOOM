@@ -39,6 +39,10 @@ public class Sound {
 		this.thisClip().loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
+	public void stop(){
+		this.thisClip().stop();
+	}
+	
 	public Clip thisClip(){
 		return clip;
 	}
