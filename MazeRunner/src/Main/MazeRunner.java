@@ -356,7 +356,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		System.out.println("enemies op level: " + level);
 		
 		lifeforms = new ArrayList<Lifeform>();
-		SoundPeter = new ArrayList<Sound>();
+		SoundPeter.clear();
+		SoundRandy.clear();
 		
 		int j,k,count = 0;
 	
@@ -578,7 +579,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		{
 			if (Eindtrue){
 				StopPeterRandySound();
-				GameWonSound.playloop();
+				
 				Eindtrue = false;
 			}
 			this.setCursor(Cursor.getDefaultCursor());
@@ -962,10 +963,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 		{	
 			
 			if(calculatescore){
+			GameWonSound.playloop();
 			int TimeInSeconds = clock.minutes*60 + clock.seconds;
 			score = new Score();
 			score.calculateNewScore(player.hp, TimeInSeconds);
 			calculatescore = false;
+			
 			}
 			score.drawScore(gl, screenWidth, screenHeight);
 
@@ -995,6 +998,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				submit = true;
 				calculatescore = true;
 			}else if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
+				GameWonSound.stop();
 				ButtonExit();
 			}
 			input.mouseReleasedUsed();
@@ -1026,8 +1030,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		switchTo3D(drawable);
 		input.waspauzed = true;
 		if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
-			dispose();
 			GameWonSound.stop();
+			dispose();
+			
 			new Menu();
 		}
 

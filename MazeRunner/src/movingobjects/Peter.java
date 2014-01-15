@@ -129,7 +129,7 @@ public class Peter extends CompanionCube {
 
 
 		// kubus roteerd naar de player
-		oldangle = angle;
+	
 		dR = 0;
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);

@@ -19,7 +19,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 	private double speed;
 	protected double angle;
 	protected double newangle;
-	protected double oldangle;
 	private double anglespeed;
 	protected double dR;
 
@@ -58,7 +57,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 		speed = 0.005;
 		angle = 0;
 		newangle = angle;
-		oldangle = 0;
 		anglespeed = 0.1;
 		
 	}
@@ -391,7 +389,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 		CubeMove(deltaTime, maze, X,Z);
 
 		// kubus roteerd naar de player
-		oldangle = angle;
 		dR = 0;
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);

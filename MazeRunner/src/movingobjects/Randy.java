@@ -2,6 +2,8 @@ package movingobjects;
 
 import javax.media.opengl.GL;
 
+import com.sun.opengl.util.GLUT;
+
 import Maze.Maze;
 import Player.Player;
 
@@ -22,47 +24,47 @@ public class Randy extends CompanionCube {
 		
 		Lichaam = CustomMazeObject.readFromOBJ("RLichaam.obj", multi);
 		Lichaam.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Lichaam.rotateVerticesZ(-90, 1, 1);
+	
 		Lichaam.addColour("roze");
 		
 		Haar = CustomMazeObject.readFromOBJ("RHaar.obj", multi);
 		Haar.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Haar.rotateVerticesZ(-90, 1, 1);
+
 		Haar.addColour("bruin");
 		
 		Gitaar = CustomMazeObject.readFromOBJ("RGitaar.obj", multi);
 		Gitaar.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Gitaar.rotateVerticesZ(-90, 1, 1);
+
 		Gitaar.addColour("zwart");
 		
 		Ogen = CustomMazeObject.readFromOBJ("ROgen.obj", multi);
 		Ogen.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Ogen.rotateVerticesZ(-90, 1, 1);
+
 		Ogen.addColour("wit");
 		
 		Onderbroek = CustomMazeObject.readFromOBJ("ROnderbroek.obj", multi);
 		Onderbroek.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Onderbroek.rotateVerticesZ(-90, 1, 1);
+
 		Onderbroek.addColour("wit");
 		
 		Band = CustomMazeObject.readFromOBJ("RBand.obj", multi);
 		Band.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Band.rotateVerticesZ(-90, 1, 1);
+
 		Band.addColour("zwart");
 		
 		Binnenkant = CustomMazeObject.readFromOBJ("RBinnenkant.obj", multi);
 		Binnenkant.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Binnenkant.rotateVerticesZ(-90, 1, 1);
+
 		Binnenkant.addColour("wit");
 		
 		Schoenen = CustomMazeObject.readFromOBJ("RSchoenen.obj", multi);
 		Schoenen.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Schoenen.rotateVerticesZ(-90, 1, 1);
+
 		Schoenen.addColour("bruin");
 		
 		Pupil = CustomMazeObject.readFromOBJ("RPupil.obj", multi);
 		Pupil.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Pupil.rotateVerticesZ(-90, 1, 1);
+
 		Pupil.addColour("geel");
 		
 	}
@@ -72,6 +74,24 @@ public class Randy extends CompanionCube {
 	}
 	
 	public void display(GL gl){
+		GLUT glut = new GLUT();		
+		float[] CubeColor = { 0.1333f, 0.545f, 0.1333f, 1f };
+
+		gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, CubeColor, 0);
+
+		gl.glPushMatrix();
+		gl.glTranslated(locationX,locationY,locationZ);
+		gl.glRotated(angle, 0,1,0);
+		glut.glutSolidCube( (float) size);
+		gl.glPopMatrix();
+		
+		gl.glPushMatrix();
+		gl.glTranslated(locationX,locationY + size,locationZ);
+		gl.glRotated(angle, 0,1,0);
+		glut.glutSolidCube( (float) size);
+		gl.glPopMatrix();
+		
+		
 		Lichaam.display(gl);
 		Haar.display(gl);
 		Gitaar.display(gl);
@@ -101,6 +121,7 @@ public class Randy extends CompanionCube {
 		CubeMove(deltaTime, maze, X,Z);
 
 		// kubus roteerd naar de player
+		dR = 0;
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
@@ -118,6 +139,19 @@ public class Randy extends CompanionCube {
 		Binnenkant.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
 		Schoenen.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
 		Pupil.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
+		
+		float dRotate = (float)dR;
+		
+		Lichaam.rotateVerticesZ( dRotate, 1, 1);
+		Haar.rotateVerticesZ( dRotate, 1, 1);
+		Gitaar.rotateVerticesZ( dRotate, 1, 1);
+		Ogen.rotateVerticesZ( dRotate, 1, 1);
+		Onderbroek.rotateVerticesZ( dRotate, 1, 1);
+		Band.rotateVerticesZ( dRotate, 1, 1);
+		Binnenkant.rotateVerticesZ( dRotate, 1, 1);
+		Schoenen.rotateVerticesZ( dRotate, 1, 1);
+		Pupil.rotateVerticesZ( dRotate, 1, 1);
+	
 	}
 	
 	
