@@ -19,7 +19,9 @@ public class CompanionCube extends GameObject implements Lifeform {
 	private double speed;
 	protected double angle;
 	protected double newangle;
+	protected double oldangle;
 	private double anglespeed;
+	protected double dR;
 
 
 	// Follow player attributes
@@ -56,6 +58,7 @@ public class CompanionCube extends GameObject implements Lifeform {
 		speed = 0.005;
 		angle = 0;
 		newangle = angle;
+		oldangle = 0;
 		anglespeed = 0.1;
 		
 	}
@@ -280,7 +283,8 @@ public class CompanionCube extends GameObject implements Lifeform {
 
 	protected void CubeRotate(int deltaTime){
 		// trying to let the cube turn to the player
-
+	
+		
 		// Vector van de speler bepalen ten opzichte van de kubus
 		double dx = this.sightX;
 		double dz = this.sightZ;
@@ -304,28 +308,36 @@ public class CompanionCube extends GameObject implements Lifeform {
 
 			if((angle - newangle) < -180){
 				angle = angle - anglespeed*deltaTime;
+				dR = dR - anglespeed*deltaTime;
 			}else{
 				angle = angle + anglespeed*deltaTime;
+				dR = dR + anglespeed*deltaTime;
 			}
 
 			if(angle > 180)
 				angle = angle - 360;
+				dR = dR - 360;
 			if(angle < -180)
 				angle = angle + 360;
+				dR = dR + 360;
 		}
 		if(angle > newangle){
 
 
 			if((angle - newangle) > 180){
 				angle = angle + anglespeed*deltaTime;
+				dR = dR + anglespeed*deltaTime;
 			}else{
 				angle = angle - anglespeed*deltaTime;
+				dR = dR - anglespeed*deltaTime;
 			}
 
 			if(angle > 180)
 				angle = angle - 360;
+				dR = dR - 360;
 			if(angle < -180)
 				angle = angle + 360;
+				dR = dR + 360;
 		}
 
 	}
@@ -379,6 +391,8 @@ public class CompanionCube extends GameObject implements Lifeform {
 		CubeMove(deltaTime, maze, X,Z);
 
 		// kubus roteerd naar de player
+		oldangle = angle;
+		dR = 0;
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);

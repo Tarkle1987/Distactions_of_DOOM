@@ -2,6 +2,8 @@ package movingobjects;
 
 import javax.media.opengl.GL;
 
+import com.sun.opengl.util.GLUT;
+
 import Maze.Maze;
 import Player.Player;
 
@@ -9,17 +11,18 @@ import Player.Player;
 public class Peter extends CompanionCube {
 
 	private MazeObject Peter;
-	public MazeObject Lichaam, Haar, Frame, Ogen, Shirt, Riem, Broek, Schoenen, Bier, Glas,Buckle;
+	public MazeObject Lichaam, Haar, Frame, Ogen, Shirt, Riem, Broek, Schoenen, Bier, Glas,Buckle, Pet;
 	
 	
 	public Peter(double x, double y, double z) {
 		super(x, y, z, 1.5);
 		
-		float multi = (float) 1.6;
+		float multi = (float) 1.5;
 		
-//		Peter = CustomMazeObject.readFromOBJ("Peter.obj", (float)0.01);
-//		Peter.setCor((float)(locationX), (float)(locationZ), (float)(locationY));
-		
+//		Pet = CustomMazeObject.readFromOBJ("Peter.obj", multi);
+//		Pet.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
+//		Pet.addColour("roze");
+//		
 		Lichaam = CustomMazeObject.readFromOBJ("PeterLichaam.obj", multi);
 		Lichaam.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
 		Lichaam.rotateVerticesZ(-90, 1, 1);
@@ -77,7 +80,7 @@ public class Peter extends CompanionCube {
 		Glas = CustomMazeObject.readFromOBJ("Glas.obj", multi);
 		Glas.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
 		Glas.rotateVerticesZ(-90, 1, 1);
-		Glas.rotateVerticesZ(1, angle, 1);
+
 		Glas.addColour("wit");
 		
 		Buckle = CustomMazeObject.readFromOBJ("Buckle.obj", multi);
@@ -104,6 +107,7 @@ public class Peter extends CompanionCube {
 		Bier.display(gl);
 		Glas.display(gl);
 		Buckle.display(gl);
+
 	}
 	public void update(int deltaTime, Maze maze, Player player){
 		playerhit = false;
@@ -123,7 +127,10 @@ public class Peter extends CompanionCube {
 		// Bewegen van kubus naar player / door player
 		CubeMove(deltaTime, maze, X,Z);
 
+
 		// kubus roteerd naar de player
+		oldangle = angle;
+		dR = 0;
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
@@ -131,17 +138,36 @@ public class Peter extends CompanionCube {
 		}
 		
 //		Peter.setCor((float)locationX, (float)locationZ, (float)locationY);
+
+		Lichaam.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Haar.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Frame.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Ogen.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Shirt.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Riem.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Broek.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Schoenen.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Bier.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Glas.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		Buckle.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+		
+		float dRotate = (float)dR;
+		
+		Lichaam.rotateVerticesZ( dRotate, 1, 1);
+		Haar.rotateVerticesZ( dRotate, 1, 1);
+		Frame.rotateVerticesZ( dRotate, 1, 1);
+		Ogen.rotateVerticesZ( dRotate, 1, 1);
+		Shirt.rotateVerticesZ( dRotate, 1, 1);
+		Riem.rotateVerticesZ( dRotate, 1, 1);
+		Broek.rotateVerticesZ( dRotate, 1, 1);
+		Schoenen.rotateVerticesZ( dRotate, 1, 1);
+		Bier.rotateVerticesZ( dRotate, 1, 1);
+		Glas.rotateVerticesZ( dRotate, 1, 1);
+		Buckle.rotateVerticesZ( dRotate, 1, 1);
+		
 	
-		Lichaam.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Haar.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Frame.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Ogen.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Shirt.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Riem.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Broek.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Schoenen.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Bier.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
-		Glas.setCor((float)locationX, (float)locationZ, (float)(locationY-0.8));
+		
+
 	}
 	
 	

@@ -475,6 +475,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				pet.Bier.addTexture(maze.bier);
 				pet.Glas.addTexture(maze.glas);
 				pet.Buckle.addTexture(maze.frame);
+				
 			}
 		}
 
@@ -492,6 +493,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * reference of the GL context, so it knows where to draw.
 	 */
 	public void display(GLAutoDrawable drawable) {
+		System.out.println(player.locationX + ", " + player.locationZ);
+		
 		input.thisX = this.getX();
 		input.thisY = this.getY();
 

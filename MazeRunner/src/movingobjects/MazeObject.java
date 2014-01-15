@@ -36,6 +36,7 @@ public abstract class MazeObject implements VisibleObject{
 		vertices = new ArrayList<Vector3f>();
 		normals = new ArrayList<Vector3f>();
 		faces = new ArrayList<int[]>();
+		
 	}
 	
 	/**
@@ -240,8 +241,8 @@ public abstract class MazeObject implements VisibleObject{
 			float x = vert[0];
 			float y = vert[1];
 			float z = vert[2];
-			double cos = Math.cos(Math.toRadians(angle));
-			double sin = Math.sin(Math.toRadians(angle));
+			double cos = Math.cos(Math.toRadians(-angle));
+			double sin = Math.sin(Math.toRadians(-angle));
 			vert[0] = ((float)(x*cos - z * sin - xRotate * cos + yRotate * sin + xRotate));
 			vert[2] = ((float)(x*sin + z * cos - yRotate * cos - xRotate * sin + yRotate));
 						
