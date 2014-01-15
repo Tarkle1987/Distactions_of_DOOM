@@ -350,8 +350,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		System.out.println("enemies op level: " + level);
 		
 		lifeforms = new ArrayList<Lifeform>();
-		SoundPeter = new ArrayList<Sound>();
-		
+		SoundPeter.clear();
+		SoundRandy.clear();
 		int j,k,count = 0;
 	
 		if(level == 3){
@@ -391,7 +391,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 								GO = false;
 							}
 						}
-
 						Randy R = new Randy(X, 0, Z);
 						lifeforms.add(R);
 						Sound Rs = new Sound("randy.wav");
@@ -693,7 +692,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.setLocationX(maze.convertFromGridX(coordTa[0])+0.5*maze.SQUARE_SIZE);
 						player.setLocationZ(maze.convertFromGridZ(coordTa[1])+0.5*maze.SQUARE_SIZE);
 						tr.transport = false;
-						
+						StopPeterRandySound();
 						CompanionCube(numberOfEnemies,1.5,3);
 					}
 					else{
@@ -702,6 +701,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.setLocationX(maze.convertFromGridX(coordTa[2])+0.5*maze.SQUARE_SIZE);
 						player.setLocationZ(maze.convertFromGridZ(coordTa[3])+0.5*maze.SQUARE_SIZE);
 						tr.transport = false;
+						StopPeterRandySound();
 						CompanionCube(numberOfEnemies,1.5,2);
 					}
 				}
@@ -714,12 +714,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.setLocationX(maze.convertFromGridX(coordTo[0])+0.5*maze.SQUARE_SIZE);
 						player.setLocationZ(maze.convertFromGridZ(coordTo[1])+0.5*maze.SQUARE_SIZE);
 						tra.transport = false;
+						StopPeterRandySound();
 						CompanionCube(numberOfEnemies,1.5,1);
 					}
 					else{
 						player.setLocationX(maze.convertFromGridX(coordTo[2])+0.5*maze.SQUARE_SIZE);
 						player.setLocationZ(maze.convertFromGridZ(coordTo[3])+0.5*maze.SQUARE_SIZE);
 						tra.transport = false;
+						StopPeterRandySound();
 						CompanionCube(numberOfEnemies,1.5,2);
 					}
 				}

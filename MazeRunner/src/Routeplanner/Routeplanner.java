@@ -288,7 +288,7 @@ public class Routeplanner
  * @param objectTile
  * @return
  */
-	private static int[][] createMaze(Maze maze, Tile objectTile) {
+	protected static int[][] createMaze(Maze maze, Tile objectTile) {
 		int[][] currentMaze = new int[23][23];
 		if(maze.convertToGridX(objectTile.getX())>= 0 && 
 				maze.convertToGridX(objectTile.getX()) < 23 
@@ -351,7 +351,7 @@ public class Routeplanner
 	 * @param objectTile the position of the object
 	 * @return the index of the crosspoint where the object is
 	 */
-	private static int getCross(Maze maze, Vertex[] vertices,Tile objectTile)
+	protected static int getCross(Maze maze, Vertex[] vertices,Tile objectTile)
 	{
 		int Xs = maze.convertToGridX(objectTile.getX());
 		int Zs = maze.convertToGridZ(objectTile.getZ());
@@ -371,7 +371,7 @@ public class Routeplanner
 	 * @param objectTile the position of the object
 	 * @return true if the object is at a crosspoint
 	 */
-	private boolean atCrosspoint(Maze maze, Vertex[] vertices,Tile objectTile)
+	protected boolean atCrosspoint(Maze maze, Vertex[] vertices,Tile objectTile)
 	{
 		int Xs = maze.convertToGridX(objectTile.getX());
 		int Xf = maze.convertToGridX(objectTile.getX() + this.range);
@@ -412,7 +412,7 @@ public class Routeplanner
 	 * @param objectTile the position of the object
 	 * @return the list of crosspoints
 	 */
-	private static ArrayList<Vertex> closestCrosspoint(Maze maze, int[][] currentMaze ,Vertex[] vertices,Tile objectTile) {
+	protected static ArrayList<Vertex> closestCrosspoint(Maze maze, int[][] currentMaze ,Vertex[] vertices,Tile objectTile) {
 
 		Vertex closestCrosspoint = new Vertex(new Tile(100,100), "not existing");
 		int X = maze.convertToGridX(objectTile.getX());
@@ -518,7 +518,7 @@ public class Routeplanner
 	 * @param objectTile the position of the object
 	 * @return A list of distances from the object to the crosspoints
 	 */
-	private static ArrayList<Double> distanceToCrosspoints(Maze maze, int[][] currentMaze, Vertex[] vertices, Tile objectTile)
+	protected static ArrayList<Double> distanceToCrosspoints(Maze maze, int[][] currentMaze, Vertex[] vertices, Tile objectTile)
 	{
 		int X = maze.convertToGridX(objectTile.getX());
 		int Z = maze.convertToGridZ(objectTile.getZ());
@@ -633,7 +633,7 @@ public class Routeplanner
 	 * @param targetTile
 	 * @return true if in the same maze
 	 */
-	private boolean inTheSameMaze(Maze maze, Tile objectTile, Tile targetTile) {
+	protected boolean inTheSameMaze(Maze maze, Tile objectTile, Tile targetTile) {
 		int Xs = maze.convertToGridX(objectTile.getX());
 		int Xt = maze.convertToGridX(targetTile.getX());
 		int Zs = maze.convertToGridZ(objectTile.getZ());
@@ -647,7 +647,7 @@ public class Routeplanner
 	 * @param edge
 	 * @return An Edge[] that contains valid connections
 	 */
-	public static Edge[] addExtraAdjacencie(Edge[] adjacencies, Edge edge)
+	protected static Edge[] addExtraAdjacencie(Edge[] adjacencies, Edge edge)
 	{
 		Edge[] newAdjacencies;
 		if(!edge.target.pattern.equals("Not exist"))

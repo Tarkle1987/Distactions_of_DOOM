@@ -59,6 +59,13 @@ public class Maze implements VisibleObject {
 	public static int[][] maze = new int[44][44];
 	private static int[][] textswitchArray = new int[44][44];
 	
+	/**
+	 * Constructor, only needed for the Unit test for Routeplanner
+	 * @param maze
+	 */
+	public Maze(){
+	}
+	
 //	{{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 //	{1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
 //	{1, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1 },
