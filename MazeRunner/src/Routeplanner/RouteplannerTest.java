@@ -94,9 +94,9 @@ public class RouteplannerTest {
 	public void atCrosspoint(){
 		Maze maze = new Maze();
 		maze.maze = testMaze;
-		Routeplanner Rp = new Routeplanner(-0.7);
+		Routeplanner Rp = new Routeplanner(1.5);
 		double m = maze.SQUARE_SIZE;
-		Tile object = new Tile(m,m);
+		Tile object = new Tile(1.5*m,1.5*m);
 		int[][] subtestmaze = Routeplanner.createMaze(maze, object);
 		Rp.init(subtestmaze);
 		System.out.println(Rp.vertices[0].toString() + " " + maze.convertToGridX(m)); 
