@@ -19,6 +19,7 @@ public class Routeplanner
 	Vertex[] vertices;
 	double size;
 	double range;
+	List<Vertex> path = null;
 
 	public Routeplanner(double size) 
 	{
@@ -91,7 +92,6 @@ public class Routeplanner
 				double min = Double.MAX_VALUE;
 				int bestTar = 0;
 				double totalDistance = 0.0;
-				List<Vertex> path = null;
 				Vertex next = null;
 				for(int k =0; k < closestCrosspointsObject.size(); k++)
 				{
