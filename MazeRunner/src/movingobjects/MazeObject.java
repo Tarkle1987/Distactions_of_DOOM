@@ -36,6 +36,7 @@ public abstract class MazeObject implements VisibleObject{
 		vertices = new ArrayList<Vector3f>();
 		normals = new ArrayList<Vector3f>();
 		faces = new ArrayList<int[]>();
+		
 	}
 	
 	/**

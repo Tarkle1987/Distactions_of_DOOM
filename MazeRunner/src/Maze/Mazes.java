@@ -6,22 +6,39 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Scanner;
 
-
+/**
+ * Container class for storing and loading mazes
+ * @author Tark
+ *
+ */
 public class Mazes {
 	private int[][] mz,mz2,mz3;
 	private String nm;
-	
+	/**
+	 * Constuctor for storing mazes
+	 * @param m Int array for maze 1
+	 * @param m2 Int array for maze 1
+	 * @param m3 Int array for maze 1
+	 * @param naam name of level collection
+	 */
 	public Mazes(int[][] m,int[][] m2,int[][] m3, String naam){
 		mz = m;
 		mz2 = m2;
 		mz3 = m3;
 		nm = naam;
 	}
-	
+	/**
+	 * 
+	 * @return name of collection
+	 */
 	public String getNaam(){
 		return nm;
 	}
-	
+	/**
+	 * 
+	 * @param l index of Array to be returned
+	 * @return returns selected maze
+	 */
 	public int[][] getArray(int l){
 		int[][] res = new int[22][22];
 		if (l==1){
@@ -35,7 +52,10 @@ public class Mazes {
 			}
 		return res;
 	}
-	
+	/**
+	 * converts Mazes container to String
+	 * @return String representation of Mazes
+	 */
 	public String ToString(){
 		String res = this.nm + " " + this.mz.length+"\n";
 		for (int i = 0; i<this.mz.length; i++){
@@ -66,7 +86,11 @@ public class Mazes {
 		}
 		return res;
 	}
-	
+	/**
+	 * Reads Mazes from scanner
+	 * @param sc scanner to read from
+	 * @return Mazes container read from scanner
+	 */
 	public static Mazes read(Scanner sc){
 		Mazes res = null;
 		String naam = sc.next();
@@ -98,7 +122,10 @@ public class Mazes {
 		return res;
 	}
 	
-
+	/**
+	 * adds mazes container to file
+	 * @param Outfile file to write to
+	 */
 	public void addtofile(String Outfile){
 		Mazescont MC1 = Mazescont.read(Outfile);
 		int aantal = MC1.getArray().size();

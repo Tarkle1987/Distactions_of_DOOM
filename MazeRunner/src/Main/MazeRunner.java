@@ -150,11 +150,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 
 
-
 	/*
 	 * **********************************************
 	 * * Initialization methods * **********************************************
 	/*
+	 * 
+	 */
 	/**
 	 * Initializes the complete MazeRunner game.
 	 * <p>
@@ -164,6 +165,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * proper settings to accurately display MazeRunner. Finally, it adds itself
 	 * as the OpenGL event listener, to be able to function as the view
 	 * controller.
+	 * 
+	 * @param difficulty setting for how hard the game is
 	 */
 	public MazeRunner(int difficulty) {
 		// Make a new window.
@@ -294,9 +297,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		CompanionCube(numberOfEnemies,1.5, 1);
 
-//			    Peter peter = new Peter(player.locationX, 0, player.locationZ);
-//			    lifeforms.add(peter);
-
 		coordT = Maze.CoordTrap(Maze.maze);
 		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
 		Trap tr2 = new Trap((float) coordT[2], (float) coordT[3]);
@@ -345,13 +345,20 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * It is <b>very important</b> to realize that there should be no drawing at
 	 * all in this method.
 	 */
-
+	/**
+	 * Creates and places enemies on the current level
+	 * 
+	 * @param num amount of enemies
+	 * @param size size of enemies
+	 * @param level level to place enemies
+	 */
 	public void CompanionCube(int num, double size, int level) {
 		System.out.println("enemies op level: " + level);
 		
 		lifeforms = new ArrayList<Lifeform>();
 		SoundPeter.clear();
 		SoundRandy.clear();
+
 		int j,k,count = 0;
 	
 		if(level == 3){
@@ -451,7 +458,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}
 
 	}
-
+	/**
+	 * Adds textures to objects and enemies in maze
+	 * @param gl GL to load textures to
+	 */
 	private void textureAdd(GL gl) {
 		for (int i = 0; i < visibleObjects.size(); i++) {
 
@@ -477,6 +487,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				pet.Bier.addTexture(maze.bier);
 				pet.Glas.addTexture(maze.glas);
 				pet.Buckle.addTexture(maze.frame);
+				
 			}
 		}
 		
@@ -507,8 +518,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * visibleObject, this method calls the object's display(GL) function, which
 	 * specifies how that object should be drawn. The object is passed a
 	 * reference of the GL context, so it knows where to draw.
+	 * also determines if a projectile (book) is thrown and displays it and displays the appropriate screen when at the end of the game or dead
 	 */
 	public void display(GLAutoDrawable drawable) {
+		System.out.println(player.locationX + ", " + player.locationZ);
+		
 		input.thisX = this.getX();
 		input.thisY = this.getY();
 
@@ -564,7 +578,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		{
 			if (Eindtrue){
 				StopPeterRandySound();
-				GameWonSound.playloop();
+				
 				Eindtrue = false;
 			}
 			this.setCursor(Cursor.getDefaultCursor());
@@ -641,8 +655,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 
 	/**
-	 * updateMovement(int) updates the position of all objects that need moving.
-	 * This includes rudimentary collision checking and collision reaction.
+	 * Stops the enemies sounds
 	 */
 	private void StopPeterRandySound(){
 		for(int i = 0; i<SoundPeter.size();i++){
@@ -652,7 +665,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 			SoundRandy.get(i).stop();
 		}
 	}
-	
+	/**
+	 * Starts the enemies sounds
+	 */
 	private void StartPeterRandySound(){
 		for(int i = 0; i<SoundPeter.size();i++){
 			SoundPeter.get(i).playloop();
@@ -661,7 +676,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 			SoundRandy.get(i).playloop();
 		}
 	}
-	
+	/**
+	 * updateMovement(int) updates the position of all objects that need moving.
+	 * This includes rudimentary collision checking and collision reaction.
+	 */
 	private void updateMovement(int deltaTime) {
 		player.update(deltaTime, maze);
 		/*
@@ -947,10 +965,12 @@ public class MazeRunner extends Frame implements GLEventListener {
 		{	
 			
 			if(calculatescore){
+			GameWonSound.playloop();
 			int TimeInSeconds = clock.minutes*60 + clock.seconds;
 			score = new Score();
 			score.calculateNewScore(player.hp, TimeInSeconds);
 			calculatescore = false;
+			
 			}
 			score.drawScore(gl, screenWidth, screenHeight);
 
@@ -980,6 +1000,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				submit = true;
 				calculatescore = true;
 			}else if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
+				GameWonSound.stop();
 				ButtonExit();
 			}
 			input.mouseReleasedUsed();
@@ -1011,8 +1032,9 @@ public class MazeRunner extends Frame implements GLEventListener {
 		switchTo3D(drawable);
 		input.waspauzed = true;
 		if(knopExit.inKnop(input.ReleaseX, input.ReleaseY) && knopExit.inKnop(input.WasPressedX, input.WasPressedY)){
-			dispose();
 			GameWonSound.stop();
+			dispose();
+			
 			new Menu();
 		}
 
@@ -1268,14 +1290,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	/*
 	 * **********************************************
-	 * * Main * **********************************************
-=======
-
-	/*
-	 * **********************************************
 	 * *				  Main						*
 	 * **********************************************
->>>>>>> cfd49c3c9a9e32f8d7e9ef9205e67e234446947f
 	 */
 	/**
 	 * Program entry point
