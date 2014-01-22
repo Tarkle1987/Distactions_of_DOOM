@@ -113,7 +113,7 @@ public class PatternCheck
 		// X1X 
 		// 100
 		// X0X 
-		if( x >= 1 && x < maze.length-1 && z >= 0 && z < maze.length-1 )
+		if( x >= 1 && x < maze.length-1 && z >= 1 && z < maze.length-1 )
 		{
 			return ((maze[x-1][z] 	==	1 	|| maze[x-1][z] ==7 	|| maze[x-1][z] ==2) && //up
 					(maze[x][z-1] 	== 	1 	|| maze[x][z-1] ==7 	|| maze[x][z-1] ==2) && // left
@@ -137,7 +137,7 @@ public class PatternCheck
 		// X1X 
 		// 001
 		// X0X 
-		if( x >= 1 && x < maze.length-1 && z >= 0 && z < maze.length-1 )
+		if( x >= 1 && x < maze.length-1 && z >= 1 && z < maze.length-1 )
 		{
 			return ((maze[x-1][z] 	==	1 	|| maze[x-1][z] ==7 	|| maze[x-1][z] ==2) && //up
 					(maze[x][z-1] 	!= 	1 	&& maze[x][z-1] !=7 	&& maze[x][z-1] !=2) && // left
@@ -160,7 +160,7 @@ public class PatternCheck
 		// X0X 
 		// 001
 		// X1X 
-		if( x >= 1 && x < maze.length-1 && z >= 0 && z < maze.length-1 )
+		if( x >= 1 && x < maze.length-1 && z >= 1 && z < maze.length-1 )
 		{
 			return (//(Maze.maze[x-1][z-1] == 1) &&  //left & up
 					(maze[x-1][z] 	!=	1 	&& maze[x-1][z] !=7 	&& maze[x-1][z] !=2) && //up
@@ -184,7 +184,7 @@ public class PatternCheck
 		// X0X 
 		// 100
 		// X1X 
-		if( x >= 1 && x < maze.length-1 && z >= 0 && z < maze.length-1 )
+		if( x >= 1 && x < maze.length-1 && z >= 1 && z < maze.length-1 )
 		{
 			return ((maze[x-1][z] 	!=	1 	&& maze[x-1][z] !=7 	&& maze[x-1][z] !=2) && //up
 					(maze[x][z-1] 	== 	1 	|| maze[x][z-1] ==7 	|| maze[x][z-1] ==2) && // left
@@ -207,7 +207,7 @@ public class PatternCheck
 		// X0X 
 		// 100
 		// X0X 
-		if( x >= 1 && x < maze.length-1 && z >= 0 && z < maze.length-1 )
+		if( x >= 1 && x < maze.length-1 && z >= 1 && z < maze.length-1 )
 		{
 			return ((maze[x-1][z] 	!=	1 	&& maze[x-1][z] !=7 	&& maze[x-1][z] !=2) && //up
 					(maze[x][z-1] 	== 	1 	|| maze[x][z-1] ==7 	|| maze[x][z-1] ==2) && // left
@@ -231,7 +231,7 @@ public class PatternCheck
 		// X0X 
 		// 001
 		// X0X 
-		if( x >= 1 && x < maze.length-1 && z >= 0 && z < maze.length-1 )
+		if( x >= 1 && x < maze.length-1 && z >= 1 && z < maze.length-1 )
 		{
 			return ((maze[x-1][z] 	!=	1 	&& maze[x-1][z] !=7 	&& maze[x-1][z] !=2) && //up
 					(maze[x][z-1] 	!= 	1 	&& maze[x][z-1] !=7 	&& maze[x][z-1] !=2) && // left
@@ -254,7 +254,7 @@ public class PatternCheck
 		// X1X 
 		// 000
 		// X0X 
-		if( x >= 1 && x < maze.length-1 && z >= 0 && z < maze.length-1 )
+		if( x >= 1 && x < maze.length-1 && z >= 1 && z < maze.length-1 )
 		{
 			return ((maze[x-1][z] 	==	1 	|| maze[x-1][z] ==7 	|| maze[x-1][z] ==2) && //up
 					(maze[x][z-1] 	!= 	1 	&& maze[x][z-1] !=7 	&& maze[x][z-1] !=2) && // left
@@ -278,7 +278,7 @@ public class PatternCheck
 		// X0X 
 		// 000
 		// X1X 
-		if( x >= 1 && x < maze.length-1 && z >= 0 && z < maze.length-1 )
+		if( x >= 1 && x < maze.length-1 && z >= 1 && z < maze.length-1 )
 		{
 			return ((maze[x-1][z] 	!=	1 	&& maze[x-1][z] !=7 	&& maze[x-1][z] !=2) && //up
 					(maze[x][z-1] 	!= 	1 	&& maze[x][z-1] !=7 	&& maze[x][z-1] !=2) && // left
