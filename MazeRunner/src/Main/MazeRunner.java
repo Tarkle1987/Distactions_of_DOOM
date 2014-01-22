@@ -113,6 +113,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private boolean Eindtrue = true;
 
 	private Score score;
+	private int newscore = 0;
 	private boolean calculatescore = false;
 
 	// Ingame seconden tellen
@@ -148,6 +149,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	private Sound GameWonSound = new Sound("win.wav");
 
 	private int numberOfEnemies = 3;
+
 
 
 
@@ -297,7 +299,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		 */  
 
-		CompanionCube(numberOfEnemies,1.5, 1);
+		CompanionCube(numberOfEnemies,1.5, 1, difficulty);
 
 		coordT = Maze.CoordTrap(Maze.maze);
 		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
@@ -354,14 +356,16 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * @param size size of enemies
 	 * @param level level to place enemies
 	 */
-	public void CompanionCube(int num, double size, int level) {
+	public void CompanionCube(int num, double size, int level, int difficulty) {
 		System.out.println("enemies op level: " + level);
-
+		int Num = num + 2 * difficulty;
+		
+		
 		lifeforms = new ArrayList<Lifeform>();
 		SoundPeter.clear();
 		SoundRandy.clear();
 
-		int j,k,count = 0;
+		int j,k, countP = 0, countR = 0;
 
 		if(level == 3){
 			k = 1;
@@ -374,7 +378,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			k = 0;
 		}
 		Placing placing = new Placing(maze, k,j);
-		for (int i = 0; i < num; i++) {
+		for (int i = 0; i < Num; i++) {
 
 			double X = player.locationX;
 			double Z = player.locationZ;
@@ -383,13 +387,23 @@ public class MazeRunner extends Frame implements GLEventListener {
 			X = (nextTile.getX()+k*22 + 0.5)*maze.SQUARE_SIZE;
 			Z = (nextTile.getZ()+j*22 + 0.5)*maze.SQUARE_SIZE;
 
-			Randy R = new Randy(X, 0, Z);
-			lifeforms.add(R);
-			Sound Rs = new Sound("randy.wav");
-			SoundRandy.add(Rs);
-			SoundRandy.get(count).playloop();
-			SoundRandy.get(count).setGain(-70);
-			count = count + 1;
+			if((i%2)==0){
+				Randy R = new Randy(X, 0, Z, difficulty);
+				lifeforms.add(R);
+				Sound Rs = new Sound("randy.wav");
+				SoundRandy.add(Rs);
+				SoundRandy.get(countR).playloop();
+				SoundRandy.get(countR).setGain(-70);
+				countR = countR + 1;
+			}else{
+				Peter P = new Peter(X, 0, Z, difficulty);
+				lifeforms.add(P);
+				Sound Ps = new Sound("bird1.wav");
+				SoundPeter.add(Ps);
+				SoundPeter.get(countP).playloop();
+				SoundPeter.get(countP).setGain(-70);
+				countP = countP + 1;
+			}
 
 		}
 
@@ -695,7 +709,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.setLocationZ(maze.convertFromGridZ(coordTa[1])+0.5*maze.SQUARE_SIZE);
 						tr.transport = false;
 						StopPeterRandySound();
-						CompanionCube(numberOfEnemies,1.5,3);
+						CompanionCube(numberOfEnemies,1.5,3, difficulty);
 					}
 					else{
 						coordTo[0] = (int) maze.convertToGridX(player.getLocationX());
@@ -704,7 +718,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.setLocationZ(maze.convertFromGridZ(coordTa[3])+0.5*maze.SQUARE_SIZE);
 						tr.transport = false;
 						StopPeterRandySound();
-						CompanionCube(numberOfEnemies,1.5,2);
+						CompanionCube(numberOfEnemies,1.5,2, difficulty);
 					}
 				}
 			}
@@ -717,14 +731,14 @@ public class MazeRunner extends Frame implements GLEventListener {
 						player.setLocationZ(maze.convertFromGridZ(coordTo[1])+0.5*maze.SQUARE_SIZE);
 						tra.transport = false;
 						StopPeterRandySound();
-						CompanionCube(numberOfEnemies,1.5,1);
+						CompanionCube(numberOfEnemies,1.5,1, difficulty);
 					}
 					else{
 						player.setLocationX(maze.convertFromGridX(coordTo[2])+0.5*maze.SQUARE_SIZE);
 						player.setLocationZ(maze.convertFromGridZ(coordTo[3])+0.5*maze.SQUARE_SIZE);
 						tra.transport = false;
 						StopPeterRandySound();
-						CompanionCube(numberOfEnemies,1.5,2);
+						CompanionCube(numberOfEnemies,1.5,2, difficulty);
 					}
 				}
 			}
@@ -810,7 +824,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				double dZ = ran.locationZ - player.locationZ;
 				double dLength = Math.sqrt(Math.pow(dX,2)+Math.pow(dZ,2));
 				SoundRandy.get(soundintr).setGain((float)(-2*dLength));
-				soundintr = soundintp+1;
+				soundintr = soundintr+1;
 			}
 		}
 		// If the player is at the endpoint, the games stops, in display wordt bepaald wat er getoon wordt.
@@ -905,6 +919,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 	private void GameOverScherm(GLAutoDrawable drawable){
 		GL gl = drawable.getGL();
+		
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+
+		
 		StopPeterRandySound();
 		switchTo2D(drawable);
 
@@ -952,11 +970,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 				GameWonSound.playloop();
 				int TimeInSeconds = clock.minutes*60 + clock.seconds;
 				score = new Score();
-				score.calculateNewScore(player.hp, TimeInSeconds);
+				newscore = score.calculateNewScore(player.hp, TimeInSeconds);
 				calculatescore = false;
 
 			}
-			score.drawScore(gl, screenWidth, screenHeight);
+//			score.drawScore(gl, screenWidth, screenHeight);
 
 			Knop knopSubmit = new Knop(screenWidth/2 - 950/2 + 283, screenHeight/2 - 950/2 + 551, screenWidth/2 - 950/2 + 751, screenHeight/2 - 950/2 + 495);
 			Knop knopExit = new Knop(screenWidth/2 - 950/2 + 255, screenHeight/2 - 950/2 + 636, screenWidth/2 - 950/2 + 775, screenHeight/2 - 950/2 + 592);
@@ -998,6 +1016,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		if(calculatescore){
 			score = new Score();
 			calculatescore = false;
+			score.setnewScore(newscore);
 		}
 
 		Image.drawImage(gl, screenWidth/2 - 950/2, screenHeight/2 - 950/2, 950, 950, HighScore);
@@ -1012,6 +1031,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		}	
 
 		score.drawHighScores(gl, screenWidth, screenHeight);
+		score.drawScore(gl,screenWidth,screenHeight);
 
 		switchTo3D(drawable);
 		input.waspauzed = true;
@@ -1284,6 +1304,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	public static void main(String[] args) {
 		// Create and run MazeRunner.
-		new MazeRunner(1);	//easy
+		new Menu();
 	}
 }

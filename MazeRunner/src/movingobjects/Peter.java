@@ -14,8 +14,8 @@ public class Peter extends CompanionCube {
 	public MazeObject Lichaam, Haar, Frame, Ogen, Shirt, Riem, Broek, Schoenen, Bier, Glas,Buckle, Pet;
 	
 	
-	public Peter(double x, double y, double z) {
-		super(x, y, z, 1.5);
+	public Peter(double x, double y, double z, int difficulty) {
+		super(x, y, z, 1.5, difficulty);
 		
 		float multi = (float) 1.5;
 		
@@ -25,67 +25,67 @@ public class Peter extends CompanionCube {
 //		
 		Lichaam = CustomMazeObject.readFromOBJ("PeterLichaam.obj", multi);
 		Lichaam.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Lichaam.rotateVerticesZ(-90, 1, 1);
+		Lichaam.rotateVerticesZ(90, 1, 1);
 	
 		Lichaam.addColour("roze");
 		
 		Haar = CustomMazeObject.readFromOBJ("PeterHaar.obj", multi);
 		Haar.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Haar.rotateVerticesZ(-90, 1, 1);
+		Haar.rotateVerticesZ(90, 1, 1);
 
 		Haar.addColour("bruin");
 		
 		Frame = CustomMazeObject.readFromOBJ("Frame.obj", multi);
 		Frame.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Frame.rotateVerticesZ(-90, 1, 1);
+		Frame.rotateVerticesZ(90, 1, 1);
 
 		Frame.addColour("zwart");
 		
 		Ogen = CustomMazeObject.readFromOBJ("Ogen.obj", multi);
 		Ogen.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Ogen.rotateVerticesZ(-90, 1, 1);
+		Ogen.rotateVerticesZ(90, 1, 1);
 
 		Ogen.addColour("wit");
 		
 		Shirt = CustomMazeObject.readFromOBJ("Shirt.obj", multi);
 		Shirt.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Shirt.rotateVerticesZ(-90, 1, 1);
+		Shirt.rotateVerticesZ(90, 1, 1);
 
 		Shirt.addColour("wit");
 		
 		Riem = CustomMazeObject.readFromOBJ("Riem.obj", multi);
 		Riem.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Riem.rotateVerticesZ(-90, 1, 1);
+		Riem.rotateVerticesZ(90, 1, 1);
 
 		Riem.addColour("zwart");
 		
 		Broek = CustomMazeObject.readFromOBJ("Broek.obj", multi);
 		Broek.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Broek.rotateVerticesZ(-90, 1, 1);
+		Broek.rotateVerticesZ(90, 1, 1);
 
 		Broek.addColour("groen");
 		
 		Schoenen = CustomMazeObject.readFromOBJ("PeterSchoenen.obj", multi);
 		Schoenen.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Schoenen.rotateVerticesZ(-90, 1, 1);
+		Schoenen.rotateVerticesZ(90, 1, 1);
 
 		Schoenen.addColour("bruin");
 		
 		Bier = CustomMazeObject.readFromOBJ("Bier.obj", multi);
 		Bier.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Bier.rotateVerticesZ(-90, 1, 1);
+		Bier.rotateVerticesZ(90, 1, 1);
 
 		Bier.addColour("geel");
 		
 		Glas = CustomMazeObject.readFromOBJ("Glas.obj", multi);
 		Glas.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Glas.rotateVerticesZ(-90, 1, 1);
+		Glas.rotateVerticesZ(90, 1, 1);
 
 		Glas.addColour("wit");
 		
 		Buckle = CustomMazeObject.readFromOBJ("Buckle.obj", multi);
 		Buckle.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-		Buckle.rotateVerticesZ(-90, 1, 1);
+		Buckle.rotateVerticesZ(90, 1, 1);
 
 		Buckle.addColour("wit");
 		
@@ -121,7 +121,7 @@ public class Peter extends CompanionCube {
 			stun = false;
 		}
 
-
+		dR = 0;
 		if(!stun){
 
 		// Bewegen van kubus naar player / door player
@@ -130,7 +130,7 @@ public class Peter extends CompanionCube {
 
 		// kubus roteerd naar de player
 	
-		dR = 0;
+		
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
