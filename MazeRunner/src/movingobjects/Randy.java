@@ -14,8 +14,8 @@ public class Randy extends CompanionCube {
 	public MazeObject Lichaam, Haar, Gitaar, Ogen, Onderbroek, Band, Binnenkant, Schoenen, Pupil, Glas,Buckle;
 	
 	
-	public Randy(double x, double y, double z) {
-		super(x, y, z, 1.5);
+	public Randy(double x, double y, double z, int difficulty) {
+		super(x, y, z, 1.5, difficulty);
 		
 		float multi = (float) 1.6;
 		
@@ -116,14 +116,14 @@ public class Randy extends CompanionCube {
 			stun = false;
 		}
 
-
+		dR = 0;
 		if(!stun){
 
 		// Bewegen van kubus naar player / door player
 		CubeMove(deltaTime, maze, X,Z);
 
 		// kubus roteerd naar de player
-		dR = 0;
+		
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);
 		CubeRotate(deltaTime);

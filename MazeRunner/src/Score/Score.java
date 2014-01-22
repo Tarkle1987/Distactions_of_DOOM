@@ -19,13 +19,15 @@ public class Score
 		this.DB.connect();
 	}
 	
-	public void calculateNewScore(int hp, int TimeInSeconds){
+	public int calculateNewScore(int hp, int TimeInSeconds){
 		this.bonus = (1000- TimeInSeconds)*10;
 		if(this.bonus < 0)
 		{
 			this.bonus = 0;
 		}
 		this.newScore = hp*500 + bonus;
+		
+		return newScore;
 	}
 	
 	public void submitScore(String name)
@@ -58,6 +60,7 @@ public class Score
 			String row = (i+1) + ": " + divided[i];
 			drawText(gl, row, x,y);
 		}
+
 	}
 	
 	public void drawText(GL gl, String string, int x, int y)
@@ -65,11 +68,11 @@ public class Score
 		int length = string.length();
 		
 		GLUT glut = new GLUT();
-		gl.glColor3f(0.0f, 1.0f, 0.0f);
+		gl.glColor3f(0.0f, 0.0f, 0.0f);
 		gl.glRasterPos2i(x, y); // raster position in 2D
 		for(int i=0; i<length; i++)
 		{
-			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18, string.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
+			glut.glutBitmapCharacter(GLUT.BITMAP_TIMES_ROMAN_24, string.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
 		}
 	}
 
@@ -78,8 +81,8 @@ public class Score
 		String congrats = "Congratulations, you have reached the end!";
 		String yourscore = "Your score for this game is: " +this.newScore;
 		
-		drawBigText(gl, congrats, screenWidth-400, screenHeight - 80);
-		drawText(gl, yourscore, screenWidth-400, screenHeight - 120);
+		drawText(gl, congrats, (int)(0.4*screenWidth)- 100, (int)(0.9*screenHeight) -340);
+		drawText(gl, yourscore, (int)(0.4*screenWidth)- 100, (int)(0.9*screenHeight) -380);
 	}
 
 	private void drawBigText(GL gl, String congrats, int x, int y) 
@@ -93,5 +96,9 @@ public class Score
 		{
 			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18, congrats.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
 		}
+	}
+	
+	public void setnewScore(int newscore){
+		newScore = newscore;
 	}
 }
