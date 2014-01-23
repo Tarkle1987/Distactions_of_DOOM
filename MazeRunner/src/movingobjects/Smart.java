@@ -10,7 +10,8 @@ import Routeplanner.Tile;
 
 public class Smart implements VisibleObject{
 
-	private MazeObject Smarto,Smartw;
+	public MazeObject Smarto;
+	public MazeObject Smartw;
 	public boolean destroy = false;
 	private float size = 5;
 	private double locationX,locationZ;

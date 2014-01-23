@@ -395,7 +395,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 		if (textrue) {
 
 			maze.textures();
-			textureAdd(gl);
 			textrue = false;
 		}
 
@@ -413,6 +412,11 @@ public class MazeRunner extends Frame implements GLEventListener {
 				tr.Kaft2.addTexture(maze.Groen);
 				tr.Kaft3.addTexture(maze.Rood);
 				tr.Papier.addTexture(maze.Wit);
+			}
+			if(visibleObjects.get(i) instanceof Smart){
+				Smart sm = (Smart)visibleObjects.get(i);
+				sm.Smarto.addTexture(maze.Oranje);
+				sm.Smartw.addTexture(maze.Wit);
 			}
 		}
 		for (int i = 0; i < lifeforms.size();i++){
@@ -463,11 +467,13 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 * also determines if a projectile (book) is thrown and displays it and displays the appropriate screen when at the end of the game or dead
 	 */
 	public void display(GLAutoDrawable drawable) {
+		
+		GL gl = drawable.getGL();
 
 		input.thisX = this.getX();
 		input.thisY = this.getY();
 
-		// StartScherm
+
 		if(start && !end){
 			this.setCursor(Cursor.getDefaultCursor());
 			input.pauze = true;
@@ -539,7 +545,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			input.pauze = true;
 			GameOverScherm(drawable);
 		}
-
+		textureAdd(gl);
 
 	}
 
