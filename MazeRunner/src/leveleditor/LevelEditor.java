@@ -142,6 +142,10 @@ public class LevelEditor implements GLEventListener, MouseListener {
 
 		Mazeconf3[1][20]=5;
 		Mazeconf[20][1]=4;
+		Mazeconf2[20][5]=2;
+		Mazeconf3[20][5]=6;
+		Mazeconf[1][13]=2;
+		Mazeconf2[1][13]=6;
 		points = new ArrayList<Point2D.Float>();
 
 		that.setSize(screenWidth, screenHeight);
@@ -656,7 +660,7 @@ public class LevelEditor implements GLEventListener, MouseListener {
 			lineOnScreen(gl, rastwidth+rastspace, i*unit,2*rastwidth+rastspace-12, i*unit);
 		}
 		//level 3
-		drawText(gl,"Level 3",  (int) 2*(rastwidth+rastspace),(int) (rastwidth+10));
+		drawText(gl,"Level 3",  (int) 2*(rastwidth+rastspace)+4,(int) (rastwidth+10));
 		for (int i = 0; i<=rast; i++){
 			lineOnScreen(gl, i*unit+2*rastwidth+2*rastspace, 0,i*unit+2*rastwidth+2*rastspace, rastwidth-11);
 			lineOnScreen(gl, 2*rastwidth+2*rastspace, i*unit,3*rastwidth+2*rastspace-12, i*unit);
