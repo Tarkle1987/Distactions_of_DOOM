@@ -1,14 +1,10 @@
 package movingobjects;
 
-import java.util.ArrayList;
-
 import javax.media.opengl.GL;
-
 import Maze.Maze;
 import Player.Player;
 import Routeplanner.Routeplanner;
 import Routeplanner.Tile;
-
 import com.sun.opengl.util.GLUT;
 
 
@@ -98,18 +94,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 
 	public void CubeMove(int deltaTime, Maze maze, double X, double Z){
 
-
-		// De kubus bewegen als de speler ertegenaan loopt ( alleen in X of in Z richting )
-		//		switch (CubeTouchDetection(X,Z)){
-		//		case 1: while(X > this.locationX - size/2 -1){this.locationX = this.locationX + speed*deltaTime;}
-		//			break;
-		//		case 2: while(Z > this.locationZ - size/2 -1){this.locationZ = this.locationZ + speed*deltaTime;}
-		//			break;
-		//		case 3: while(X < this.locationX + size/2 + 1){this.locationX = this.locationX - speed*deltaTime;}
-		//			break;
-		//		case 4: while(Z < this.locationZ + size/2 + 1){this.locationZ = this.locationZ - speed*deltaTime;}
-		//			break;
-		//		}
 
 		// kubus loopt richting player
 		double dX = X - locationX;
@@ -280,7 +264,6 @@ public class CompanionCube extends GameObject implements Lifeform {
 	}
 
 	protected void CubeRotate(int deltaTime){
-		// trying to let the cube turn to the player
 	
 		
 		// Vector van de speler bepalen ten opzichte van de kubus

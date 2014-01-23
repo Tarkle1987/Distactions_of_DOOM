@@ -243,9 +243,19 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.screenWidth = screenWidth;
 		input.screenHeight = screenHeight;
 
-		// Place enemies in on first level
-		CompanionCube(numberOfEnemies,1.5, 1, difficulty);
-
+//		// Place enemies in on first level
+//		CompanionCube(numberOfEnemies,1.5, 1, difficulty);
+		
+		// VOOR TEST
+		Peter P = new Peter(17*maze.SQUARE_SIZE, 0, 3*maze.SQUARE_SIZE, difficulty);
+		lifeforms.add(P);
+		Sound Ps = new Sound("bird1.wav");
+		SoundPeter.add(Ps);
+		SoundPeter.get(0).playloop();
+		SoundPeter.get(0).setGain(-70);
+		
+		// VOOR TEST
+		
 		// Placing stairs, doors and smartdrugs
 		coordT = Maze.CoordTrap(Maze.maze);
 		Trap tr1 = new Trap((float) coordT[0], (float) coordT[1]);
@@ -519,6 +529,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 			input.waspauzed = true;
 
 		}
+		
 
 		// Won the game
 		if(end)
@@ -896,7 +907,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 				GameWonSound.playloop();
 				int TimeInSeconds = clock.minutes*60 + clock.seconds;
 				score = new Score();
-				newscore = score.calculateNewScore(player.hp, TimeInSeconds);
+				newscore = score.calculateNewScore(player.hp, TimeInSeconds, difficulty);
 				calculatescore = false;
 
 			}
@@ -1204,5 +1215,6 @@ public class MazeRunner extends Frame implements GLEventListener {
 	public static void main(String[] args) {
 		// Create and run MazeRunner.
 		new Menu();
+//		new MazeRunner(0);
 	}
 }

@@ -1,15 +1,7 @@
 package NotDefined;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
-
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
-
 import movingobjects.GameObject;
 import movingobjects.VisibleObject;
 import Maze.Maze;
@@ -51,11 +43,10 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 		
 		size = maze.SQUARE_SIZE;
 		this.x = x;
-		this.y = y;
 		this.z = z;
 		this.maze = maze;
 		this.dLmax = size;
-		this.dLmin = size/2;
+		this.dLmin = size/2+0.5;
 	
 
 	}
@@ -67,10 +58,7 @@ public class SchuifMuur extends GameObject implements VisibleObject {
     	gl.glEnable(GL.GL_TEXTURE_2D);
     	gl.glPushMatrix();
 		gl.glTranslated(locationX,locationY,locationZ);
-		
-//		maze.muurTexture.enable();
-//		maze.muurTexture.bind();
-	
+			
 
 		maze.DeurTexture.enable();
 		maze.DeurTexture.bind();

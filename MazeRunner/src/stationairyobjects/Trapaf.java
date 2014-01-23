@@ -1,14 +1,8 @@
 package stationairyobjects;
 
-import java.io.InputStream;
+
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
-
-import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
-
 import Maze.Maze;
 import Player.Player;
 import Routeplanner.Tile;
@@ -66,16 +60,7 @@ public class Trapaf implements VisibleObject{
 	@Override
 	public void update(int deltaTime, Maze maze,
 			ArrayList<VisibleObject> visibleObjects, Player player) {
-		// TODO Auto-generated method stub
-//		int plocX = maze.convertToGridX(player.getLocationX());
-//		int plocZ =	maze.convertToGridZ(player.getLocationZ());
-//		int tlocX = (int) Math.floor(locationX);
-//		int tlocZ = (int) Math.floor(locationZ);
-//		if (plocX==tlocX){
-//			if (plocZ==tlocZ){
-//				transport = true;
-//			}
-//		}
+
 		this.maze = maze;
 		double dX = player.locationX - maze.convertFromGridX((int)locationX)-2.5;
 		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ)-2.5;

@@ -19,13 +19,15 @@ public class Score
 		this.DB.connect();
 	}
 	
-	public int calculateNewScore(int hp, int TimeInSeconds){
-		this.bonus = (1000- TimeInSeconds)*10;
+	public int calculateNewScore(int hp, int TimeInSeconds,int difficulty){
+		this.bonus = (1000- TimeInSeconds)*4;
 		if(this.bonus < 0)
 		{
 			this.bonus = 0;
 		}
-		this.newScore = hp*500 + bonus;
+		this.newScore = (hp*500 + bonus)*(difficulty+1);
+		
+		
 		
 		return newScore;
 	}
@@ -85,18 +87,7 @@ public class Score
 		drawText(gl, yourscore, (int)(0.4*screenWidth)- 100, (int)(0.9*screenHeight) -380);
 	}
 
-	private void drawBigText(GL gl, String congrats, int x, int y) 
-	{
-		int length = congrats.length();
-		
-		GLUT glut = new GLUT();
-		gl.glColor3f(1.0f, 0.0f, 0.0f);
-		gl.glRasterPos2i(x, y); // raster position in 2D
-		for(int i=0; i<length; i++)
-		{
-			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18, congrats.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
-		}
-	}
+	
 	
 	public void setnewScore(int newscore){
 		newScore = newscore;

@@ -1,9 +1,6 @@
 package movingobjects;
 
 import javax.media.opengl.GL;
-
-import com.sun.opengl.util.GLUT;
-
 import Maze.Maze;
 import Player.Player;
 
@@ -18,11 +15,7 @@ public class Randy extends CompanionCube {
 		super(x, y, z, 1.5, difficulty);
 		
 		float multi = (float) 1.6;
-		
-//		Randy = CustomMazeObject.readFromOBJ("Randy.obj", multi);
-//		Randy.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-//		
-//		Randy.addColour("roze");
+
 		
 		Lichaam = CustomMazeObject.readFromOBJ("RLichaam.obj", multi);
 		Lichaam.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
@@ -76,22 +69,6 @@ public class Randy extends CompanionCube {
 	}
 	
 	public void display(GL gl){
-//		GLUT glut = new GLUT();		
-//		float[] CubeColor = { 0.1333f, 0.545f, 0.1333f, 1f };
-//
-//		gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, CubeColor, 0);
-//
-//		gl.glPushMatrix();
-//		gl.glTranslated(locationX,locationY,locationZ);
-//		gl.glRotated(angle, 0,1,0);
-//		glut.glutSolidCube( (float) size);
-//		gl.glPopMatrix();
-//		
-//		gl.glPushMatrix();
-//		gl.glTranslated(locationX,locationY + size,locationZ);
-//		gl.glRotated(angle, 0,1,0);
-//		glut.glutSolidCube( (float) size);
-//		gl.glPopMatrix();
 		
 		Lichaam.display(gl);
 		Haar.display(gl);
@@ -102,7 +79,7 @@ public class Randy extends CompanionCube {
 		Binnenkant.display(gl);
 		Schoenen.display(gl);
 		Pupil.display(gl);
-//		Randy.display(gl);
+
 	}
 	public void update(int deltaTime, Maze maze, Player player){
 		playerhit = false;
@@ -130,7 +107,7 @@ public class Randy extends CompanionCube {
 		CubeRotate(deltaTime);
 		}
 		
-//		Randy.setCor((float)locationX, (float)locationZ, (float)locationY);
+
 	
 		Lichaam.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
 		Haar.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
@@ -141,7 +118,7 @@ public class Randy extends CompanionCube {
 		Binnenkant.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
 		Schoenen.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
 		Pupil.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
-//		Randy.setCor((float)(locationX - 1), (float)(locationZ - 0.9), (float)(locationY-0.8));
+
 		
 		float dRotate = -(float)dR;
 		
@@ -154,7 +131,7 @@ public class Randy extends CompanionCube {
 		Binnenkant.rotateVerticesZ( dRotate, 1, 1);
 		Schoenen.rotateVerticesZ( dRotate, 1, 1);
 		Pupil.rotateVerticesZ( dRotate, 1, 1);
-//		Randy.rotateVerticesZ( dRotate, 1, 1);
+
 	
 	}
 	

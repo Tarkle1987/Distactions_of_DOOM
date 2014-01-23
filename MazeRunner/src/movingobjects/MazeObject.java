@@ -1,12 +1,8 @@
 package movingobjects;
 
 import javax.media.opengl.*;
-
 import java.util.ArrayList;
-
-import javax.vecmath.Tuple3f;
 import javax.vecmath.Vector3f;
-
 import com.sun.opengl.util.texture.Texture;
 
 /**
@@ -23,7 +19,6 @@ public abstract class MazeObject implements VisibleObject{
 	protected float x,y,z,nx,ny,nz;
 	
 	private boolean test = true;
-	private int tel = 0;
 	
 	protected Texture texture;
 	protected int[][] texturePoints = { {1, 1}, {1, 0}, {0, 0} , {0, 1}}; 
@@ -239,7 +234,6 @@ public abstract class MazeObject implements VisibleObject{
 			
 			vertex.get(vert);
 			float x = vert[0];
-			float y = vert[1];
 			float z = vert[2];
 			double cos = Math.cos(Math.toRadians(angle));
 			double sin = Math.sin(Math.toRadians(angle));

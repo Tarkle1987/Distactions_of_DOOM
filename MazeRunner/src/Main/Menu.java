@@ -10,8 +10,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Calendar;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -22,18 +20,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-
 import leveleditor.Image;
 import leveleditor.LevelEditor;
 import HUD.Clock;
 import Maze.Maze;
 import Maze.Mazescont;
-import MenuButtons.Button;
 import MenuButtons.Knop;
 import MenuButtons.RadioGroup;
 import MenuButtons.ToggleButton;
 import NotDefined.Sound;
-
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.GLUT;
 
@@ -49,10 +44,6 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	// Screen size.
 	private int screenWidth = 600, screenHeight = 735;
 	private int Width = 600, Height = 735;
-	private float buttonHeight = screenHeight / 15.0f;
-	private float buttonWidth = screenWidth / 2.5f;
-	private float buttonSpace = buttonHeight + buttonHeight / 4.0f;
-	
 	private int CurrentX = 0;
 	private int CurrentY = 0;
 	private int ReleaseX = 0;
@@ -104,6 +95,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	public Menu() {
 		super("Menu");
 
+		// intro sound
 		intro.playloop();
 
 		// Set the desired size and background color of the frame
@@ -356,62 +348,6 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		ReleaseX = 0;ReleaseY = 0;
 	
 	}
-	
-		private void drawText(GL gl, String text, int x, int y)
-	{
-		int length = text.length();
-		GLUT glut = new GLUT();
-		gl.glColor3f(1.0f, 0.0f, 0.0f);
-		gl.glRasterPos2i(x, y); // raster position in 2D
-		for(int i=0; i<length; i++)
-		{
-			glut.glutBitmapCharacter(GLUT.BITMAP_HELVETICA_18, text.charAt(i)); // generation of characters in our text with 9 by 15 GLU font
-		}
-	}
-	
-	/**
-	 * Help method that uses GL calls to draw a point.
-	 */
-	private void pointOnScreen(GL gl, float x, float y) {
-		gl.glBegin(GL.GL_POINTS);
-		gl.glVertex2f(x, y);
-		gl.glEnd();
-	}
-
-	/**
-	 * Help method that uses GL calls to draw a line.
-	 */
-	private void lineOnScreen(GL gl, float x1, float y1, float x2, float y2) {
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex2f(x1, y1);
-		gl.glVertex2f(x2, y2);
-		gl.glEnd();
-	}
-
-	/**
-	 * Help method that uses GL calls to draw a square
-	 */
-	private void boxOnScreen(GL gl, float x, float y, float size) {
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(x, y);
-		gl.glVertex2f(x + size, y);
-		gl.glVertex2f(x + size, y + size);
-		gl.glVertex2f(x, y + size);
-		gl.glEnd();
-	}
-	
-	private void rectOnScreen(GL gl, float x, float y, float height, float width){
-		height = height / 2.0f;
-		width = width / 2.0f;
-		
-		gl.glBegin(GL.GL_QUADS);
-		gl.glVertex2f(x + width,y + height);
-		gl.glVertex2f(x + width, y - height);
-		gl.glVertex2f(x - width,y - height);
-		gl.glVertex2f(x - width,y + height);
-		gl.glEnd();
-	}
-
 
 	@Override
 	/**
@@ -439,9 +375,6 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		// Set the new screen size and adjusting the viewport
 		screenWidth = width;
 		screenHeight = height;
-		buttonHeight = screenHeight / 15.0f;
-		buttonWidth = screenWidth / 2.5f;
-		buttonSpace = buttonHeight + buttonHeight / 4.0f;
 		gl.glViewport(0, 0, screenWidth, screenHeight);
 
 		// Update the projection to an orthogonal projection using the new screen size

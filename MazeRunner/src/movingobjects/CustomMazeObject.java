@@ -3,15 +3,12 @@ package movingobjects;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import javax.media.opengl.GL;
 import javax.vecmath.Vector3f;
-
 import Maze.Maze;
 import Player.Player;
 import Routeplanner.Tile;
 
-import com.sun.opengl.util.texture.Texture;
 
 public class CustomMazeObject extends MazeObject{
 	
@@ -51,8 +48,7 @@ public class CustomMazeObject extends MazeObject{
 				}
 			}
 			res.removeRedundantVertices();
-//			System.out.println("Read in " + res.vertices.size() + " vertices.");
-//			System.out.println("Read in " + res.faces.size() + " faces.");
+
 			
 			sc.close();
 		}

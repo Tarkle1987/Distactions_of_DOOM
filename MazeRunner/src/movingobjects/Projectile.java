@@ -1,12 +1,8 @@
 package movingobjects;
 
-import java.util.ArrayList;
-
 import javax.media.opengl.GL;
-
 import Maze.Maze;
 
-import com.sun.opengl.util.GLUT;
 
 
 public class Projectile extends GameObject {
@@ -79,8 +75,7 @@ public class Projectile extends GameObject {
 	
 
 	public void display(GL gl) {
-		// TODO Auto-generated method stub
-		GLUT glut = new GLUT();
+	
 		
 		float CubeColor[] = { 1f, 0.627f, 0f, 1f };
 		gl.glMaterialfv( GL.GL_FRONT, GL.GL_DIFFUSE, CubeColor, 0);
@@ -166,47 +161,7 @@ public class Projectile extends GameObject {
         gl.glEnd(); 
 		gl.glPopMatrix();
         
-//		gl.glPushMatrix();
-//		gl.glTranslated(locationX,locationY,locationZ);
-//		gl.glRotated(horAngle -90, 0, 1, 0);
-//		gl.glTranslated(0, 0, size/2);
-//		glut.glutSolidCube( (float) size);
-//		gl.glPopMatrix();
-//		
-//		gl.glPushMatrix();
-//		gl.glTranslated(locationX,locationY,locationZ);
-//		gl.glRotated(horAngle -90, 0, 1, 0);
-//		gl.glTranslated(0, 0, -size/2);
-//		glut.glutSolidCube( (float) size);
-//		gl.glPopMatrix();
-//		
-//		gl.glPushMatrix();
-//		gl.glTranslated(locationX,locationY,locationZ);
-//		gl.glRotated(horAngle -90, 0, 1, 0);
-//		gl.glTranslated(0, size, size/2);
-//		glut.glutSolidCube( (float) size);
-//		gl.glPopMatrix();
-//		
-//		gl.glPushMatrix();
-//		gl.glTranslated(locationX,locationY,locationZ);
-//		gl.glRotated(horAngle -90, 0, 1, 0);
-//		gl.glTranslated(0, size, -size/2);
-//		glut.glutSolidCube( (float) size);
-//		gl.glPopMatrix();
-//		
-//		gl.glPushMatrix();
-//		gl.glTranslated(locationX,locationY,locationZ);
-//		gl.glRotated(horAngle -90, 0, 1, 0);
-//		gl.glTranslated(0,-size, size/2);
-//		glut.glutSolidCube( (float) size);
-//		gl.glPopMatrix();
-//		
-//		gl.glPushMatrix();
-//		gl.glTranslated(locationX,locationY,locationZ);
-//		gl.glRotated(horAngle -90, 0, 1, 0);
-//		gl.glTranslated(0, -size, -size/2);
-//		glut.glutSolidCube( (float) size);
-//		gl.glPopMatrix();
+
 	}
 	
 	public double getHorAngle(){

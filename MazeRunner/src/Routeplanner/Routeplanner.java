@@ -112,8 +112,7 @@ public class Routeplanner
 					}
 					clear(vertices);
 				}
-				//System.out.println("Distance from [" +closestCrosspointsObject.get(bestObj) + "] to [" + closestCrosspointsPlayer.get(bestTar) + "]: " + totalDistance);
-				//System.out.println("Path: " + path);
+				
 				// Bereken volgende stap richting volgende kruispunt, en return deze naar het object
 				int nextdir = getNextDirection(maze, next, objectTile);
 				return nextdir;
@@ -439,7 +438,7 @@ public class Routeplanner
 
 		up: for(int m = X; m >= 0; m--)
 		{
-			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 7 && currentMaze[m][Z] !=2)
+			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 2 && currentMaze[m][Z] != 7)
 			{
 				for(int n =0; n < vertices.length; n++)
 				{
@@ -455,7 +454,7 @@ public class Routeplanner
 		}
 		down: for(int m = X; m < 22; m++)
 		{
-			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 7 && currentMaze[m][Z] !=2)
+			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 2 && currentMaze[m][Z] != 7)
 			{
 				for(int n =0; n < vertices.length; n++)
 				{
@@ -471,7 +470,7 @@ public class Routeplanner
 		}
 		left :for(int m = Z; m >= 0; m--)
 		{
-			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 7 && currentMaze[X][m] !=2)
+			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 2 && currentMaze[X][m] != 7)
 			{
 				for(int n =0; n < vertices.length; n++)
 				{
@@ -487,7 +486,7 @@ public class Routeplanner
 		}
 		right :for(int m = Z; m <22; m++)
 		{
-			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 7 && currentMaze[X][m] !=2)
+			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 2 && currentMaze[X][m] != 7)
 			{
 				for(int n =0; n < vertices.length; n++)
 				{
@@ -543,7 +542,7 @@ public class Routeplanner
 		}
 		up: for(int m = X; m > 0; m--)
 		{
-			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 7 && currentMaze[m][Z] !=2)
+			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 2 && currentMaze[m][Z] != 7)
 			{
 				for(int n =0; n < vertices.length; n++)
 				{
@@ -560,7 +559,7 @@ public class Routeplanner
 		}
 		down: for(int m = X; m < 22; m++)
 		{
-			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 7 && currentMaze[m][Z] !=2)
+			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 2 && currentMaze[m][Z] != 7)
 			{
 				for(int n =0; n < vertices.length; n++)
 				{
@@ -577,7 +576,7 @@ public class Routeplanner
 		}
 		left :for(int m = Z; m > 0; m--)
 		{
-			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 7 && currentMaze[X][m] !=2)
+			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 2 && currentMaze[X][m] != 7)
 			{
 				for(int n =0; n < vertices.length; n++)
 				{
@@ -594,7 +593,7 @@ public class Routeplanner
 		}
 		right :for(int m = Z; m <22; m++)
 		{
-			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 7 && currentMaze[X][m] !=2)
+			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 2 && currentMaze[X][m] != 7)
 			{
 				for(int n =0; n < vertices.length; n++)
 				{
@@ -795,7 +794,7 @@ public class Routeplanner
 		//left
 		for(int m = Z-1; m > 0; m--)
 		{
-			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 7 && currentMaze[X][m] !=2)
+			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 2 && currentMaze[X][m] != 7)
 			{
 				for(int i =0; i< crosspoints.size(); i++)
 				{
@@ -824,8 +823,8 @@ public class Routeplanner
 		int Z = (int) crosspoints.get(k).getZ();
 		//right
 		for(int m = Z+1; m < currentMaze.length; m++)
-		{			
-			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 7 && currentMaze[X][m] !=2)
+		{
+			if(currentMaze[X][m] != 1 && currentMaze[X][m] != 2 && currentMaze[X][m] != 7)
 			{
 				for(int i=0; i<crosspoints.size(); i++)
 				{
@@ -856,7 +855,7 @@ public class Routeplanner
 		//Down
 		for(int m = X+1; m < currentMaze.length; m++)
 		{
-			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 7 && currentMaze[m][Z] !=2)
+			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 2 && currentMaze[m][Z] != 7)
 			{
 				for(int i=0; i < crosspoints.size(); i++)
 				{
@@ -886,7 +885,7 @@ public class Routeplanner
 		//up
 		for(int m = X-1; m > 0; m--)
 		{
-			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 7 && currentMaze[m][Z] !=2)
+			if(currentMaze[m][Z] != 1 && currentMaze[m][Z] != 2 && currentMaze[m][Z] != 7)
 			{
 				for(int i = 0; i<crosspoints.size(); i++)
 				{

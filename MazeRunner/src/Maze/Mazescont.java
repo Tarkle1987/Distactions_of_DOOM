@@ -57,9 +57,6 @@ public class Mazescont {
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");
 		}
-		catch (IOException e){
-			System.out.println("IOException found");
-		}
 		catch (InputMismatchException e){
 			System.out.println("Other input expected");
 		}
@@ -70,11 +67,5 @@ public class Mazescont {
 		}
 		return res;
 	}
-	
-	public static void main(String[] arg0){
-//		Mazescont bla = read("Mazes2.txt");
-//		for (int i = 0; i<bla.getArray().size();i++){
-//			System.out.println(bla.getMazes(i).ToString());
-//		}
-	}
+
 }

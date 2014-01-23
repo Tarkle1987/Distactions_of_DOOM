@@ -69,7 +69,7 @@ public class Smart implements VisibleObject{
 		if (plocX==slocX){
 			if (plocZ==slocZ){
 				destroy = true;
-				player.hp = player.hp+1;
+				player.hp = 6;
 			}
 		}
 		
