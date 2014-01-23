@@ -228,9 +228,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 		visibleObjects.set(0, maze);
 
 		input = new UserInput(canvas);
-		player.setControl(input);
-		input.screenWidth = screenWidth;
-		input.screenHeight = screenHeight;
+
 
 
 		player = new Player( 20 * maze.SQUARE_SIZE + maze.SQUARE_SIZE / 2, 	// x-position
@@ -240,6 +238,10 @@ public class MazeRunner extends Frame implements GLEventListener {
 
 		camera = new Camera( player.getLocationX(), player.getLocationY(), player.getLocationZ(), 
 				player.getHorAngle(), player.getVerAngle() );
+		
+		player.setControl(input);
+		input.screenWidth = screenWidth;
+		input.screenHeight = screenHeight;
 
 		// Place enemies in on first level
 		CompanionCube(numberOfEnemies,1.5, 1, difficulty);
