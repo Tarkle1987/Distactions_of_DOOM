@@ -1,14 +1,11 @@
 package stationairyobjects;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
-
 import movingobjects.CustomMazeObject;
 import movingobjects.MazeObject;
 import movingobjects.VisibleObject;
 import Maze.Maze;
-import NotDefined.Sound;
 import Player.Player;
 import Routeplanner.Tile;
 /**
@@ -57,30 +54,7 @@ public class Trap implements VisibleObject{
 		Papier.rotateVerticesZ(-90, 1, 1);
 		Papier.addColour("wit");
 		
-//		ByteArrayOutputStream out = new ByteArrayOutputStream();
-//		BufferedInputStream in = null;
-//		try {
-//			in = new BufferedInputStream(new FileInputStream("bird.wav"));
-//		} catch (FileNotFoundException e) {
-//			System.out.println("no such file");
-//			e.printStackTrace();
-//		}
-//
-//		int read;
-//		byte[] buff = new byte[1024];
-//		while ((read = in.read(buff)) > 0)
-//		{
-//		    out.write(buff, 0, read);
-//		}
-//		out.flush();
-//		byte[] audiobyte = out.toByteArray();
-//		buffer.wrap(audiobyte);
-//		Soundbuf.configure(buffer, Buffer.FORMAT_STEREO16, 10000);
-//		bron.setPosition(x,(float) 2.5,z);
-//		bron.setBuffer(Soundbuf);
-//		bron.setLooping(true);
-//		bron.setGain(100);
-//		bron.setReferenceDistance(20);
+
 	
 	}
 	/**
@@ -120,16 +94,7 @@ public class Trap implements VisibleObject{
 	@Override
 	public void update(int deltaTime, Maze maze,
 			ArrayList<VisibleObject> visibleObjects, Player player) {
-		// TODO Auto-generated method stub
-//		int plocX = maze.convertToGridX(player.getLocationX());
-//		int plocZ =	maze.convertToGridZ(player.getLocationZ());
-//		int tlocX = (int) Math.floor(locationX);
-//		int tlocZ = (int) Math.floor(locationZ);
-//		if (plocX==tlocX){
-//			if (plocZ==tlocZ){
-//				transport = true;
-//			}
-//		}
+
 		this.maze = maze;
 		double dX = player.locationX - maze.convertFromGridX((int)locationX)-2.5;
 		double dZ = player.locationZ - maze.convertFromGridZ((int)locationZ)-2.5;

@@ -1,9 +1,6 @@
 package movingobjects;
 
 import javax.media.opengl.GL;
-
-import com.sun.opengl.util.GLUT;
-
 import Maze.Maze;
 import Player.Player;
 
@@ -19,10 +16,6 @@ public class Peter extends CompanionCube {
 		
 		float multi = (float) 1.5;
 		
-//		Pet = CustomMazeObject.readFromOBJ("Peter.obj", multi);
-//		Pet.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
-//		Pet.addColour("roze");
-//		
 		Lichaam = CustomMazeObject.readFromOBJ("PeterLichaam.obj", multi);
 		Lichaam.setCor((float)(locationX), (float)(locationZ), (float)(locationY-2));
 		Lichaam.rotateVerticesZ(90, 1, 1);
