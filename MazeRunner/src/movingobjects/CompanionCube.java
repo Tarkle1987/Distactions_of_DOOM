@@ -50,11 +50,11 @@ public class CompanionCube extends GameObject implements Lifeform {
 	private int signZ = 1;
 	int momentum = 0;
 
-	public CompanionCube(double x, double y, double z,  double size){
+	public CompanionCube(double x, double y, double z,  double size, int difficulty){
 
 		super(x,y + size/2,z);
 		this.size = size;
-		speed = 0.005;
+		speed = 0.005 + 0.005*difficulty;
 		angle = 0;
 		newangle = angle;
 		anglespeed = 0.1;

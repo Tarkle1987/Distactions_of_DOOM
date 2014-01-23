@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Calendar;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -30,6 +31,7 @@ import Maze.Mazescont;
 import MenuButtons.Button;
 import MenuButtons.Knop;
 import MenuButtons.RadioGroup;
+import MenuButtons.ToggleButton;
 import NotDefined.Sound;
 
 import com.sun.opengl.util.Animator;
@@ -61,6 +63,7 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	private int WasPressedY = 0;
 	
 	private int Difficulty = 1;
+	private boolean DifficultyPressed = false;
 	
 	private Sound intro = new Sound("intro.wav");
 	
@@ -83,6 +86,13 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 	private byte[] LEKlik = Image.loadImage("LevedKlik.png");
 	private byte[] exitHover = Image.loadImage("ExitHover.png");
 	private byte[] exitKlik = Image.loadImage("ExitKlik.png");
+	private byte[] Hardclicked	= Image.loadImage("Hardclicked.png");
+	private byte[] HardHover	= Image.loadImage("HardHover.png");
+	private byte[] MediumClicked	= Image.loadImage("MediumClicked.png");
+	private byte[] MediumHover	= Image.loadImage("MediumHover.png");
+	private byte[] SettingsImage	= Image.loadImage("Settings.png");
+	private byte[] EasyClicked	= Image.loadImage("EasyClicked.png");
+	private byte[] EasyHover	= Image.loadImage("EasyHover.png");
 	
 	private LevelEditor LE;
 
@@ -285,22 +295,61 @@ public class Menu extends Frame implements GLEventListener, MouseListener, Mouse
 		
 	}
 	public void SettingScreen(GL gl){
+		Image.drawImage(gl, 0,0, 600, 700, menuImage);
 		
-		Button button1 = new Button(gl, screenWidth, screenHeight, 5, "Back");
-		RadioGroup radio1 = new RadioGroup(gl, screenWidth, screenHeight, 2, "Difficulty");
-		radio1.addButton(0,"Easy");
-		radio1.addButton(1, "Medium");
-		radio1.addButton(2, "Hard");
-		Difficulty = radio1.drawGroup(CurrentX,CurrentY,PressedX,PressedY, Difficulty);
+		if(DifficultyPressed){
+			if(Difficulty == 0){
+				Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, EasyClicked);
+			}else if(Difficulty == 1){
+				Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, MediumClicked);
+			}else if(Difficulty == 2){
+				Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, Hardclicked);
+			}
+			
+			if(WasPressedX != 0 && WasPressedY != 0 && ReleaseX != 0 && ReleaseY != 0){
+				DifficultyPressed = false;
+				ReleaseX = 0;ReleaseY = 0;
+				SettingsButton1();
+			}
+		}
 		
-		System.out.println(Difficulty);
+		else{
 		
-		button1.NegIfIn(CurrentX,CurrentY);
+	
+		Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, SettingsImage);
 		
-		button1.PresIfIn(PressedX, PressedY);
+		ToggleButton Easy = new ToggleButton(331, 142+screenHeight/2 - 295, 425, 124+screenHeight/2 - 295);
+		ToggleButton Medium = new ToggleButton(323, 201+screenHeight/2 - 295, 433, 182+screenHeight/2 - 295);
+		ToggleButton Hard = new ToggleButton(329, 287+screenHeight/2 - 295, 432, 241+screenHeight/2 - 295);
 		
-		if(button1.CursorInButton(ReleaseX, ReleaseY) && button1.CursorInButton(WasPressedX, WasPressedY)){
-			SettingsButton1();
+		RadioGroup radio = new RadioGroup(Easy, Medium, Hard);
+		
+		if(Easy.inKnop(CurrentX, CurrentY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, EasyHover);
+		}else if(Medium.inKnop(CurrentX, CurrentY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, MediumHover);
+		}else if(Hard.inKnop(CurrentX, CurrentY)){
+			Image.drawImage(gl, screenWidth/2 - 295, screenHeight/2 - 295, 591, 590, HardHover);
+		}
+		
+		if(Easy.inKnop(ReleaseX, ReleaseY) && Easy.inKnop(WasPressedX,WasPressedY)){
+			radio.setButton(0);
+			Difficulty = radio.update();
+			System.out.println(Difficulty);
+			DifficultyPressed = true;
+		}else if(Medium.inKnop(ReleaseX, ReleaseY) && Medium.inKnop(WasPressedX,WasPressedY)){
+			radio.setButton(1);
+			Difficulty = radio.update();
+			System.out.println(Difficulty);
+			DifficultyPressed = true;
+		}else if(Hard.inKnop(ReleaseX, ReleaseY) && Hard.inKnop(WasPressedX,WasPressedY)){
+			radio.setButton(2);
+			Difficulty = radio.update();
+			System.out.println(Difficulty);
+			DifficultyPressed = true;
+		}
+
+		
 		}
 		
 		// resetting used values

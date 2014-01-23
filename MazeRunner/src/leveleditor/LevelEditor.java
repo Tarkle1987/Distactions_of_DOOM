@@ -83,6 +83,8 @@ public class LevelEditor implements GLEventListener, MouseListener {
 	private byte[] deur18 = Image.loadImage("deur18.jpg");
 	private byte[] deur36 = Image.loadImage("deur36.jpg");
 	private byte[] background = Image.loadImage("achtergrond.png");
+	private byte[] save = Image.loadImage("Save36.jpg");
+	private byte[] exit = Image.loadImage("Exit36.jpg");
 
 	protected Texture muurText, floorText, smartText, trapText, trapopText;
 	
@@ -701,16 +703,11 @@ public class LevelEditor implements GLEventListener, MouseListener {
 		drawText(gl,"Add Pill", (int) (5*buttonSize+410),(int) (buttonpos-0.5*buttonSize));
 		// Save
 		gl.glColor3f(0f, 1.0f, 0.5f);
-		boxOnScreen(gl, 5*buttonSize+500, buttonpos-buttonSize, buttonSize);
+		Image.drawImage(gl, (int) (5*buttonSize+500),(int)(buttonpos-buttonSize),36,36, save);
 		drawText(gl,"Save Maze", (int) (6*buttonSize+510),(int) (buttonpos-0.5*buttonSize));
 		//Exit
 		gl.glColor3f(0.1f, 0.1f, 0.1f);
-		boxOnScreen(gl, 6*buttonSize+600, buttonpos-buttonSize, buttonSize);
-		// Draw a cross on top of exit box
-		gl.glLineWidth(3);
-		gl.glColor3f(1.0f, 1.0f, 1.0f);
-		lineOnScreen(gl, 6*buttonSize+600,buttonpos, 7*buttonSize+600,buttonpos-buttonSize);
-		lineOnScreen(gl, 6*buttonSize+600,buttonpos-buttonSize, 7*buttonSize+600,buttonpos);
+		Image.drawImage(gl, (int) (6*buttonSize+600),(int)(buttonpos-buttonSize),36,36, exit);
 		drawText(gl,"Exit LevelEditor", (int) (7*buttonSize+610),(int) (buttonpos-0.5*buttonSize));
 
 		//		// Draw a point on top of the first box

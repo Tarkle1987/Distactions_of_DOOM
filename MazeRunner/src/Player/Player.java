@@ -24,7 +24,7 @@ import Maze.Maze;
 public class Player extends GameObject {	
 	private double horAngle, verAngle;
 	private double speed;
-	private double sprintspeed = 0.015;
+	private double sprintspeed = 0.016;
 	private double godmodespeed = 0.02;
 
 	public int hp;
