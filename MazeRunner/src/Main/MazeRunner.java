@@ -244,17 +244,8 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.screenHeight = screenHeight;
 
 //		// Place enemies in on first level
-//		CompanionCube(numberOfEnemies,1.5, 1, difficulty);
-		
-		// VOOR TEST
-		Peter P = new Peter(17*maze.SQUARE_SIZE, 0, 3*maze.SQUARE_SIZE, difficulty);
-		lifeforms.add(P);
-		Sound Ps = new Sound("bird1.wav");
-		SoundPeter.add(Ps);
-		SoundPeter.get(0).playloop();
-		SoundPeter.get(0).setGain(-70);
-		
-		// VOOR TEST
+		CompanionCube(numberOfEnemies,1.5, 1, difficulty);
+
 		
 		// Placing stairs, doors and smartdrugs
 		coordT = Maze.CoordTrap(Maze.maze);
