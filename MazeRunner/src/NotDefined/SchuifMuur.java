@@ -46,7 +46,7 @@ public class SchuifMuur extends GameObject implements VisibleObject {
 		this.z = z;
 		this.maze = maze;
 		this.dLmax = size;
-		this.dLmin = size/2;
+		this.dLmin = size/2+0.5;
 	
 
 	}

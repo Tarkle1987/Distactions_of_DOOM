@@ -243,8 +243,18 @@ public class MazeRunner extends Frame implements GLEventListener {
 		input.screenWidth = screenWidth;
 		input.screenHeight = screenHeight;
 
-		// Place enemies in on first level
-		CompanionCube(numberOfEnemies,1.5, 1, difficulty);
+//		// Place enemies in on first level
+//		CompanionCube(numberOfEnemies,1.5, 1, difficulty);
+		
+		// VOOR TEST
+		Peter P = new Peter(17*maze.SQUARE_SIZE, 0, 3*maze.SQUARE_SIZE, difficulty);
+		lifeforms.add(P);
+		Sound Ps = new Sound("bird1.wav");
+		SoundPeter.add(Ps);
+		SoundPeter.get(0).playloop();
+		SoundPeter.get(0).setGain(-70);
+		
+		// VOOR TEST
 		
 		// Placing stairs, doors and smartdrugs
 		coordT = Maze.CoordTrap(Maze.maze);
@@ -301,7 +311,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	public void CompanionCube(int num, double size, int level, int difficulty) {
 
-		int Num = 2;//num + 2 * difficulty;
+		int Num = num + 2 * difficulty;
 		
 		
 		lifeforms = new ArrayList<Lifeform>();
@@ -1204,7 +1214,7 @@ public class MazeRunner extends Frame implements GLEventListener {
 	 */
 	public static void main(String[] args) {
 		// Create and run MazeRunner.
-//		new Menu();
-		new MazeRunner(0);
+		new Menu();
+//		new MazeRunner(0);
 	}
 }
